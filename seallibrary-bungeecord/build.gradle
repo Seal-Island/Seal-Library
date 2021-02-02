@@ -1,0 +1,39 @@
+plugins {
+    id 'net.minecrell.plugin-yml.bungee' version '0.3.0'
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+repositories {
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+}
+
+dependencies {
+    compile(project(':seallibrary-common'))
+    compileOnly 'net.md-5:bungeecord-api:1.12-SNAPSHOT'
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        expand 'version': project.version
+    }
+}
+
+shadowJar {
+    dependencies {
+        include(dependency(':seallibrary-common'))
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
+
+bungee {
+    main = 'com.focamacho.seallibrary.SealLibraryBungee'
+    name = 'seallibrary'
+    version = project.version
+    description = 'Library para facilitar a criação de plugins.'
+    author = 'Focamacho'
+}

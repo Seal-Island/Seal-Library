@@ -1,0 +1,84 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath "io.freefair.gradle:lombok-plugin:5.3.0"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'io.freefair.lombok'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+group = 'com.focamacho'
+version = '1.0'
+archivesBaseName = 'SealLibrary'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    mavenCentral()
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'http://repo.wea-ondara.net/repository/public/' }
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'io.freefair.lombok'
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    group = project.group
+    version = project.version
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    repositories {
+        mavenCentral()
+        maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+        maven { url = 'http://repo.wea-ondara.net/repository/public/' }
+    }
+
+    shadowJar {
+        relocate 'org.apache.commons.text', 'com.focamacho.seallibrary.relocated.org.apache.commons.text'
+    }
+
+    dependencies {
+        //LuckPerms
+        compileOnly 'net.luckperms:api:5.2'
+
+        //Outros
+        compile files(project.rootDir.toString() + '/libs/Jankson-1.2.0.jar')
+        compile group: 'org.json', name: 'json', version: '20200518'
+        compile group: 'commons-io', name: 'commons-io', version: '2.7'
+        compile group: 'org.apache.commons', name: 'commons-text', version: '1.9'
+        compile 'org.jetbrains:annotations:16.0.2'
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding("UTF-8")
+    }
+
+    tasks.build.dependsOn(shadowJar)
+}
+
+subprojects.each { subproject -> evaluationDependsOn(subproject.path)}
+
+task allJar(type: Jar, dependsOn: subprojects.build) {
+    subprojects.each { subproject ->
+        from subproject.configurations.archives.allArtifacts.files.collect {
+            zipTree(it)
+        }
+    }
+}

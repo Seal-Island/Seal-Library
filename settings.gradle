@@ -1,0 +1,3 @@
+rootProject.name = 'seallibrary'
+
+include 'seallibrary-common', 'seallibrary-bukkit', 'seallibrary-sponge', 'seallibrary-bungeecord'

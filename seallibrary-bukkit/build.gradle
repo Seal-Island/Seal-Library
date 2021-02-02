@@ -1,0 +1,40 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.3.0'
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    compile project(':seallibrary-common')
+    compileOnly 'org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT'
+    compileOnly group: 'com.github.azbh111', name: 'craftbukkit-1.12.2', version: 'R'
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        expand 'version': project.version
+    }
+}
+
+shadowJar {
+    dependencies {
+        include(dependency(':seallibrary-common'))
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
+
+bukkit {
+    main = 'com.focamacho.seallibrary.SealLibraryBukkit'
+    name = 'seallibrary'
+    version = rootProject.version
+    description = 'Library para facilitar a criação de plugins.'
+    author = 'Focamacho'
+}
