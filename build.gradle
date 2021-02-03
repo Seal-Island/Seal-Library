@@ -48,6 +48,7 @@ allprojects {
         maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
         maven { url = 'http://repo.wea-ondara.net/repository/public/' }
+        maven { url 'https://jitpack.io' }
     }
 
     shadowJar {
@@ -57,6 +58,9 @@ allprojects {
     dependencies {
         //LuckPerms
         compileOnly 'net.luckperms:api:5.2'
+
+        //Vault
+        compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 
         //Outros
         compile files(project.rootDir.toString() + '/libs/Jankson-1.2.0.jar')

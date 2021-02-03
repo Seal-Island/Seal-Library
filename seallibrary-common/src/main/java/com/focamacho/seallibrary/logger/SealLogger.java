@@ -33,4 +33,34 @@ public class SealLogger {
         Implementations.logger.error(message);
     }
 
+    /**
+     * Exibe uma informação nos logs.
+     * @param messages as mensagens deseajdas.
+     */
+    public static void info(String... messages) {
+        for (String message : messages) {
+            info(message);
+        }
+    }
+
+    /**
+     * Exibe um aviso nos logs.
+     * @param messages as mensagens deseajdas.
+     */
+    public static void warning(String... messages) {
+        for (String message : messages) {
+            warning(message);
+        }
+    }
+
+    /**
+     * Exibe um erro nos logs.
+     * @param messages as mensagens deseajdas.
+     */
+    public static void error(String... messages) {
+        for (String message : messages) {
+            error(message);
+        }
+    }
+
 }

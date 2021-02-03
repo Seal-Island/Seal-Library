@@ -1,5 +1,6 @@
 package com.focamacho.seallibrary.player;
 
+import com.focamacho.seallibrary.economy.EconomyHandler;
 import com.focamacho.seallibrary.menu.IMenu;
 import com.focamacho.seallibrary.permission.PermissionHandler;
 
@@ -132,6 +133,96 @@ public interface ISealPlayer {
      */
     default boolean removeGroup(String group) {
         return PermissionHandler.removeGroup(getUUID(), group);
+    }
+
+    /**
+     * Consulta a quantia de dinheiro
+     * que o jogador possui.
+     *
+     * @return a quantia que o jogador possui.
+     */
+    default double getMoney() {
+        return EconomyHandler.getMoney(getUUID());
+    }
+
+    /**
+     * Consulta a quantia de dinheiro
+     * que o jogador possui na moeda
+     * especificada.
+     *
+     * @param currency a moeda para consulta.
+     * @return a quantia que o jogador possui.
+     */
+    default double getMoney(String currency) {
+        return EconomyHandler.getMoney(getUUID(), currency);
+    }
+
+    /**
+     * Consulta se o jogador possui
+     * uma quantia de dinheiro especificada.
+     *
+     * @param value o valor para consulta.
+     * @return se o jogador possui o money.
+     */
+    default boolean hasMoney(double value) {
+        return EconomyHandler.hasMoney(getUUID(), value);
+    }
+
+    /**
+     * Consulta se o jogador possui
+     * uma quantia de dinheiro na moeda
+     * especificada.
+     *
+     * @param value o valor para consulta.
+     * @param currency a moeda para consulta.
+     * @return se o jogador possui o money.
+     */
+    default boolean hasMoney(double value, String currency) {
+        return EconomyHandler.hasMoney(getUUID(), value, currency);
+    }
+
+    /**
+     * Adiciona uma quantia de dinheiro
+     * na conta do jogador.
+     *
+     * @param value o valor para adição.
+     */
+    default void addMoney(double value) {
+        EconomyHandler.addMoney(getUUID(), value);
+    }
+
+    /**
+     * Adiciona uma quantia de dinheiro
+     * na conta do jogador na moeda
+     * especificada.
+     *
+     * @param value o valor para adição.
+     * @param currency a moeda desejada.
+     */
+    default void addMoney(double value, String currency) {
+        EconomyHandler.addMoney(getUUID(), value, currency);
+    }
+
+    /**
+     * Remove uma quantia de dinheiro
+     * da conta do jogador.
+     *
+     * @param value o valor para remoção.
+     */
+    default void removeMoney(double value) {
+        EconomyHandler.removeMoney(getUUID(), value);
+    }
+
+    /**
+     * Remove uma quantia de dinheiro
+     * da conta do jogador na moeda
+     * especificada.
+     *
+     * @param value o valor para remoção.
+     * @param currency a moeda desejada.
+     */
+    default void removeMoney(double value, String currency) {
+        EconomyHandler.removeMoney(getUUID(), value, currency);
     }
 
 }

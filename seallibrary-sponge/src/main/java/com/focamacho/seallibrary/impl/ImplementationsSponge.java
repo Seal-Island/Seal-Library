@@ -1,10 +1,13 @@
 package com.focamacho.seallibrary.impl;
 
 import com.focamacho.seallibrary.SealLibrarySponge;
+import com.focamacho.seallibrary.economy.EconomyHandlerSponge;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStackSponge;
 import com.focamacho.seallibrary.logger.LoggerSponge;
+import com.focamacho.seallibrary.logger.SealLogger;
 import com.focamacho.seallibrary.menu.MenuSponge;
+import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.SealPlayerSponge;
 import com.focamacho.seallibrary.util.ItemStackUtils;
 import org.spongepowered.api.Sponge;
@@ -17,6 +20,8 @@ import org.spongepowered.api.plugin.PluginManager;
  * por meio do Sponge.
  */
 public class ImplementationsSponge {
+
+    private static final PluginManager pluginManager = Sponge.getPluginManager();
 
     public static void init() {
         /*
@@ -42,18 +47,29 @@ public class ImplementationsSponge {
         /*
          * Implementação do sistema de Menus.
          */
-        Implementations.builder = MenuSponge::new;
+        Implementations.menuBuilder = MenuSponge::new;
 
         /*
          * Implementação do sistema de SealPlayers.
          */
-        Implementations.getter = player -> new SealPlayerSponge((Player) player);
+        Implementations.playerGetter = player -> new SealPlayerSponge((Player) player);
+
+        /*
+         * Implementação do sistema de manipulação de Economia.
+         */
+        Implementations.economyHandler = new EconomyHandlerSponge();
 
         /*
          * Implementação do sistema de manipulação de Permissões.
          */
-        PluginManager pluginManager = Sponge.getPluginManager();
-        if(pluginManager.isLoaded("luckperms")) Implementations.setPermissionHandler("luckperms");
+        if(pluginManager.isLoaded("luckperms")) Implementations.permissionHandler = new PermissionHandlerLuckPerms();
+        else {
+            SealLogger.error("Nenhum plugin de permissões compatível foi carregado.",
+                    "Por favor, instale um dos seguintes plugins:",
+                    "LuckPerms",
+                    "O servidor será desligado para evitar problemas.");
+            Sponge.getServer().shutdown();
+        }
     }
 
 }

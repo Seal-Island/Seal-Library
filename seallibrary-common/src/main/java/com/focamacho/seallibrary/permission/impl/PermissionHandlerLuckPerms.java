@@ -8,6 +8,7 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.InheritanceNode;
+import net.luckperms.api.node.types.PermissionNode;
 
 import java.util.Set;
 import java.util.UUID;
@@ -18,11 +19,11 @@ import java.util.stream.Collectors;
  * por meio do LuckPerms.
  * @see IPermissionHandler
  */
-public class LuckPermsHandler implements IPermissionHandler {
+public class PermissionHandlerLuckPerms implements IPermissionHandler {
 
     private final LuckPerms api;
 
-    public LuckPermsHandler() {
+    public PermissionHandlerLuckPerms() {
         api = LuckPermsProvider.get();
     }
 
@@ -54,6 +55,28 @@ public class LuckPermsHandler implements IPermissionHandler {
     public boolean hasPermission(UUID uuid, String permission) {
         User user = getUser(uuid);
         return user != null && user.getCachedData().getPermissionData().checkPermission(permission).asBoolean();
+    }
+
+    @Override
+    public boolean addPermission(UUID uuid, String permission) {
+        User user = getUser(uuid);
+        if(user == null) return false;
+
+        DataMutateResult result = user.data().add(PermissionNode.builder().permission(permission).value(true).build());
+        api.getUserManager().saveUser(user);
+
+        return result.wasSuccessful();
+    }
+
+    @Override
+    public boolean removePermission(UUID uuid, String permission) {
+        User user = getUser(uuid);
+        if(user == null) return false;
+
+        DataMutateResult result = user.data().remove(PermissionNode.builder().permission(permission).value(true).build());
+        api.getUserManager().saveUser(user);
+
+        return result.wasSuccessful();
     }
 
     private boolean hasGroup(User user, Group group) {

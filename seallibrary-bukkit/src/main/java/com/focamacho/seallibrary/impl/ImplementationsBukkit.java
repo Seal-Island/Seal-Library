@@ -1,12 +1,17 @@
 package com.focamacho.seallibrary.impl;
 
 import com.focamacho.seallibrary.SealLibraryBukkit;
+import com.focamacho.seallibrary.economy.EconomyHandlerVault;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStackBukkit;
 import com.focamacho.seallibrary.logger.LoggerBukkit;
+import com.focamacho.seallibrary.logger.SealLogger;
 import com.focamacho.seallibrary.menu.MenuBukkit;
+import com.focamacho.seallibrary.permission.PermissionHandlerVault;
+import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.SealPlayerBukkit;
 import com.focamacho.seallibrary.util.ItemStackUtilsBukkit;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +22,8 @@ import org.bukkit.plugin.PluginManager;
  * por meio do Bukkit.
  */
 public class ImplementationsBukkit {
+
+    public static final PluginManager pluginManager = Bukkit.getPluginManager();
 
     public static void init() {
         /*
@@ -42,18 +49,37 @@ public class ImplementationsBukkit {
         /*
          * Implementação do sistema de Menus.
          */
-        Implementations.builder = MenuBukkit::new;
+        Implementations.menuBuilder = MenuBukkit::new;
 
         /*
          * Implementação do sistema de SealPlayers.
          */
-        Implementations.getter = player -> new SealPlayerBukkit((Player) player);
+        Implementations.playerGetter = player -> new SealPlayerBukkit((Player) player);
+
+        /*
+         * Implementação do sistema de manipulação de Economia.
+         */
+        if(pluginManager.isPluginEnabled("vault")) Implementations.economyHandler = new EconomyHandlerVault();
+        else {
+            SealLogger.error("Nenhum plugin de economia compatível foi carregado.",
+                    "Por favor, instale um dos seguintes plugins:",
+                    "Vault",
+                    "O servidor será desligado para evitar problemas.");
+            Bukkit.getServer().shutdown();
+        }
 
         /*
          * Implementação do sistema de manipulação de Permissões.
          */
-        PluginManager pluginManager = Bukkit.getPluginManager();
-        if(pluginManager.isPluginEnabled("luckperms")) Implementations.setPermissionHandler("luckperms");
+        if(pluginManager.isPluginEnabled("luckperms")) Implementations.permissionHandler = new PermissionHandlerLuckPerms();
+        else if(pluginManager.isPluginEnabled("vault")) Implementations.permissionHandler = new PermissionHandlerVault();
+        else {
+            SealLogger.error("Nenhum plugin de permissões compatível foi carregado.",
+                    "Por favor, instale um dos seguintes plugins:",
+                    "LuckPerms; Vault",
+                    "O servidor será desligado para evitar problemas.");
+            Bukkit.getServer().shutdown();
+        }
     }
 
 }

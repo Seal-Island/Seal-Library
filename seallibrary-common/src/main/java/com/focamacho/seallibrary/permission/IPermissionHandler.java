@@ -32,6 +32,24 @@ public interface IPermissionHandler {
     boolean hasPermission(UUID uuid, String permission);
 
     /**
+     *  Adiciona uma permissão para
+     *  o jogador.
+     *
+     * @param uuid o uuid do jogador
+     * @param permission a permissão para adição
+     */
+    boolean addPermission(UUID uuid, String permission);
+
+    /**
+     *  Remove uma permissão
+     *  do jogador.
+     *
+     * @param uuid o uuid do jogador
+     * @param permission a permissão para remoção
+     */
+    boolean removePermission(UUID uuid, String permission);
+
+    /**
      *  Consulta se o jogador está em um
      *  grupo.
      *

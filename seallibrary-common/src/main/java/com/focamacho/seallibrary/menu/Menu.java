@@ -11,7 +11,7 @@ public class Menu {
      * @return o menu criado.
      */
     public static IMenu create(Object plugin) {
-        return Implementations.builder.create(plugin);
+        return Implementations.menuBuilder.create(plugin);
     }
 
     /**

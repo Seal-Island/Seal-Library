@@ -11,7 +11,7 @@ public class SealPlayer {
      * @return o SealPlayer obtido.
      */
     public static ISealPlayer get(Object player) {
-        return Implementations.getter.get(player);
+        return Implementations.playerGetter.get(player);
     }
 
 }
