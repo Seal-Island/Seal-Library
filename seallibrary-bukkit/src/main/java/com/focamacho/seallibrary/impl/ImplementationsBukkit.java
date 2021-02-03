@@ -3,6 +3,7 @@ package com.focamacho.seallibrary.impl;
 import com.focamacho.seallibrary.SealLibraryBukkit;
 import com.focamacho.seallibrary.chat.ChatHandlerVault;
 import com.focamacho.seallibrary.chat.MessageWaiterListenerBukkit;
+import com.focamacho.seallibrary.chat.impl.ChatHandlerBungeePerms;
 import com.focamacho.seallibrary.chat.impl.ChatHandlerLuckPerms;
 import com.focamacho.seallibrary.economy.EconomyHandlerVault;
 import com.focamacho.seallibrary.item.ISealStack;
@@ -11,6 +12,7 @@ import com.focamacho.seallibrary.logger.LoggerBukkit;
 import com.focamacho.seallibrary.logger.SealLogger;
 import com.focamacho.seallibrary.menu.MenuBukkit;
 import com.focamacho.seallibrary.permission.PermissionHandlerVault;
+import com.focamacho.seallibrary.permission.impl.PermissionHandlerBungeePerms;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.SealPlayerBukkit;
 import com.focamacho.seallibrary.util.ItemStackUtilsBukkit;
@@ -74,11 +76,12 @@ public class ImplementationsBukkit {
          * Implementação do sistema de manipulação de Permissões.
          */
         if(pluginManager.isPluginEnabled("luckperms")) Implementations.permissionHandler = new PermissionHandlerLuckPerms();
+        else if(pluginManager.isPluginEnabled("bungeeperms")) Implementations.permissionHandler = new PermissionHandlerBungeePerms();
         else if(pluginManager.isPluginEnabled("vault")) Implementations.permissionHandler = new PermissionHandlerVault();
         else {
             SealLogger.error("Nenhum plugin de permissões compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
-                    "LuckPerms; Vault",
+                    "LuckPerms; BungeePerms; Vault",
                     "O servidor será desligado para evitar problemas.");
             Bukkit.getServer().shutdown();
         }
@@ -87,11 +90,12 @@ public class ImplementationsBukkit {
          * Implementação do sistema de manipulação de Chat.
          */
         if(pluginManager.isPluginEnabled("luckperms")) Implementations.chatHandler = new ChatHandlerLuckPerms();
+        else if(pluginManager.isPluginEnabled("bungeeperms")) Implementations.chatHandler = new ChatHandlerBungeePerms();
         else if(pluginManager.isPluginEnabled("vault")) Implementations.chatHandler = new ChatHandlerVault();
         else {
             SealLogger.error("Nenhum plugin de chat compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
-                    "LuckPerms; Vault",
+                    "LuckPerms; BungeePerms; Vault",
                     "O servidor será desligado para evitar problemas.");
             Bukkit.getServer().shutdown();
         }

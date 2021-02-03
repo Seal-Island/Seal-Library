@@ -264,7 +264,7 @@ public interface ISealPlayer {
      *                  a mensagem.
      */
     default void waitForMessage(Runnable.MessageRunnable onReceive) {
-        ChatHandler.waitForMessage(getUUID(), onReceive, Integer.MAX_VALUE);
+        ChatHandler.waitForMessage(getUUID(), onReceive);
     }
 
 }

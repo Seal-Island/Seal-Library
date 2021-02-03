@@ -54,7 +54,7 @@ public interface IChatHandler {
      *                     waiter se auto-destruir.
      */
     default void waitForMessage(UUID player, Runnable.MessageRunnable onReceive, int secondsLimit) {
-        waitForMessage(player, onReceive, secondsLimit, () -> {});
+        ChatHandler.waitForMessage(player, onReceive, secondsLimit);
     }
 
     /**
@@ -67,7 +67,7 @@ public interface IChatHandler {
      *                  a mensagem.
      */
     default void waitForMessage(UUID player, Runnable.MessageRunnable onReceive) {
-        waitForMessage(player, onReceive, Integer.MAX_VALUE);
+        ChatHandler.waitForMessage(player, onReceive);
     }
 
 }

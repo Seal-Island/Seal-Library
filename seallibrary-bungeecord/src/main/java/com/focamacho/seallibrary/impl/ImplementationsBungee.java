@@ -2,9 +2,11 @@ package com.focamacho.seallibrary.impl;
 
 import com.focamacho.seallibrary.SealLibraryBungee;
 import com.focamacho.seallibrary.chat.MessageWaiterListenerBungee;
+import com.focamacho.seallibrary.chat.impl.ChatHandlerBungeePerms;
 import com.focamacho.seallibrary.chat.impl.ChatHandlerLuckPerms;
 import com.focamacho.seallibrary.logger.LoggerBungee;
 import com.focamacho.seallibrary.logger.SealLogger;
+import com.focamacho.seallibrary.permission.impl.PermissionHandlerBungeePerms;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.SealPlayerBungee;
 import net.md_5.bungee.api.ProxyServer;
@@ -49,10 +51,11 @@ public class ImplementationsBungee {
          * Implementação do sistema de manipulação de Permissões.
          */
         if(pluginManager.getPlugin("LuckPerms") != null) Implementations.permissionHandler = new PermissionHandlerLuckPerms();
+        else if(pluginManager.getPlugin("BungeePerms") != null) Implementations.permissionHandler = new PermissionHandlerBungeePerms();
         else {
             SealLogger.error("Nenhum plugin de permissões compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
-                    "LuckPerms",
+                    "LuckPerms, BungeePerms",
                     "O servidor será desligado para evitar problemas.");
             ProxyServer.getInstance().stop();
         }
@@ -61,10 +64,11 @@ public class ImplementationsBungee {
          * Implementação do sistema de manipulação de Chat.
          */
         if(pluginManager.getPlugin("LuckPerms") != null) Implementations.chatHandler = new ChatHandlerLuckPerms();
+        else if(pluginManager.getPlugin("BungeePerms") != null) Implementations.chatHandler = new ChatHandlerBungeePerms();
         else {
             SealLogger.error("Nenhum plugin de chat compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
-                    "LuckPerms",
+                    "LuckPerms, BungeePerms",
                     "O servidor será desligado para evitar problemas.");
             ProxyServer.getInstance().stop();
         }
