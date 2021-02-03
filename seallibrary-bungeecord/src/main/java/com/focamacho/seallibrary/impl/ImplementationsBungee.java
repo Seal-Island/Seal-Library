@@ -1,6 +1,8 @@
 package com.focamacho.seallibrary.impl;
 
 import com.focamacho.seallibrary.SealLibraryBungee;
+import com.focamacho.seallibrary.chat.MessageWaiterListenerBungee;
+import com.focamacho.seallibrary.chat.impl.ChatHandlerLuckPerms;
 import com.focamacho.seallibrary.logger.LoggerBungee;
 import com.focamacho.seallibrary.logger.SealLogger;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
@@ -54,6 +56,20 @@ public class ImplementationsBungee {
                     "O servidor será desligado para evitar problemas.");
             ProxyServer.getInstance().stop();
         }
+
+        /*
+         * Implementação do sistema de manipulação de Chat.
+         */
+        if(pluginManager.getPlugin("LuckPerms") != null) Implementations.chatHandler = new ChatHandlerLuckPerms();
+        else {
+            SealLogger.error("Nenhum plugin de chat compatível foi carregado.",
+                    "Por favor, instale um dos seguintes plugins:",
+                    "LuckPerms",
+                    "O servidor será desligado para evitar problemas.");
+            ProxyServer.getInstance().stop();
+        }
+        pluginManager.registerListener(SealLibraryBungee.instance, new MessageWaiterListenerBungee());
+
     }
 
 }

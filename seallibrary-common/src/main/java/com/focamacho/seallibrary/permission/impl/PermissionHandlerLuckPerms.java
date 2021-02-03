@@ -38,20 +38,6 @@ public class PermissionHandlerLuckPerms implements IPermissionHandler {
     }
 
     @Override
-    public String getPrefix(UUID uuid) {
-        User user = getUser(uuid);
-        if(user == null) return null;
-        return user.getCachedData().getMetaData().getPrefix();
-    }
-
-    @Override
-    public String getSuffix(UUID uuid) {
-        User user = getUser(uuid);
-        if(user == null) return null;
-        return user.getCachedData().getMetaData().getSuffix();
-    }
-
-    @Override
     public boolean hasPermission(UUID uuid, String permission) {
         User user = getUser(uuid);
         return user != null && user.getCachedData().getPermissionData().checkPermission(permission).asBoolean();

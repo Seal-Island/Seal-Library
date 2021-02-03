@@ -6,24 +6,6 @@ import java.util.UUID;
 public interface IPermissionHandler {
 
     /**
-     *  Consulta o prefix de um jogador.
-     *
-     * @param uuid o uuid do jogador
-     * @return o prefix ou null caso o jogador
-     * não possua um.
-     */
-    String getPrefix(UUID uuid);
-
-    /**
-     *  Consulta o suffix de um jogador.
-     *
-     * @param uuid o uuid do jogador
-     * @return o suffix ou null caso o jogador
-     * não possua um.
-     */
-    String getSuffix(UUID uuid);
-
-    /**
      *  Consulta se o jogador possui uma
      *  permissão.
      *

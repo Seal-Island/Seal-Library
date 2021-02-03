@@ -1,5 +1,7 @@
 package com.focamacho.seallibrary.player;
 
+import com.focamacho.seallibrary.chat.ChatHandler;
+import com.focamacho.seallibrary.chat.lib.Runnable;
 import com.focamacho.seallibrary.economy.EconomyHandler;
 import com.focamacho.seallibrary.menu.IMenu;
 import com.focamacho.seallibrary.permission.PermissionHandler;
@@ -79,7 +81,7 @@ public interface ISealPlayer {
      * caso ele não possua um.
      */
     default String getPrefix() {
-        return PermissionHandler.getPrefix(getUUID());
+        return ChatHandler.getPrefix(getUUID());
     }
 
     /**
@@ -89,7 +91,7 @@ public interface ISealPlayer {
      * caso ele não possua um.
      */
     default String getSuffix() {
-        return PermissionHandler.getSuffix(getUUID());
+        return ChatHandler.getSuffix(getUUID());
     }
 
     /**
@@ -224,6 +226,45 @@ public interface ISealPlayer {
      */
     default void removeMoney(double value, String currency) {
         EconomyHandler.removeMoney(getUUID(), value, currency);
+    }
+
+    /**
+     * Aguarda uma mensagem do jogador
+     * para executar uma ação.
+     *
+     * @param onReceive a ação efetuada ao receber
+     *                  a mensagem.
+     * @param secondsLimit o limite de segundos antes desse
+     *                     waiter se auto-destruir.
+     * @param onExpire a ação efetuada ao tempo limiter ser
+     *                 esgotado.
+     */
+    default void waitForMessage(Runnable.MessageRunnable onReceive, int secondsLimit, java.lang.Runnable onExpire) {
+        ChatHandler.waitForMessage(getUUID(), onReceive, secondsLimit, onExpire);
+    }
+
+    /**
+     * Aguarda uma mensagem do jogador
+     * para executar uma ação.
+     *
+     * @param onReceive a ação efetuada ao receber
+     *                  a mensagem.
+     * @param secondsLimit o limite de segundos antes desse
+     *                     waiter se auto-destruir.
+     */
+    default void waitForMessage(Runnable.MessageRunnable onReceive, int secondsLimit) {
+        ChatHandler.waitForMessage(getUUID(), onReceive, secondsLimit, () -> {});
+    }
+
+    /**
+     * Aguarda uma mensagem do jogador
+     * para executar uma ação.
+     *
+     * @param onReceive a ação efetuada ao receber
+     *                  a mensagem.
+     */
+    default void waitForMessage(Runnable.MessageRunnable onReceive) {
+        ChatHandler.waitForMessage(getUUID(), onReceive, Integer.MAX_VALUE);
     }
 
 }

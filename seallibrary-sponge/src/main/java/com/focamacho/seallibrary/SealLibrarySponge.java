@@ -1,10 +1,8 @@
 package com.focamacho.seallibrary;
 
-import com.focamacho.seallibrary.chat.WaiterListener;
 import com.focamacho.seallibrary.impl.ImplementationsSponge;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
@@ -31,8 +29,6 @@ public class SealLibrarySponge {
         instance = this;
         ImplementationsSponge.init();
         SealLibrary.init();
-
-        Sponge.getEventManager().registerListeners(this, new WaiterListener());
     }
 
     @Listener

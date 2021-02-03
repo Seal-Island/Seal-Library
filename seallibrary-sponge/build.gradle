@@ -4,6 +4,8 @@ plugins {
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
+version = rootProject.version
+
 dependencies {
     compile project(':seallibrary-common')
     compileOnly 'org.spongepowered:spongeapi:7.3.0'

@@ -1,5 +1,6 @@
 package com.focamacho.seallibrary.impl;
 
+import com.focamacho.seallibrary.chat.IChatHandler;
 import com.focamacho.seallibrary.economy.IEconomyHandler;
 import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.logger.ILogger;
@@ -52,5 +53,11 @@ public class Implementations {
      * de permissões.
      */
     public static IPermissionHandler permissionHandler;
+
+    /**
+     * IChatHandler utilizado para a manipulação
+     * de chat.
+     */
+    public static IChatHandler chatHandler;
 
 }

@@ -1,8 +1,11 @@
 package com.focamacho.seallibrary.impl;
 
+import com.focamacho.seallibrary.chat.lib.Runnable;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.menu.IMenu;
 import com.focamacho.seallibrary.player.ISealPlayer;
+
+import java.util.UUID;
 
 public class ImpInterfaces {
 
@@ -30,4 +33,13 @@ public class ImpInterfaces {
         ISealStack get(Object item);
         ISealStack get(String item);
     }
+
+    /**
+     * Interface usada para a criação
+     * de um MessageWaiter.
+     */
+    public interface IMessageWaiterGetter {
+        void waitForMessage(UUID player, Runnable.MessageRunnable onReceive, int secondsLimit, java.lang.Runnable onExpire);
+    }
+
 }

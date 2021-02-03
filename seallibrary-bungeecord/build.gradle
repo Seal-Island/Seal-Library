@@ -33,7 +33,7 @@ tasks.build.dependsOn tasks.shadowJar
 bungee {
     main = 'com.focamacho.seallibrary.SealLibraryBungee'
     name = 'seallibrary'
-    version = project.version
+    version = rootProject.version
     description = 'Library para facilitar a criação de plugins.'
     author = 'Focamacho'
 }

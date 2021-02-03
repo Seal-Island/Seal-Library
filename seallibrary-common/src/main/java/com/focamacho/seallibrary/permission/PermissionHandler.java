@@ -13,14 +13,6 @@ import java.util.UUID;
  */
 public class PermissionHandler {
 
-    public static String getPrefix(UUID uuid) {
-        return Implementations.permissionHandler.getPrefix(uuid);
-    }
-
-    public static String getSuffix(UUID uuid) {
-        return Implementations.permissionHandler.getSuffix(uuid);
-    }
-
     public static boolean hasPermission(UUID uuid, String permission) {
         return Implementations.permissionHandler.hasPermission(uuid, permission);
     }

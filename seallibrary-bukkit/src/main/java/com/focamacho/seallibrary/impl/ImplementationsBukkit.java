@@ -1,6 +1,9 @@
 package com.focamacho.seallibrary.impl;
 
 import com.focamacho.seallibrary.SealLibraryBukkit;
+import com.focamacho.seallibrary.chat.ChatHandlerVault;
+import com.focamacho.seallibrary.chat.MessageWaiterListenerBukkit;
+import com.focamacho.seallibrary.chat.impl.ChatHandlerLuckPerms;
 import com.focamacho.seallibrary.economy.EconomyHandlerVault;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStackBukkit;
@@ -79,6 +82,20 @@ public class ImplementationsBukkit {
                     "O servidor será desligado para evitar problemas.");
             Bukkit.getServer().shutdown();
         }
+
+        /*
+         * Implementação do sistema de manipulação de Chat.
+         */
+        if(pluginManager.isPluginEnabled("luckperms")) Implementations.chatHandler = new ChatHandlerLuckPerms();
+        else if(pluginManager.isPluginEnabled("vault")) Implementations.chatHandler = new ChatHandlerVault();
+        else {
+            SealLogger.error("Nenhum plugin de chat compatível foi carregado.",
+                    "Por favor, instale um dos seguintes plugins:",
+                    "LuckPerms; Vault",
+                    "O servidor será desligado para evitar problemas.");
+            Bukkit.getServer().shutdown();
+        }
+        pluginManager.registerEvents(new MessageWaiterListenerBukkit(), SealLibraryBukkit.instance);
     }
 
 }

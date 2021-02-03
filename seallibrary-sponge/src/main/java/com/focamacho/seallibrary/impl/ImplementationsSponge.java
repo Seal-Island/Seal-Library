@@ -1,6 +1,8 @@
 package com.focamacho.seallibrary.impl;
 
 import com.focamacho.seallibrary.SealLibrarySponge;
+import com.focamacho.seallibrary.chat.MessageWaiterListenerSponge;
+import com.focamacho.seallibrary.chat.impl.ChatHandlerLuckPerms;
 import com.focamacho.seallibrary.economy.EconomyHandlerSponge;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStackSponge;
@@ -70,6 +72,19 @@ public class ImplementationsSponge {
                     "O servidor será desligado para evitar problemas.");
             Sponge.getServer().shutdown();
         }
+
+        /*
+         * Implementação do sistema de manipulação de Chat.
+         */
+        if(pluginManager.isLoaded("luckperms")) Implementations.chatHandler = new ChatHandlerLuckPerms();
+        else {
+            SealLogger.error("Nenhum plugin de chat compatível foi carregado.",
+                    "Por favor, instale um dos seguintes plugins:",
+                    "LuckPerms",
+                    "O servidor será desligado para evitar problemas.");
+            Sponge.getServer().shutdown();
+        }
+        Sponge.getEventManager().registerListeners(SealLibrarySponge.instance, new MessageWaiterListenerSponge());
     }
 
 }

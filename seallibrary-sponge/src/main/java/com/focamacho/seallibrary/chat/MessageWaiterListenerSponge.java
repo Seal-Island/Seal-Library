@@ -1,5 +1,8 @@
 package com.focamacho.seallibrary.chat;
 
+import com.focamacho.seallibrary.chat.lib.IMessage;
+import com.focamacho.seallibrary.player.ISealPlayer;
+import com.focamacho.seallibrary.player.SealPlayer;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.message.MessageChannelEvent;
@@ -7,7 +10,7 @@ import org.spongepowered.api.event.network.ClientConnectionEvent;
 
 import java.util.Iterator;
 
-public class WaiterListener {
+public class MessageWaiterListenerSponge {
 
     @Listener
     public void onChatMessage(MessageChannelEvent.Chat event) {
@@ -16,10 +19,20 @@ public class WaiterListener {
         Iterator<MessageWaiter> waiters = MessageWaiter.waiters.iterator();
         while(waiters.hasNext()) {
             MessageWaiter waiter = waiters.next();
-            if(waiter.player.equals(((Player)event.getSource()).getUniqueId())) {
+            if(waiter.getPlayer().equals(((Player)event.getSource()).getUniqueId())) {
                 waiters.remove();
 
-                waiter.onReceive.run(event);
+                waiter.getOnReceive().run(new IMessage() {
+                    @Override
+                    public ISealPlayer getPlayer() {
+                        return SealPlayer.get(event.getSource());
+                    }
+
+                    @Override
+                    public String getMessage() {
+                        return event.getMessage().toPlain();
+                    }
+                });
 
                 break;
             }
@@ -33,10 +46,10 @@ public class WaiterListener {
         Iterator<MessageWaiter> waiters = MessageWaiter.waiters.iterator();
         while(waiters.hasNext()) {
             MessageWaiter waiter = waiters.next();
-            if(waiter.player.equals(((Player)event.getSource()).getUniqueId())) {
+            if(waiter.getPlayer().equals(((Player)event.getSource()).getUniqueId())) {
                 waiters.remove();
 
-                waiter.onExpire.run();
+                waiter.getOnExpire().run();
 
                 break;
             }
