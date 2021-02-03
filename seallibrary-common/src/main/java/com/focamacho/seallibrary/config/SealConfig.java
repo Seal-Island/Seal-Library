@@ -102,7 +102,7 @@ public class SealConfig {
             configs.put(configClass, new AbstractMap.SimpleEntry<>(configFile, config));
             return config;
         } catch(Exception e) {
-            SealLogger.error("Error loading config file:");
+            SealLogger.error("Erro ao carregar um arquivo de configuração:");
             e.printStackTrace();
             return null;
         }
@@ -127,8 +127,8 @@ public class SealConfig {
             boolean mk = langFolder.mkdirs();
         }
         if(!langFolder.isDirectory()) {
-            SealLogger.error("Can't load lang files.");
-            SealLogger.error(langFolder.toString() + " is not a directory.");
+            SealLogger.error("Não foi possível carregar os arquivos de idioma.");
+            SealLogger.error(langFolder.toString() + " não é uma pasta.");
             return;
         }
 
@@ -151,7 +151,7 @@ public class SealConfig {
                     });
                 }
             } catch(Exception e) {
-                SealLogger.error("Error loading lang file:");
+                SealLogger.error("Erro ao carregar um arquivo de idioma:");
                 e.printStackTrace();
             }
         }
@@ -168,7 +168,7 @@ public class SealConfig {
 
                 FileUtils.write(file, unicodeUnescaper.translate(configObject.toJson(false, true, 0)), StandardCharsets.UTF_8);
             } catch (Exception e) {
-                SealLogger.error("Error saving lang file:");
+                SealLogger.error("Erro ao salvar um arquivo de idioma:");
                 e.printStackTrace();
             }
         });
