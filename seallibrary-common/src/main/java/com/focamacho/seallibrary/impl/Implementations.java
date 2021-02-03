@@ -5,7 +5,6 @@ import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.logger.ILogger;
 import com.focamacho.seallibrary.menu.Menu;
 import com.focamacho.seallibrary.permission.IPermissionHandler;
-import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.SealPlayer;
 
 /**

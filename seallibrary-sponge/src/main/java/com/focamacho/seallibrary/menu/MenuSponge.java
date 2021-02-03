@@ -15,10 +15,7 @@ import org.spongepowered.api.item.inventory.property.SlotIndex;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("unused")
 @Accessors(chain = true)
@@ -93,7 +90,9 @@ public class MenuSponge implements IMenu {
                     .listener(ClickInventoryEvent.class, event -> {
                         event.setCancelled(true);
                         if (event.getSlot().isPresent()) {
-                            int slotIndex = event.getSlot().get().getInventoryProperty(SlotIndex.class).get().getValue();
+                            Optional<SlotIndex> index = event.getSlot().get().getInventoryProperty(SlotIndex.class);
+                            if(!index.isPresent()) return;
+                            Integer slotIndex = index.get().getValue();
 
                             /*onClick.run(event);*/
                             if(event instanceof ClickInventoryEvent.Double) { /*onDouble.run(event);*/ if(items.containsKey(slotIndex)) { items.get(slotIndex).getOnDouble().run(getClick(event)); }}

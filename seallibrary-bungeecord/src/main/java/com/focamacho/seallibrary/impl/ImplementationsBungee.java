@@ -8,7 +8,6 @@ import com.focamacho.seallibrary.player.SealPlayerBungee;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.PluginManager;
-import org.bukkit.Bukkit;
 
 /**
  * Implementações dos sistemas da Seal Library

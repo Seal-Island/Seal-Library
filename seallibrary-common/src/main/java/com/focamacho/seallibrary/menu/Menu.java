@@ -2,6 +2,7 @@ package com.focamacho.seallibrary.menu;
 
 import com.focamacho.seallibrary.impl.Implementations;
 
+@SuppressWarnings("unused")
 public class Menu {
 
     /**

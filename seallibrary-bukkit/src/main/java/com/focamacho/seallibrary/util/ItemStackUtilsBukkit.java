@@ -23,8 +23,7 @@ public class ItemStackUtilsBukkit {
                 return new ItemStack(Material.AIR);
             }
 
-            ItemStack toReturn =  CraftItemStack.asBukkitCopy(new net.minecraft.server.v1_12_R1.ItemStack(type, 1, value));
-            return toReturn;
+            return CraftItemStack.asBukkitCopy(new net.minecraft.server.v1_12_R1.ItemStack(type, 1, value));
         } else if(split.length == 2) {
             Item type = Item.REGISTRY.get(new MinecraftKey(split[0], split[1]));
             if(type == null) return new ItemStack(Material.AIR);

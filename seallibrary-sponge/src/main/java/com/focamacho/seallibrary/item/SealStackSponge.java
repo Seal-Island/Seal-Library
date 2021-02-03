@@ -47,9 +47,7 @@ public class SealStackSponge implements ISealStack {
     @Override
     public ISealStack setLore(List<String> lore) {
         List<Text> text = new ArrayList<>();
-        lore.forEach(string -> {
-            text.add(Text.of(string));
-        });
+        lore.forEach(string -> text.add(Text.of(string)));
         stack.offer(Keys.ITEM_LORE, text);
         return this;
     }

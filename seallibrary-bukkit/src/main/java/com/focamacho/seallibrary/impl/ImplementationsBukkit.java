@@ -11,7 +11,6 @@ import com.focamacho.seallibrary.permission.PermissionHandlerVault;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.SealPlayerBukkit;
 import com.focamacho.seallibrary.util.ItemStackUtilsBukkit;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

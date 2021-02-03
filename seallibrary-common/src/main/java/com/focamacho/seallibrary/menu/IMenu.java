@@ -1,9 +1,11 @@
 package com.focamacho.seallibrary.menu;
 
 import com.focamacho.seallibrary.menu.item.IMenuItem;
+import com.focamacho.seallibrary.player.ISealPlayer;
 
 import java.util.List;
 
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public interface IMenu {
 
     /**
@@ -89,6 +91,14 @@ public interface IMenu {
      * aberto.
      */
     IMenu update();
+
+    /**
+     * Abre esse menu para
+     * um jogador.
+     */
+    default void open(ISealPlayer player) {
+        player.openInventory(this);
+    }
 
     /**
      * Cria uma cópia desse menu.

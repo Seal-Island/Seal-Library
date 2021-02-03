@@ -8,6 +8,7 @@ import java.util.List;
  * Representa um ItemStack
  * no jogo.
  */
+@SuppressWarnings("unused")
 public interface ISealStack {
 
     /**

@@ -7,6 +7,7 @@ import com.focamacho.seallibrary.impl.Implementations;
  * aos métodos de Logging.
  * @see ILogger
  */
+@SuppressWarnings("unused")
 public class SealLogger {
 
     /**

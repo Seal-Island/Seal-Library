@@ -21,8 +21,8 @@ public class JsonHandler {
 
     public static JSONObject getOrCreateJson(File jsonFile) throws IOException {
         if(!jsonFile.exists()) {
-            jsonFile.getParentFile().mkdirs();
-            jsonFile.createNewFile();
+            boolean mk = jsonFile.getParentFile().mkdirs();
+            boolean nf = jsonFile.createNewFile();
             FileUtils.write(jsonFile, "{}", StandardCharsets.UTF_8);
         }
         return getJson(jsonFile);
@@ -32,8 +32,7 @@ public class JsonHandler {
         try {
             URLConnection urlConnection = new URL(url).openConnection();
             urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
-            InputStream is = urlConnection.getInputStream();
-            try {
+            try (InputStream is = urlConnection.getInputStream()) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
                 StringBuilder sb = new StringBuilder();
                 int cp;
@@ -41,8 +40,6 @@ public class JsonHandler {
                     sb.append((char) cp);
                 }
                 return new JSONObject(sb.toString());
-            } finally {
-                is.close();
             }
         } catch (Exception ignored) {}
         return new JSONObject();

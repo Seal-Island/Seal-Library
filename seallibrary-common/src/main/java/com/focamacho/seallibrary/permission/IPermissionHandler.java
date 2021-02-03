@@ -2,6 +2,7 @@ package com.focamacho.seallibrary.permission;
 
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public interface IPermissionHandler {
 
     /**

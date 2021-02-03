@@ -20,10 +20,10 @@ import java.util.Map;
  * de configuração e idioma de
  * forma fácil.
  */
-@SuppressWarnings({"deprecation", "unchecked"})
+@SuppressWarnings({"unused", "deprecation", "unchecked"})
 public class SealConfig {
 
-    private final Map<Class, AbstractMap.SimpleEntry<File, Object>> configs = new HashMap<>();
+    private final Map<Class<?>, AbstractMap.SimpleEntry<File, Object>> configs = new HashMap<>();
     private final UnicodeUnescaper unicodeUnescaper = new UnicodeUnescaper();
 
     private final File langFolder;
@@ -88,8 +88,8 @@ public class SealConfig {
 
             JsonObject configObject;
             if (!configFile.exists()) {
-                configFile.getParentFile().mkdirs();
-                configFile.createNewFile();
+                boolean mk = configFile.getParentFile().mkdirs();
+                boolean nf = configFile.createNewFile();
                 configObject = defaults;
             } else configObject = Jankson.builder().build().load(configFile);
 
@@ -123,7 +123,9 @@ public class SealConfig {
         //Carregar as traduções padrões
         langConfig.getDefaultTranslations().forEach(langConfig.translations::put);
 
-        if(!langFolder.exists()) langFolder.mkdirs();
+        if(!langFolder.exists()) {
+            boolean mk = langFolder.mkdirs();
+        }
         if(!langFolder.isDirectory()) {
             SealLogger.error("Can't load lang files.");
             SealLogger.error(langFolder.toString() + " is not a directory.");
@@ -159,7 +161,7 @@ public class SealConfig {
             try {
                 JsonObject configObject;
                 if(!file.exists()) {
-                    file.createNewFile();
+                    boolean nf = file.createNewFile();
                     configObject = Jankson.builder().build().load("{}");
                 } else configObject = Jankson.builder().build().load(file);
                 map.forEach((key, value) -> configObject.putDefault(key, value, null));

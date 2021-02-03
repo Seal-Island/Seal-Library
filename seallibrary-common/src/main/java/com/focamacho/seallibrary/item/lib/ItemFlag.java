@@ -1,5 +1,6 @@
 package com.focamacho.seallibrary.item.lib;
 
+@SuppressWarnings("unused")
 public enum ItemFlag {
 
     /**
@@ -29,6 +30,6 @@ public enum ItemFlag {
     /**
      * Mostrar ou esconder os efeitos de poção do item
      */
-    HIDE_POTION_EFFECTS;
+    HIDE_POTION_EFFECTS
 
 }

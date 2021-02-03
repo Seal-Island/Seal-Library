@@ -10,6 +10,7 @@ import java.util.UUID;
  *  Classe que representa um jogador
  *  no servidor.
  */
+@SuppressWarnings("unused")
 public interface ISealPlayer {
 
     /**
