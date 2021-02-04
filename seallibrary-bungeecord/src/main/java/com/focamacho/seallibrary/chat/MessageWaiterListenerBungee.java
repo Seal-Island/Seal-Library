@@ -21,6 +21,7 @@ public class MessageWaiterListenerBungee implements Listener {
         while(waiters.hasNext()) {
             MessageWaiter waiter = waiters.next();
             if(waiter.getPlayer().equals(((ProxiedPlayer) event.getSender()).getUniqueId())) {
+                event.setCancelled(true);
                 waiters.remove();
 
                 waiter.getOnReceive().run(new IMessage() {

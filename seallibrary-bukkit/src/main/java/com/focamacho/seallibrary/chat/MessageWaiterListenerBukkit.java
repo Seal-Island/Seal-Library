@@ -18,6 +18,7 @@ public class MessageWaiterListenerBukkit implements Listener {
         while(waiters.hasNext()) {
             MessageWaiter waiter = waiters.next();
             if(waiter.getPlayer().equals(event.getPlayer().getUniqueId())) {
+                event.setCancelled(true);
                 waiters.remove();
 
                 waiter.getOnReceive().run(new IMessage() {

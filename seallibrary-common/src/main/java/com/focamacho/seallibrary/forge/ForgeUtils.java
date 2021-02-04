@@ -10,6 +10,7 @@ import com.focamacho.seallibrary.item.ISealStack;
  * @see IForgeUtils para mais informações
  * sobre os métodos.
  */
+@SuppressWarnings("unused")
 public class ForgeUtils {
 
     public static Object getForgeStack(Object item) {

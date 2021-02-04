@@ -20,6 +20,7 @@ public class MessageWaiterListenerSponge {
         while(waiters.hasNext()) {
             MessageWaiter waiter = waiters.next();
             if(waiter.getPlayer().equals(((Player)event.getSource()).getUniqueId())) {
+                event.setCancelled(true);
                 waiters.remove();
 
                 waiter.getOnReceive().run(new IMessage() {
