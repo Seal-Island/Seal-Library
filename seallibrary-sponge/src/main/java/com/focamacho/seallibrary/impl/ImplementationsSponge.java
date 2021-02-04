@@ -4,6 +4,7 @@ import com.focamacho.seallibrary.SealLibrarySponge;
 import com.focamacho.seallibrary.chat.MessageWaiterListenerSponge;
 import com.focamacho.seallibrary.chat.impl.ChatHandlerLuckPerms;
 import com.focamacho.seallibrary.economy.EconomyHandlerSponge;
+import com.focamacho.seallibrary.forge.ForgeUtilsSponge;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStackSponge;
 import com.focamacho.seallibrary.logger.LoggerSponge;
@@ -85,6 +86,11 @@ public class ImplementationsSponge {
             Sponge.getServer().shutdown();
         }
         Sponge.getEventManager().registerListeners(SealLibrarySponge.instance, new MessageWaiterListenerSponge());
+
+        /*
+         * Implementação do sistema de utilidades para compatibilidade com Forge.
+         */
+        if(pluginManager.isLoaded("forge")) Implementations.forgeUtils = new ForgeUtilsSponge();
     }
 
 }

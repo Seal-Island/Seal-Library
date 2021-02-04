@@ -6,6 +6,7 @@ import com.focamacho.seallibrary.chat.MessageWaiterListenerBukkit;
 import com.focamacho.seallibrary.chat.impl.ChatHandlerBungeePerms;
 import com.focamacho.seallibrary.chat.impl.ChatHandlerLuckPerms;
 import com.focamacho.seallibrary.economy.EconomyHandlerVault;
+import com.focamacho.seallibrary.forge.ForgeUtilsBukkit;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStackBukkit;
 import com.focamacho.seallibrary.logger.LoggerBukkit;
@@ -100,6 +101,14 @@ public class ImplementationsBukkit {
             Bukkit.getServer().shutdown();
         }
         pluginManager.registerEvents(new MessageWaiterListenerBukkit(), SealLibraryBukkit.instance);
+
+        /*
+         * Implementação do sistema de utilidades para compatibilidade com Forge.
+         */
+        try {
+            Class.forName("net.minecraftforge.common.MinecraftForge");
+            Implementations.forgeUtils = new ForgeUtilsBukkit();
+        } catch (ClassNotFoundException ignored) {}
     }
 
 }

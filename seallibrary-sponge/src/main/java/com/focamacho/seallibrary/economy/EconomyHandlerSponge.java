@@ -33,8 +33,7 @@ public class EconomyHandlerSponge implements IEconomyHandler {
     @Override
     public double getMoney(UUID player) {
         Optional<UniqueAccount> account = economyService.getOrCreateAccount(player);
-        account.ifPresent(uniqueAccount -> uniqueAccount.getBalance(economyService.getDefaultCurrency()));
-        return 0;
+        return account.map(uniqueAccount -> uniqueAccount.getBalance(economyService.getDefaultCurrency()).doubleValue()).orElse(0.0);
     }
 
     @Override
@@ -53,35 +52,58 @@ public class EconomyHandlerSponge implements IEconomyHandler {
     public double getMoney(UUID player, String currency) {
         Optional<UniqueAccount> account = economyService.getOrCreateAccount(player);
         Currency cur = getCurrency(currency);
-        if(cur != null) {
-            account.ifPresent(uniqueAccount -> uniqueAccount.getBalance(cur));
-        }
-        return 0;
+        return account.map(uniqueAccount -> uniqueAccount.getBalance(cur).doubleValue()).orElse(0.0);
     }
 
     @Override
     public void addMoney(UUID player, double value, String currency) {
         Optional<UniqueAccount> account = economyService.getOrCreateAccount(player);
         Currency cur = getCurrency(currency);
-        if(cur != null) {
-            account.ifPresent(uniqueAccount -> uniqueAccount.deposit(cur, BigDecimal.valueOf(value), emptyCause));
-        }
+        account.ifPresent(uniqueAccount -> uniqueAccount.deposit(cur, BigDecimal.valueOf(value), emptyCause));
     }
 
     @Override
     public void removeMoney(UUID player, double value, String currency) {
         Optional<UniqueAccount> account = economyService.getOrCreateAccount(player);
         Currency cur = getCurrency(currency);
-        if(cur != null) {
-            account.ifPresent(uniqueAccount -> uniqueAccount.withdraw(cur, BigDecimal.valueOf(value), emptyCause));
-        }
+        account.ifPresent(uniqueAccount -> uniqueAccount.withdraw(cur, BigDecimal.valueOf(value), emptyCause));
+    }
+
+    @Override
+    public String getCurrencySymbol() {
+        return economyService.getDefaultCurrency().getSymbol().toPlain();
+    }
+
+    @Override
+    public String getCurrencySingular() {
+        return economyService.getDefaultCurrency().getDisplayName().toPlain();
+    }
+
+    @Override
+    public String getCurrencyPlural() {
+        return economyService.getDefaultCurrency().getPluralDisplayName().toPlain();
+    }
+
+    @Override
+    public String getCurrencySymbol(String currency) {
+        return getCurrency(currency).getSymbol().toPlain();
+    }
+
+    @Override
+    public String getCurrencySingular(String currency) {
+        return getCurrency(currency).getDisplayName().toPlain();
+    }
+
+    @Override
+    public String getCurrencyPlural(String currency) {
+        return getCurrency(currency).getPluralDisplayName().toPlain();
     }
 
     private Currency getCurrency(String currency) {
         for (Currency cur : economyService.getCurrencies()) {
             if(cur.getId().equalsIgnoreCase(currency)) return cur;
         }
-        return null;
+        return economyService.getDefaultCurrency();
     }
 
 }

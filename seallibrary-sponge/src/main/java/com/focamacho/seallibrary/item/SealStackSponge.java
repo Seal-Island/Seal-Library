@@ -1,6 +1,7 @@
 package com.focamacho.seallibrary.item;
 
 import com.focamacho.seallibrary.item.lib.ItemFlag;
+import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.value.mutable.Value;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 public class SealStackSponge implements ISealStack {
 
-    private final ItemStack stack;
+    private ItemStack stack;
 
     public SealStackSponge(ItemStack stack) {
         this.stack = stack;
@@ -32,7 +33,7 @@ public class SealStackSponge implements ISealStack {
 
     @Override
     public ISealStack setName(String name) {
-        stack.offer(Keys.DISPLAY_NAME, Text.of("name"));
+        stack.offer(Keys.DISPLAY_NAME, Text.of(name));
         return this;
     }
 
@@ -84,6 +85,17 @@ public class SealStackSponge implements ISealStack {
     @Override
     public int getMaxAmount() {
         return stack.getMaxStackQuantity();
+    }
+
+    @Override
+    public String getData() {
+        return stack.toContainer().get(DataQuery.of("UnsafeData")).toString();
+    }
+
+    @Override
+    public ISealStack setData(String nbt) {
+        stack.toContainer().set(DataQuery.of("UnsafeData"), nbt);
+        return this;
     }
 
     @Override

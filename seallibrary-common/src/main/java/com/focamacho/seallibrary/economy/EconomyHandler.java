@@ -11,6 +11,7 @@ import java.util.UUID;
  * @see IEconomyHandler para mais informações
  * sobre os métodos.
  */
+@SuppressWarnings("unused")
 public class EconomyHandler {
 
     public static double getMoney(UUID player) {
@@ -43,6 +44,30 @@ public class EconomyHandler {
 
     public static void removeMoney(UUID player, double value, String currency) {
         Implementations.economyHandler.removeMoney(player, value, currency);
+    }
+
+    public static String getCurrencySymbol() {
+        return Implementations.economyHandler.getCurrencySymbol();
+    }
+
+    public static String getCurrencySingular() {
+        return Implementations.economyHandler.getCurrencySingular();
+    }
+
+    public static String getCurrencyPlural() {
+        return Implementations.economyHandler.getCurrencyPlural();
+    }
+
+    public static String getCurrencySymbol(String currency) {
+        return Implementations.economyHandler.getCurrencySymbol(currency);
+    }
+
+    public static String getCurrencySingular(String currency) {
+        return Implementations.economyHandler.getCurrencySingular(currency);
+    }
+
+    public static String getCurrencyPlural(String currency) {
+        return Implementations.economyHandler.getCurrencyPlural(currency);
     }
 
 }

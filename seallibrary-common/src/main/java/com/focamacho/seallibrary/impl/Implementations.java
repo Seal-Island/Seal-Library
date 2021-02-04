@@ -2,6 +2,7 @@ package com.focamacho.seallibrary.impl;
 
 import com.focamacho.seallibrary.chat.IChatHandler;
 import com.focamacho.seallibrary.economy.IEconomyHandler;
+import com.focamacho.seallibrary.forge.IForgeUtils;
 import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.logger.ILogger;
 import com.focamacho.seallibrary.menu.Menu;
@@ -59,5 +60,11 @@ public class Implementations {
      * de chat.
      */
     public static IChatHandler chatHandler;
+
+    /**
+     * IForgeUtils utilizado para métodos de
+     * compatibilidade com o Forge.
+     */
+    public static IForgeUtils forgeUtils;
 
 }

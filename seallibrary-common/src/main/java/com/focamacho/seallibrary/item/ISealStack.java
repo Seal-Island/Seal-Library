@@ -80,6 +80,18 @@ public interface ISealStack {
     int getMaxAmount();
 
     /**
+     * Retorna o NBT do item.
+     * @return o NBT do item em String.
+     */
+    String getData();
+
+    /**
+     * Define o NBT do Item.
+     * @param nbt o NBT em String.
+     */
+    ISealStack setData(String nbt);
+
+    /**
      * Retorna o ItemStack original.
      * @return o ItemStack original.
      */

@@ -54,4 +54,38 @@ public class EconomyHandlerVault implements IEconomyHandler {
         economyService.withdrawPlayer(Bukkit.getOfflinePlayer(player), value);
     }
 
+    @Override
+    public String getCurrencySymbol() {
+        return "$";
+    }
+
+    @Override
+    public String getCurrencySingular() {
+        return economyService.currencyNameSingular();
+    }
+
+    @Override
+    public String getCurrencyPlural() {
+        return economyService.currencyNamePlural();
+    }
+
+    @Override
+    public String getCurrencySymbol(String currency) {
+        return "$";
+    }
+
+    @Override
+    public String getCurrencySingular(String currency) {
+        String name = economyService.currencyNameSingular();
+        if(name == null) name = "";
+        return name;
+    }
+
+    @Override
+    public String getCurrencyPlural(String currency) {
+        String name = economyService.currencyNamePlural();
+        if(name == null) name = "";
+        return name;
+    }
+
 }

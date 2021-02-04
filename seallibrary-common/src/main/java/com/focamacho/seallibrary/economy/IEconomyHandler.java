@@ -76,4 +76,49 @@ public interface IEconomyHandler {
      */
     void removeMoney(UUID player, double value, String currency);
 
+    /**
+     * Retorna o símbolo usado para
+     * a moeda padrão.
+     * @return o símbolo da moeda padrão.
+     */
+    String getCurrencySymbol();
+
+    /**
+     * Retorna o nome da moeda padrão
+     * no singular.
+     * @return o nome da moeda padrão no singular.
+     */
+    String getCurrencySingular();
+
+    /**
+     * Retorna o nome da moeda padrão
+     * no plural.
+     * @return o nome da moeda padrão no plural.
+     */
+    String getCurrencyPlural();
+
+    /**
+     * Retorna o símbolo usado para
+     * a moeda especificada.
+     * @param currency a moeda desejada.
+     * @return o símbolo da moeda especificada.
+     */
+    String getCurrencySymbol(String currency);
+
+    /**
+     * Retorna o nome da moeda especificada
+     * no singular.
+     * @param currency a moeda desejada.
+     * @return o nome da moeda especificada no singular.
+     */
+    String getCurrencySingular(String currency);
+
+    /**
+     * Retorna o nome da moeda especificada
+     * no plural.
+     * @param currency a moeda desejada.
+     * @return o nome da moeda especificada no plural.
+     */
+    String getCurrencyPlural(String currency);
+
 }

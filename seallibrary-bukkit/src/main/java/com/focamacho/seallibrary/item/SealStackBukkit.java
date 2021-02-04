@@ -2,6 +2,9 @@ package com.focamacho.seallibrary.item;
 
 import com.focamacho.seallibrary.item.lib.FakeEnchantment;
 import com.focamacho.seallibrary.item.lib.ItemFlag;
+import net.minecraft.server.v1_12_R1.MojangsonParseException;
+import net.minecraft.server.v1_12_R1.MojangsonParser;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -10,7 +13,7 @@ import java.util.List;
 
 public class SealStackBukkit implements ISealStack {
 
-    private final ItemStack stack;
+    private ItemStack stack;
 
     public SealStackBukkit(ItemStack stack) {
         this.stack = stack;
@@ -93,6 +96,22 @@ public class SealStackBukkit implements ISealStack {
     @Override
     public int getMaxAmount() {
         return stack.getMaxStackSize();
+    }
+
+    @Override
+    public String getData() {
+        net.minecraft.server.v1_12_R1.ItemStack craftStack = CraftItemStack.asNMSCopy(stack);
+        return craftStack.hasTag() ? craftStack.getTag().toString() : "";
+    }
+
+    @Override
+    public ISealStack setData(String nbt) {
+        net.minecraft.server.v1_12_R1.ItemStack craftStack = CraftItemStack.asNMSCopy(stack);
+        try {
+            craftStack.setTag(MojangsonParser.parse(nbt));
+        } catch (MojangsonParseException ignored) {}
+        stack = CraftItemStack.asBukkitCopy(craftStack);
+        return this;
     }
 
     @Override
