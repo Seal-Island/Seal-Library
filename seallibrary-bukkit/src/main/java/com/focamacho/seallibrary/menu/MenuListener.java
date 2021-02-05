@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
@@ -35,6 +36,14 @@ public class MenuListener implements Listener {
             else if(type == ClickType.CONTROL_DROP) { /*menu.onDropAll.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnDropAll().run(getClick(event)); }}
             else if(type == ClickType.DROP) { /*menu.onDrop.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnDrop().run(getClick(event)); }}
             else if(type == ClickType.NUMBER_KEY) { /*menu.onNumber.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnNumber().run(getClick(event)); }}
+        }
+    }
+
+    @EventHandler
+    public void onClose(InventoryCloseEvent event) {
+        Inventory inventory = event.getInventory();
+        if(menus.containsKey(inventory) && inventory.getViewers().size() <= 0) {
+            menus.remove(inventory);
         }
     }
     

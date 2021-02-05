@@ -6,6 +6,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'net.minecraftforge.gradle'
 
 version = rootProject.version
+archivesBaseName = "SealLibrary-Sponge-" + rootProject.version
 
 minecraft {
     mappings channel: 'stable', version: '39-1.12'
@@ -25,10 +26,12 @@ dependencies {
 
 sponge.plugin.id = 'seallibrary'
 
-shadowJar {
-    dependencies {
-        include(dependency(':seallibrary-common'))
+reobf {
+    shadowJar{
+        dependencies {
+            include(dependency(':seallibrary-common'))
+        }
     }
 }
 
-tasks.build.dependsOn tasks.shadowJar
+tasks.build.dependsOn reobfShadowJar

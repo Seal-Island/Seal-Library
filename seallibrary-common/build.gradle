@@ -1,0 +1,1 @@
+archivesBaseName = "SealLibrary-Common-" + rootProject.version

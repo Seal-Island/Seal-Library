@@ -5,6 +5,7 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle'
 
+archivesBaseName = "SealLibrary-Bukkit-" + rootProject.version
 
 repositories {
     mavenLocal()

@@ -69,6 +69,7 @@ public class MenuBukkit implements IMenu {
     @Override
     public Object get() {
         if (inventory == null) update();
+        if (!MenuListener.menus.containsKey(inventory)) MenuListener.menus.put(inventory, this);
         return inventory;
     }
 

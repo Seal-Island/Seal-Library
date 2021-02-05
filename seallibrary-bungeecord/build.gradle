@@ -4,6 +4,8 @@ plugins {
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
+archivesBaseName = "SealLibrary-BungeeCord-" + rootProject.version
+
 repositories {
     maven {
         name = 'sonatype'

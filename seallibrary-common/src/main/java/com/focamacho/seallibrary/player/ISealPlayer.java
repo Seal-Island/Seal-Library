@@ -22,10 +22,16 @@ public interface ISealPlayer {
     Object toOriginal();
 
     /**
-     * Retorna o UUID do jogador
+     * Retorna o UUID do jogador.
      * @return o UUID do jogador.
      */
     UUID getUUID();
+
+    /**
+     * Retorna o nome do jogador.
+     * @return o nome do jogador.
+     */
+    String getName();
 
     /**
      * Envia uma mensagem de chat

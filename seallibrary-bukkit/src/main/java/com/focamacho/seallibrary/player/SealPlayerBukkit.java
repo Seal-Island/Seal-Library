@@ -25,6 +25,11 @@ public class SealPlayerBukkit implements ISealPlayer {
     }
 
     @Override
+    public String getName() {
+        return player.getName();
+    }
+
+    @Override
     public void sendMessage(String message) {
         player.sendMessage(message);
     }

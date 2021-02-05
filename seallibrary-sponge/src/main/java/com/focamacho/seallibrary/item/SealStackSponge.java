@@ -1,7 +1,8 @@
 package com.focamacho.seallibrary.item;
 
+import com.focamacho.seallibrary.forge.ForgeUtils;
 import com.focamacho.seallibrary.item.lib.ItemFlag;
-import org.spongepowered.api.data.DataQuery;
+import net.minecraft.nbt.JsonToNBT;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.value.mutable.Value;
@@ -89,12 +90,18 @@ public class SealStackSponge implements ISealStack {
 
     @Override
     public String getData() {
-        return stack.toContainer().get(DataQuery.of("UnsafeData")).toString();
+        net.minecraft.item.ItemStack item = (net.minecraft.item.ItemStack) ForgeUtils.getForgeStack(stack);
+        if(item.getTagCompound() != null) return item.getTagCompound().toString();
+        return "{}";
     }
 
     @Override
     public ISealStack setData(String nbt) {
-        stack.toContainer().set(DataQuery.of("UnsafeData"), nbt);
+        net.minecraft.item.ItemStack item = (net.minecraft.item.ItemStack) ForgeUtils.getForgeStack(stack);
+        try {
+            item.setTagCompound(JsonToNBT.getTagFromJson(nbt));
+        } catch(Exception ignored) {}
+        stack = (ItemStack) ForgeUtils.getServerStack(item).toOriginal();
         return this;
     }
 
