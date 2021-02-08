@@ -1,17 +1,22 @@
 package com.focamacho.seallibrary.menu;
 
-import com.focamacho.seallibrary.menu.lib.IClick;
+import com.focamacho.seallibrary.menu.lib.AbstractClick;
+import com.focamacho.seallibrary.menu.lib.AbstractInteract;
+import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayer;
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class MenuListener implements Listener {
     
@@ -21,36 +26,111 @@ public class MenuListener implements Listener {
     public void onClick(InventoryClickEvent event) {
         MenuBukkit menu = menus.get(event.getInventory());
         if(menu != null) {
-            event.setCancelled(true);
-
+            AbstractClick click = getClick(event);
+            
             int slotIndex = event.getSlot();
             ClickType type = event.getClick();
 
-            /*menu.onClick.run(event);*/
-            if(type == ClickType.DOUBLE_CLICK) { /*menu.onDouble.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnDouble().run(getClick(event)); }}
-            else if(type == ClickType.SHIFT_LEFT) { /*menu.onShift.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnShift().run(getClick(event)); }}
-            else if(type == ClickType.SHIFT_RIGHT) { /*menu.onShiftSecondary.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnShiftSecondary().run(getClick(event)); }}
-            else if(type == ClickType.LEFT) { /*menu.onPrimary.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnPrimary().run(getClick(event)); }}
-            else if(type == ClickType.MIDDLE) { /*menu.onMiddle.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnMiddle().run(getClick(event)); }}
-            else if(type == ClickType.RIGHT) { /*menu.onSecondary.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnSecondary().run(getClick(event)); }}
-            else if(type == ClickType.CONTROL_DROP) { /*menu.onDropAll.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnDropAll().run(getClick(event)); }}
-            else if(type == ClickType.DROP) { /*menu.onDrop.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnDrop().run(getClick(event)); }}
-            else if(type == ClickType.NUMBER_KEY) { /*menu.onNumber.run(event);*/ if(menu.items.containsKey(slotIndex)) { menu.items.get(slotIndex).getOnNumber().run(getClick(event)); }}
+            menu.getOnClick().run(click);
+            switch (type) {
+                case DOUBLE_CLICK:
+                    menu.getOnDouble().run(click);
+                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnDouble().run(click));
+                    break;
+                case SHIFT_LEFT:
+                    menu.getOnShift().run(click);
+                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnShift().run(click));
+                    break;
+                case SHIFT_RIGHT:
+                    menu.getOnShiftSecondary().run(click);
+                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnShiftSecondary().run(click));
+                    break;
+                case LEFT:
+                    menu.getOnPrimary().run(click);
+                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnPrimary().run(click));
+                    break;
+                case MIDDLE:
+                    menu.getOnMiddle().run(click);
+                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnMiddle().run(click));
+                    break;
+                case RIGHT:
+                    menu.getOnSecondary().run(click);
+                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnSecondary().run(click));
+                    break;
+                case CONTROL_DROP:
+                    menu.getOnDropAll().run(click);
+                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnDropAll().run(click));
+                    break;
+                case DROP:
+                    menu.getOnDrop().run(click);
+                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnDrop().run(click));
+                    break;
+                case NUMBER_KEY:
+                    menu.getOnNumber().run(click);
+                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnNumber().run(click));
+            }
+            
+            event.setCancelled(click.isCancelled());
+        }
+    }
+
+    @EventHandler
+    public void onOpen(InventoryOpenEvent event) {
+        Inventory inventory = event.getInventory();
+        if(menus.containsKey(inventory)) {
+            AbstractInteract interact = new AbstractInteract() {
+                @Override
+                public ISealPlayer getPlayer() {
+                    return SealPlayer.get(event.getPlayer());
+                }
+
+                @Override
+                public Object getInventory() {
+                    return inventory;
+                }
+            };
+            menus.get(inventory).getOnOpen().run(interact);
+            event.setCancelled(interact.isCancelled());
         }
     }
 
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         Inventory inventory = event.getInventory();
-        if(menus.containsKey(inventory) && inventory.getViewers().size() <= 0) {
-            menus.remove(inventory);
+        if(menus.containsKey(inventory)) {
+            MenuBukkit menu = menus.get(inventory);
+
+            AbstractInteract interact = new AbstractInteract() {
+                @Override
+                public ISealPlayer getPlayer() {
+                    return SealPlayer.get(event.getPlayer());
+                }
+
+                @Override
+                public Object getInventory() {
+                    return inventory;
+                }
+            };
+            menu.getOnClose().run(interact);
+            if(interact.isCancelled()) {
+                try { Bukkit.getScheduler().callSyncMethod((Plugin) menu.getPlugin(), () -> event.getPlayer().openInventory(inventory)).get(); } catch (Exception ignored) {}
+            } else if(inventory.getViewers().size() <= 0) {
+                menus.remove(inventory);
+            }
         }
     }
     
-    private IClick getClick(InventoryClickEvent event) {
-        return () -> {
-            if(event.getWhoClicked() instanceof Player) return SealPlayer.get(event.getWhoClicked());
-            return null;
+    private AbstractClick getClick(InventoryClickEvent event) {
+        return new AbstractClick() {
+            @Override
+            public ISealPlayer getPlayer() {
+                return SealPlayer.get(event.getWhoClicked());
+            }
+
+            @Override
+            public Object getInventory() {
+                return event.getInventory();
+            }
         };
     }
 

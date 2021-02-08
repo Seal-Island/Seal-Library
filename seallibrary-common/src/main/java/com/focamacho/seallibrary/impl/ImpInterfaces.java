@@ -2,8 +2,10 @@ package com.focamacho.seallibrary.impl;
 
 import com.focamacho.seallibrary.chat.lib.Runnable;
 import com.focamacho.seallibrary.item.ISealStack;
-import com.focamacho.seallibrary.menu.IMenu;
+import com.focamacho.seallibrary.item.SealStack;
+import com.focamacho.seallibrary.menu.AbstractMenu;
 import com.focamacho.seallibrary.player.ISealPlayer;
+import org.json.JSONObject;
 
 import java.util.UUID;
 
@@ -14,7 +16,7 @@ public class ImpInterfaces {
      * de um Menu.
      */
     public interface MenuBuilder {
-        IMenu create(Object plugin);
+        AbstractMenu create(Object plugin);
     }
 
     /**
@@ -32,6 +34,13 @@ public class ImpInterfaces {
     public interface IStackBuilder {
         ISealStack get(Object item);
         ISealStack get(String item);
+
+        static ISealStack fromJson(String item) {
+            JSONObject object = new JSONObject(item);
+            return SealStack.get(object.getString("item"))
+                    .setData(object.getString("data"))
+                    .setAmount(object.getInt("amount"));
+        }
     }
 
     /**

@@ -63,4 +63,25 @@ public interface IPermissionHandler {
      */
     boolean removeGroup(UUID uuid, String group);
 
+    /**
+     * Consulta uma option do jogador.
+     *
+     * @param uuid o uuid do jogador
+     * @param option a option para consulta
+     * @return uma String vazia se ela não existe, ou então
+     * a option.
+     */
+    String getOption(UUID uuid, String option);
+
+    /**
+     * Define uma option do jogador.
+     *
+     * @param uuid o uuid do jogador
+     * @param option a option para definir
+     * @param value o valor para definir
+     * @return uma String vazia se ela não existe, ou então
+     * a option.
+     */
+    boolean setOption(UUID uuid, String option, String value);
+
 }

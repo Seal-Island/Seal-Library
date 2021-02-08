@@ -7,7 +7,15 @@ public interface Runnable {
      * do click efetuado em um inventário.
      */
     interface ClickRunnable {
-        void run(IClick click);
+        void run(AbstractClick click);
+    }
+
+    /**
+     * Runnable contendo informações
+     * da interação efetuada em um inventário.
+     */
+    interface InteractRunnable {
+        void run(AbstractInteract interact);
     }
 
 }

@@ -37,4 +37,14 @@ public class PermissionHandlerBungeePerms implements IPermissionHandler {
         return BungeePermsAPI.userRemoveGroup(uuid.toString(), group);
     }
 
+    @Override
+    public String getOption(UUID uuid, String option) {
+        return "";
+    }
+
+    @Override
+    public boolean setOption(UUID uuid, String option, String value) {
+        return false;
+    }
+
 }

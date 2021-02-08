@@ -3,6 +3,8 @@ package com.focamacho.seallibrary.item;
 import com.focamacho.seallibrary.forge.ForgeUtils;
 import com.focamacho.seallibrary.item.lib.ItemFlag;
 import net.minecraft.nbt.JsonToNBT;
+import org.json.JSONObject;
+import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.value.mutable.Value;
@@ -24,6 +26,17 @@ public class SealStackSponge implements ISealStack {
     @Override
     public Object toOriginal() {
         return stack;
+    }
+
+    @Override
+    public String toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("item", stack.getType().getId() + (stack.toContainer().get(DataQuery.of("UnsafeDamage")).isPresent() ? ":" + stack.toContainer().get(DataQuery.of("UnsafeDamage")).get() : ""));
+        json.put("data", getData());
+        json.put("amount", getAmount());
+
+        return json.toString();
     }
 
     @Override

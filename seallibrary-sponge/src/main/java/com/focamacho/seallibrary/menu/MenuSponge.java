@@ -1,11 +1,12 @@
 package com.focamacho.seallibrary.menu;
 
 import com.focamacho.seallibrary.menu.item.IMenuItem;
-import com.focamacho.seallibrary.menu.lib.IClick;
+import com.focamacho.seallibrary.menu.lib.AbstractClick;
+import com.focamacho.seallibrary.menu.lib.AbstractInteract;
+import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayer;
-import lombok.experimental.Accessors;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
+import org.spongepowered.api.event.item.inventory.InteractInventoryEvent;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.InventoryArchetypes;
 import org.spongepowered.api.item.inventory.ItemStack;
@@ -15,63 +16,15 @@ import org.spongepowered.api.item.inventory.property.SlotIndex;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 
-import java.util.*;
+import java.util.Optional;
 
 @SuppressWarnings("unused")
-@Accessors(chain = true)
-public class MenuSponge implements IMenu {
+public class MenuSponge extends AbstractMenu {
 
-    protected final Object plugin;
-    protected String title;
-    protected int rows;
     protected Inventory inventory;
-    protected Map<Integer, IMenuItem> items = new HashMap<>();
 
     public MenuSponge(Object plugin) {
         this.plugin = plugin;
-    }
-
-    @Override
-    public String getTitle() {
-        return this.title;
-    }
-
-    @Override
-    public IMenu setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    @Override
-    public int getRows() {
-        return this.rows;
-    }
-
-    @Override
-    public IMenu setRows(int rows) {
-        this.rows = rows;
-        return this;
-    }
-
-    @Override
-    public IMenuItem getItem(int slot) {
-        return items.get(slot);
-    }
-
-    @Override
-    public List<IMenuItem> getItems() {
-        return new ArrayList<>(this.items.values());
-    }
-
-    @Override
-    public IMenu clearItems() {
-        items.clear();
-        return this;
-    }
-
-    @Override
-    public Object getPlugin() {
-        return this.plugin;
     }
 
     @Override
@@ -81,35 +34,65 @@ public class MenuSponge implements IMenu {
     }
 
     @Override
-    public IMenu update() {
+    public AbstractMenu update() {
         if(inventory == null) {
             this.inventory = Inventory.builder()
                     .of(InventoryArchetypes.CHEST)
                     .property(InventoryTitle.of(Text.of(title)))
                     .property(InventoryDimension.of(9, rows))
                     .listener(ClickInventoryEvent.class, event -> {
-                        event.setCancelled(true);
-                        if (event.getSlot().isPresent()) {
+                        AbstractClick click = getClick(event);
+                        if(event.getSlot().isPresent()) {
                             Optional<SlotIndex> index = event.getSlot().get().getInventoryProperty(SlotIndex.class);
                             if(!index.isPresent()) return;
                             Integer slotIndex = index.get().getValue();
 
-                            /*onClick.run(event);*/
-                            if(event instanceof ClickInventoryEvent.Double) { /*onDouble.run(event);*/ if(items.containsKey(slotIndex)) { items.get(slotIndex).getOnDouble().run(getClick(event)); }}
-                            else if(event instanceof ClickInventoryEvent.Shift.Primary) { /*onShift.run(event);*/ if(items.containsKey(slotIndex)) { items.get(slotIndex).getOnShift().run(getClick(event)); }}
-                            else if(event instanceof ClickInventoryEvent.Shift.Secondary) { /*onShiftSecondary.run(event);*/ if(items.containsKey(slotIndex)) { items.get(slotIndex).getOnShiftSecondary().run(getClick(event)); }}
-                            else if(event instanceof ClickInventoryEvent.Primary) { /*onPrimary.run(event);*/ if(items.containsKey(slotIndex)) { items.get(slotIndex).getOnPrimary().run(getClick(event)); }}
-                            else if(event instanceof ClickInventoryEvent.Middle) { /*onMiddle.run(event);*/ if(items.containsKey(slotIndex)) { items.get(slotIndex).getOnMiddle().run(getClick(event)); }}
-                            else if(event instanceof ClickInventoryEvent.Secondary) { /*onSecondary.run(event);*/ if(items.containsKey(slotIndex)) { items.get(slotIndex).getOnSecondary().run(getClick(event)); }}
-                            else if(event instanceof ClickInventoryEvent.Drop.Full) { /*onDropAll.run(event);*/ if(items.containsKey(slotIndex)) { items.get(slotIndex).getOnDropAll().run(getClick(event)); }}
-                            else if(event instanceof ClickInventoryEvent.Drop) { /*onDrop.run(event);*/ if(items.containsKey(slotIndex)) { items.get(slotIndex).getOnDrop().run(getClick(event)); }}
-                            else if(event instanceof ClickInventoryEvent.NumberPress) { /*onNumber.run(event);*/ if(items.containsKey(slotIndex)) { items.get(slotIndex).getOnNumber().run(getClick(event)); }}
+                            onClick.run(click);
+                            if(event instanceof ClickInventoryEvent.Double) {
+                                onDouble.run(click);
+                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnDouble().run(click);
+                            }
+                            else if(event instanceof ClickInventoryEvent.Shift.Primary) {
+                                onShift.run(click);
+                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnShift().run(click);
+                            }
+                            else if(event instanceof ClickInventoryEvent.Shift.Secondary) {
+                                onShiftSecondary.run(click);
+                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnShiftSecondary().run(click);
+                            }
+                            else if(event instanceof ClickInventoryEvent.Primary) {
+                                onPrimary.run(click);
+                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnPrimary().run(click);
+                            }
+                            else if(event instanceof ClickInventoryEvent.Middle) {
+                                onMiddle.run(click);
+                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnMiddle().run(click);
+                            }
+                            else if(event instanceof ClickInventoryEvent.Secondary) {
+                                onSecondary.run(click);
+                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnSecondary().run(click);
+                            }
+                            else if(event instanceof ClickInventoryEvent.Drop.Full) {
+                                onDropAll.run(click);
+                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnDropAll().run(click);
+                            }
+                            else if(event instanceof ClickInventoryEvent.Drop) {
+                                onDrop.run(click);
+                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnDrop().run(click);
+                            }
+                            else if(event instanceof ClickInventoryEvent.NumberPress) {
+                                onNumber.run(click);
+                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnNumber().run(click);
+                            }
                         }
+                        event.setCancelled(click.isCancelled());
                     })
-                    /*.listener(InteractInventoryEvent.class, event -> {
-                        if (event instanceof InteractInventoryEvent.Open) onOpen.run(event);
-                        else if (event instanceof InteractInventoryEvent.Close) onClose.run(event);
-                    })*/.build(plugin);
+                    .listener(InteractInventoryEvent.class, event -> {
+                        AbstractInteract interact = getInteract(event);
+                        if (event instanceof InteractInventoryEvent.Open) onOpen.run(interact);
+                        else if (event instanceof InteractInventoryEvent.Close) onClose.run(interact);
+                        event.setCancelled(interact.isCancelled());
+                    }).build(plugin);
         }
 
         int index = 0;
@@ -130,23 +113,31 @@ public class MenuSponge implements IMenu {
         return this;
     }
 
-    @Override
-    public IMenu setItems(List<IMenuItem> items) {
-        this.items.clear();
-        items.forEach(this::addItem);
-        return this;
+    private AbstractClick getClick(ClickInventoryEvent event) {
+        return new AbstractClick() {
+            @Override
+            public ISealPlayer getPlayer() {
+                return SealPlayer.get(event.getSource());
+            }
+
+            @Override
+            public Object getInventory() {
+                return event.getTargetInventory().parent();
+            }
+        };
     }
 
-    @Override
-    public IMenu addItem(IMenuItem item) {
-        items.put(item.getSlot(), item);
-        return this;
-    }
+    private AbstractInteract getInteract(InteractInventoryEvent event) {
+        return new AbstractInteract() {
+            @Override
+            public ISealPlayer getPlayer() {
+                return SealPlayer.get(event.getSource());
+            }
 
-    private IClick getClick(ClickInventoryEvent event) {
-        return () -> {
-            if(event.getSource() instanceof Player) return SealPlayer.get(event.getSource());
-            return null;
+            @Override
+            public Object getInventory() {
+                return event.getTargetInventory().parent();
+            }
         };
     }
 

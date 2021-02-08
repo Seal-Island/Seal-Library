@@ -3,7 +3,7 @@ package com.focamacho.seallibrary.player;
 import com.focamacho.seallibrary.chat.ChatHandler;
 import com.focamacho.seallibrary.chat.lib.Runnable;
 import com.focamacho.seallibrary.economy.EconomyHandler;
-import com.focamacho.seallibrary.menu.IMenu;
+import com.focamacho.seallibrary.menu.AbstractMenu;
 import com.focamacho.seallibrary.permission.PermissionHandler;
 
 import java.util.UUID;
@@ -70,7 +70,7 @@ public interface ISealPlayer {
      * o jogador.
      * @param menu o menu para ser aberto.
      */
-    default void openInventory(IMenu menu) {
+    default void openInventory(AbstractMenu menu) {
         openInventory(menu.get());
     }
 

@@ -2,11 +2,13 @@ package com.focamacho.seallibrary.item;
 
 import com.focamacho.seallibrary.item.lib.FakeEnchantment;
 import com.focamacho.seallibrary.item.lib.ItemFlag;
+import net.minecraft.server.v1_12_R1.Item;
 import net.minecraft.server.v1_12_R1.MojangsonParseException;
 import net.minecraft.server.v1_12_R1.MojangsonParser;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,18 @@ public class SealStackBukkit implements ISealStack {
     @Override
     public Object toOriginal() {
         return stack;
+    }
+
+    @Override
+    public String toJson() {
+        net.minecraft.server.v1_12_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
+
+        JSONObject json = new JSONObject();
+        json.put("item", Item.REGISTRY.b(nmsStack.getItem()).toString() + (nmsStack.getData() != 0 ? ":" + nmsStack.getData() : ""));
+        json.put("data", getData());
+        json.put("amount", getAmount());
+
+        return json.toString();
     }
 
     @Override

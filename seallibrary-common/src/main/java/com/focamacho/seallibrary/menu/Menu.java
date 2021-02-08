@@ -11,7 +11,7 @@ public class Menu {
      * que está criando o menu.
      * @return o menu criado.
      */
-    public static IMenu create(Object plugin) {
+    public static AbstractMenu create(Object plugin) {
         return Implementations.menuBuilder.create(plugin);
     }
 
@@ -20,7 +20,7 @@ public class Menu {
      * @param menu o menu para ser copiado.
      * @return o menu copiado.
      */
-    public static IMenu create(IMenu menu) {
+    public static AbstractMenu create(AbstractMenu menu) {
         return menu.copy();
     }
 

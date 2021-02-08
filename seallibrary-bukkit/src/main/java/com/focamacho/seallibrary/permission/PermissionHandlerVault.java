@@ -54,4 +54,14 @@ public class PermissionHandlerVault implements IPermissionHandler {
         return permissionService.playerRemoveGroup(null, Bukkit.getOfflinePlayer(uuid), group);
     }
 
+    @Override
+    public String getOption(UUID uuid, String option) {
+        return "";
+    }
+
+    @Override
+    public boolean setOption(UUID uuid, String option, String value) {
+        return false;
+    }
+
 }

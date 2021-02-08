@@ -98,6 +98,15 @@ public interface ISealStack {
     Object toOriginal();
 
     /**
+     * Retorna um JSON contendo informações
+     * sobre esse Stack.
+     * O JSON pode ser convertido novamente
+     * em um SealStack utilizando o método
+     * @see SealStack#fromJson(String) ();
+     */
+    String toJson();
+    
+    /**
      * Retorna uma copia
      * desse item.
      * @return a copia do item.

@@ -8,8 +8,10 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.InheritanceNode;
+import net.luckperms.api.node.types.MetaNode;
 import net.luckperms.api.node.types.PermissionNode;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -108,6 +110,27 @@ public class PermissionHandlerLuckPerms implements IPermissionHandler {
         if(hasGroup(user, gp)) return false;
 
         DataMutateResult result = user.data().add(InheritanceNode.builder().group(gp).value(false).build());
+        api.getUserManager().saveUser(user);
+
+        return result.wasSuccessful();
+    }
+
+    @Override
+    public String getOption(UUID uuid, String option) {
+        User user = getUser(uuid);
+        if(user == null) return "";
+
+        Optional<MetaNode> meta = user.getNodes(NodeType.META).stream().filter(node -> node.getMetaKey().equalsIgnoreCase(option)).collect(Collectors.toSet()).stream().findFirst();
+
+        return meta.map(MetaNode::getMetaValue).orElse("");
+    }
+
+    @Override
+    public boolean setOption(UUID uuid, String option, String value) {
+        User user = getUser(uuid);
+        if(user == null) return false;
+
+        DataMutateResult result = user.data().add(MetaNode.builder().key(option).value(value).build());
         api.getUserManager().saveUser(user);
 
         return result.wasSuccessful();

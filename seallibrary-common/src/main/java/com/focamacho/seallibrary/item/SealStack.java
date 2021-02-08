@@ -1,5 +1,6 @@
 package com.focamacho.seallibrary.item;
 
+import com.focamacho.seallibrary.impl.ImpInterfaces;
 import com.focamacho.seallibrary.impl.Implementations;
 
 public class SealStack {
@@ -25,6 +26,17 @@ public class SealStack {
      */
     public static ISealStack get(String item) {
         return Implementations.stackBuilder.get(item);
+    }
+
+    /**
+     * Cria um SealStack a partir
+     * de um JSON.
+     * @see ISealStack#toJson()
+     * @param item o json contendo o item.
+     * @return o SealStack criado.
+     */
+    public static ISealStack fromJson(String item) {
+        return ImpInterfaces.IStackBuilder.fromJson(item);
     }
 
 }
