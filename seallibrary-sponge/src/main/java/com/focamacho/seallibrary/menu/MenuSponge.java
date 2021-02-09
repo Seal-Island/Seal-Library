@@ -16,6 +16,8 @@ import org.spongepowered.api.item.inventory.property.SlotIndex;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
@@ -25,6 +27,20 @@ public class MenuSponge extends AbstractMenu {
 
     public MenuSponge(Object plugin) {
         this.plugin = plugin;
+    }
+
+    @Override
+    public Map<Integer, Object> getOriginalItems() {
+        Map<Integer, Object> items = new HashMap<>();
+
+        inventory.slots().forEach(slot -> {
+            if(slot.peek().isPresent() && !slot.peek().get().isEmpty()) {
+                int slotIndex = slot.getInventoryProperty(SlotIndex.class).get().getValue();
+                items.put(slotIndex, slot.peek().get());
+            }
+        });
+
+        return items;
     }
 
     @Override

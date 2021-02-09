@@ -159,6 +159,14 @@ public abstract class AbstractMenu {
     }
 
     /**
+     * Retorna todos os itens contidos
+     * no inventário original, em sua forma
+     * original.
+     * @return os itens no inventário.
+     */
+    public abstract Map<Integer, Object> getOriginalItems();
+
+    /**
      * Sobreescreve todos os itens
      * desse menu.
      * @param items os itens para definir.

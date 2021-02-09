@@ -123,6 +123,20 @@ public class SealStackSponge implements ISealStack {
         return SealStack.get(((ItemStack)toOriginal()).copy());
     }
 
+    @Override
+    public boolean equals(ISealStack toCompare) {
+        return stack.equalTo((ItemStack) toCompare.toOriginal());
+    }
+
+    @Override
+    public boolean equalsIgnoreAmount(ISealStack toCompare) {
+        ItemStack firstStack = stack.copy();
+        firstStack.setQuantity(1);
+        ItemStack secondStack = ((ItemStack) toCompare.toOriginal()).copy();
+        secondStack.setQuantity(1);
+        return firstStack.equalTo(secondStack);
+    }
+
     private Key<Value<Boolean>> getSpongeFlag(ItemFlag flag) {
         switch (flag) {
             case HIDE_DESTROYS:

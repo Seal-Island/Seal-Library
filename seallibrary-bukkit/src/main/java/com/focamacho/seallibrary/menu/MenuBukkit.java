@@ -5,6 +5,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SuppressWarnings("unused")
 public class MenuBukkit extends AbstractMenu {
 
@@ -12,6 +15,19 @@ public class MenuBukkit extends AbstractMenu {
 
     public MenuBukkit(Object plugin) {
         this.plugin = plugin;
+    }
+
+    @Override
+    public Map<Integer, Object> getOriginalItems() {
+        if(inventory == null) get();
+        Map<Integer, Object> items = new HashMap<>();
+
+        for(int i = 0; i < inventory.getSize(); i++) {
+            ItemStack item = inventory.getItem(0);
+            if(item != null) items.put(i, item);
+        }
+
+        return items;
     }
 
     @Override

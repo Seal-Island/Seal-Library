@@ -133,6 +133,19 @@ public class SealStackBukkit implements ISealStack {
         return SealStack.get(((ItemStack)toOriginal()).clone());
     }
 
+    @Override
+    public boolean equals(ISealStack toCompare) {
+        return stack.equals(toCompare.toOriginal());
+    }
+
+    @Override
+    public boolean equalsIgnoreAmount(ISealStack toCompare) {
+        ItemStack firstStack = stack.clone();
+        firstStack.setAmount(1);
+        ItemStack secondStack = (ItemStack) toCompare.copy().setAmount(1).toOriginal();
+        return firstStack.equals(secondStack);
+    }
+
     private org.bukkit.inventory.ItemFlag getBukkitFlag(ItemFlag flag) {
         switch (flag) {
             case HIDE_DESTROYS:

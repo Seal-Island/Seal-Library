@@ -113,4 +113,19 @@ public interface ISealStack {
      */
     ISealStack copy();
 
+    /**
+     * Confere se o item nesse SealStack
+     * é igual a outro.
+     * @return se o item é ou não igual.
+     */
+    boolean equals(ISealStack toCompare);
+
+    /**
+     * Confere se o item nesse SealStack
+     * é igual a outro, ignorando a quantidade
+     * do item.
+     * @return se o item é ou não igual.
+     */
+    boolean equalsIgnoreAmount(ISealStack toCompare);
+
 }
