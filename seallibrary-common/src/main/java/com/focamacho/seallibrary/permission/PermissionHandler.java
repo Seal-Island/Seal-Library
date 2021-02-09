@@ -29,4 +29,12 @@ public class PermissionHandler {
         return Implementations.permissionHandler.removeGroup(uuid, group);
     }
 
+    public static String getOption(UUID uuid, String option) {
+        return Implementations.permissionHandler.getOption(uuid, option);
+    }
+
+    public static boolean setOption(UUID uuid, String option, String value) {
+        return Implementations.permissionHandler.setOption(uuid, option, value);
+    }
+
 }

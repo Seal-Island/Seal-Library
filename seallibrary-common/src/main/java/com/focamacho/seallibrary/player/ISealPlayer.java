@@ -145,6 +145,29 @@ public interface ISealPlayer {
     }
 
     /**
+     * Consulta uma option do jogador.
+     *
+     * @param option a option para consulta
+     * @return uma String vazia se ela não existe, ou então
+     * a option.
+     */
+    default String getOption(String option) {
+        return PermissionHandler.getOption(getUUID(), option);
+    }
+
+    /**
+     * Define uma option do jogador.
+     *
+     * @param option a option para definir
+     * @param value o valor para definir
+     * @return uma String vazia se ela não existe, ou então
+     * a option.
+     */
+    default boolean setOption(String option, String value) {
+        return PermissionHandler.setOption(getUUID(), option, value);
+    }
+
+    /**
      * Consulta a quantia de dinheiro
      * que o jogador possui.
      *
