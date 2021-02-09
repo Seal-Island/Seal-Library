@@ -11,12 +11,16 @@ import com.focamacho.seallibrary.logger.LoggerSponge;
 import com.focamacho.seallibrary.logger.SealLogger;
 import com.focamacho.seallibrary.menu.MenuSponge;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
+import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayerSponge;
 import com.focamacho.seallibrary.util.ItemStackUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.plugin.PluginManager;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Implementações dos sistemas da Seal Library
@@ -55,7 +59,18 @@ public class ImplementationsSponge {
         /*
          * Implementação do sistema de SealPlayers.
          */
-        Implementations.playerGetter = player -> new SealPlayerSponge((Player) player);
+        Implementations.playerGetter = new ImpInterfaces.ISealPlayerGetter() {
+            @Override
+            public ISealPlayer get(Object player) {
+                return new SealPlayerSponge((Player) player);
+            }
+
+            @Override
+            public Optional<ISealPlayer> get(UUID uuid) {
+                Optional<Player> player = Sponge.getServer().getPlayer(uuid);
+                return player.map(SealPlayerSponge::new);
+            }
+        };
 
         /*
          * Implementação do sistema de manipulação de Economia.

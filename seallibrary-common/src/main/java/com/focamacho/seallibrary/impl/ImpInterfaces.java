@@ -7,6 +7,7 @@ import com.focamacho.seallibrary.menu.AbstractMenu;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import org.json.JSONObject;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class ImpInterfaces {
@@ -25,6 +26,7 @@ public class ImpInterfaces {
      */
     public interface ISealPlayerGetter {
         ISealPlayer get(Object player);
+        Optional<ISealPlayer> get(UUID uuid);
     }
 
     /**

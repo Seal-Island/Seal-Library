@@ -15,12 +15,16 @@ import com.focamacho.seallibrary.menu.MenuBukkit;
 import com.focamacho.seallibrary.permission.PermissionHandlerVault;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerBungeePerms;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
+import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayerBukkit;
 import com.focamacho.seallibrary.util.ItemStackUtilsBukkit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Implementações dos sistemas da Seal Library
@@ -59,7 +63,18 @@ public class ImplementationsBukkit {
         /*
          * Implementação do sistema de SealPlayers.
          */
-        Implementations.playerGetter = player -> new SealPlayerBukkit((Player) player);
+        Implementations.playerGetter = new ImpInterfaces.ISealPlayerGetter() {
+            @Override
+            public ISealPlayer get(Object player) {
+                return new SealPlayerBukkit((Player) player);
+            }
+
+            @Override
+            public Optional<ISealPlayer> get(UUID uuid) {
+                Player player = Bukkit.getServer().getPlayer(uuid);
+                return player != null ? Optional.of(new SealPlayerBukkit(player)) : Optional.empty();
+            }
+        };
 
         /*
          * Implementação do sistema de manipulação de Economia.

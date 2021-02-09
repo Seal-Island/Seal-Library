@@ -8,10 +8,14 @@ import com.focamacho.seallibrary.logger.LoggerBungee;
 import com.focamacho.seallibrary.logger.SealLogger;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerBungeePerms;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
+import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayerBungee;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.PluginManager;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Implementações dos sistemas da Seal Library
@@ -40,7 +44,18 @@ public class ImplementationsBungee {
         /*
          * Implementação do sistema de SealPlayers.
          */
-        Implementations.playerGetter = player -> new SealPlayerBungee((ProxiedPlayer) player);
+        Implementations.playerGetter = new ImpInterfaces.ISealPlayerGetter() {
+            @Override
+            public ISealPlayer get(Object player) {
+                return new SealPlayerBungee((ProxiedPlayer) player);
+            }
+
+            @Override
+            public Optional<ISealPlayer> get(UUID uuid) {
+                ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
+                return player != null ? Optional.of(new SealPlayerBungee(player)) : Optional.empty();
+            }
+        };
 
         /*
          * Implementação do sistema de manipulação de Economia.
