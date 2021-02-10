@@ -1,5 +1,7 @@
 package com.focamacho.seallibrary.menu;
 
+import com.focamacho.seallibrary.item.ISealStack;
+import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.menu.lib.AbstractClick;
 import com.focamacho.seallibrary.menu.lib.AbstractInteract;
 import com.focamacho.seallibrary.player.ISealPlayer;
@@ -27,7 +29,7 @@ public class MenuListener implements Listener {
         MenuBukkit menu = menus.get(event.getInventory());
         if(menu != null) {
             AbstractClick click = getClick(event);
-            
+
             int slotIndex = event.getSlot();
             ClickType type = event.getClick();
 
@@ -130,6 +132,21 @@ public class MenuListener implements Listener {
             @Override
             public Object getInventory() {
                 return event.getInventory();
+            }
+
+            @Override
+            public ISealStack getItem() {
+                return SealStack.get(event.getCurrentItem());
+            }
+
+            @Override
+            public ISealStack getCursor() {
+                return SealStack.get(event.getCursor());
+            }
+
+            @Override
+            public int getSlot() {
+                return event.getSlot();
             }
         };
     }

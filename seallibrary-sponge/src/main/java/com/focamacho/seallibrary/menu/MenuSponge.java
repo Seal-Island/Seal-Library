@@ -1,5 +1,7 @@
 package com.focamacho.seallibrary.menu;
 
+import com.focamacho.seallibrary.item.ISealStack;
+import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.menu.item.IMenuItem;
 import com.focamacho.seallibrary.menu.lib.AbstractClick;
 import com.focamacho.seallibrary.menu.lib.AbstractInteract;
@@ -139,6 +141,24 @@ public class MenuSponge extends AbstractMenu {
             @Override
             public Object getInventory() {
                 return event.getTargetInventory().parent();
+            }
+
+            @Override
+            public ISealStack getItem() {
+                if(event.getSlot().isPresent() && event.getSlot().get().peek().isPresent()) {
+                    return SealStack.get(event.getSlot().get().peek().get());
+                }
+                return null;
+            }
+
+            @Override
+            public ISealStack getCursor() {
+                return SealStack.get(event.getCursorTransaction().getFinal().createStack());
+            }
+
+            @Override
+            public int getSlot() {
+                return event.getSlot().get().getInventoryProperty(SlotIndex.class).get().getValue();
             }
         };
     }
