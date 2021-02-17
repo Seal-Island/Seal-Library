@@ -57,6 +57,9 @@ allprojects {
     }
 
     dependencies {
+        //Seal Config
+        compile files(project.rootDir.toString() + '/../../Outros/Seal Config/build/libs/SealConfig-1.0.jar')
+
         //LuckPerms
         compileOnly 'net.luckperms:api:5.2'
 
@@ -69,10 +72,7 @@ allprojects {
         }
 
         //Outros
-        compile files(project.rootDir.toString() + '/libs/Jankson-1.2.0.jar')
         compile group: 'org.json', name: 'json', version: '20200518'
-        compile group: 'commons-io', name: 'commons-io', version: '2.7'
-        compile group: 'org.apache.commons', name: 'commons-text', version: '1.9'
         compileOnly 'org.jetbrains:annotations:16.0.2'
     }
 

@@ -1,30 +1,23 @@
 package com.focamacho.seallibrary.config;
 
-import blue.endless.jankson.Jankson;
-import blue.endless.jankson.JsonObject;
-import blue.endless.jankson.JsonPrimitive;
-import com.focamacho.seallibrary.logger.SealLogger;
+import com.focamacho.sealconfig.relocated.blue.endless.jankson.Jankson;
+import com.focamacho.sealconfig.relocated.blue.endless.jankson.JsonObject;
+import com.focamacho.sealconfig.relocated.blue.endless.jankson.JsonPrimitive;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.text.translate.UnicodeUnescaper;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Classe para criação de arquivos
- * de configuração e idioma de
+ * Implementação da SealConfig na SealLibrary para
+ * criação de arquivos de configuração e idioma de
  * forma fácil.
  */
-@SuppressWarnings({"unused", "deprecation", "unchecked"})
-public class SealConfig {
-
-    private final Map<Class<?>, AbstractMap.SimpleEntry<File, Object>> configs = new HashMap<>();
-    private final UnicodeUnescaper unicodeUnescaper = new UnicodeUnescaper();
+@SuppressWarnings({"unused"})
+public class SealConfig extends com.focamacho.sealconfig.SealConfig {
 
     private final File langFolder;
     @Getter private final ILangConfig langConfig;
@@ -34,6 +27,7 @@ public class SealConfig {
      * de idioma.
      */
     public SealConfig() {
+        super();
         this.langFolder = null;
         this.langConfig = null;
     }
@@ -45,6 +39,7 @@ public class SealConfig {
      * @param langConfig um objeto criado implementando ILangConfig
      */
     public SealConfig(File langFolder, ILangConfig langConfig) {
+        super();
         this.langFolder = langFolder;
         this.langConfig = langConfig;
         createLangConfig();
@@ -53,59 +48,10 @@ public class SealConfig {
     /**
      * Recarrega as configurações.
      */
+    @Override
     public void reload() {
-        configs.forEach((classe, entry) -> createConfig(entry.getKey(), classe));
+        super.reload();
         createLangConfig();
-    }
-
-    /**
-     * Carrega ou cria o arquivo de configuração, e
-     * retorna seu valor.
-     * @param configFile o arquivo de configuração.
-     * @param classe a classe de configuração
-     * @return um objeto da classe de configuração.
-     */
-    public <T> T getConfig(File configFile, Class<T> classe) {
-        Map.Entry<File, Object> config = configs.get(classe);
-        if(config == null) return createConfig(configFile, classe);
-        return (T) config.getValue();
-    }
-
-    /**
-     * Cria o arquivo de configuração, e
-     * retorna o seu valor.
-     *
-     * Esse método é somente utilizado privadamente
-     * pelo getConfig().
-     *
-     * @param configFile o arquivo de configuração.
-     * @param configClass a classe de configuração
-     * @return um objeto da classe de configuração.
-     */
-    private <T> T createConfig(File configFile, Class<T> configClass) {
-        try {
-            JsonObject defaults = Jankson.builder().build().load(Jankson.builder().build().toJson(configClass.newInstance()).toJson(true, true, 0));
-
-            JsonObject configObject;
-            if (!configFile.exists()) {
-                boolean mk = configFile.getParentFile().mkdirs();
-                boolean nf = configFile.createNewFile();
-                configObject = defaults;
-            } else configObject = Jankson.builder().build().load(configFile);
-
-            defaults.forEach((string, element) -> {
-                if(!configObject.containsKey(string)) configObject.putDefault(string, element, defaults.getComment(string));
-            });
-
-            FileUtils.write(configFile, unicodeUnescaper.translate(configObject.toJson(true, true, 0)), StandardCharsets.UTF_8);
-            T config = Jankson.builder().build().fromJson(configObject.toJson(), configClass);
-            configs.put(configClass, new AbstractMap.SimpleEntry<>(configFile, config));
-            return config;
-        } catch(Exception e) {
-            SealLogger.error("Erro ao carregar um arquivo de configuração:");
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**
@@ -127,8 +73,8 @@ public class SealConfig {
             boolean mk = langFolder.mkdirs();
         }
         if(!langFolder.isDirectory()) {
-            SealLogger.error("Não foi possível carregar os arquivos de idioma.");
-            SealLogger.error(langFolder.toString() + " não é uma pasta.");
+            logger.severe("Não foi possível carregar os arquivos de idioma.");
+            logger.severe(langFolder.toString() + " não é uma pasta.");
             return;
         }
 
@@ -151,7 +97,7 @@ public class SealConfig {
                     });
                 }
             } catch(Exception e) {
-                SealLogger.error("Erro ao carregar um arquivo de idioma:");
+                logger.severe("Erro ao carregar um arquivo de idioma:");
                 e.printStackTrace();
             }
         }
@@ -168,7 +114,7 @@ public class SealConfig {
 
                 FileUtils.write(file, unicodeUnescaper.translate(configObject.toJson(false, true, 0)), StandardCharsets.UTF_8);
             } catch (Exception e) {
-                SealLogger.error("Erro ao salvar um arquivo de idioma:");
+                logger.severe("Erro ao salvar um arquivo de idioma:");
                 e.printStackTrace();
             }
         });
