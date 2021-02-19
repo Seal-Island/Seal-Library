@@ -22,3 +22,35 @@ As implementações feitas até o momento são as seguintes:
 - Criação e manipulação de ItemStacks.
 - Manipulação de jogadores, incluindo métodos para manipulação de economia, abrir menus...
 - Conversão de ItemStacks do MCP para do Bukkit/Sponge e vice-versa.
+
+## Usuários
+Caso um plugin que você utilize precise da Seal Library, é só baixar a última versão disponível nos [releases](https://github.com/Seal-Island/Seal-Library/releases) do GitHub e jogar dentro de sua pasta de plugins.
+## Dev
+**Maven**
+```xml
+<repository>
+    <id>focamacho-repo</id>
+    <name>Focamacho Maven Repository</name>
+    <url>https://repo.focamacho.com/repository/releases/</url>
+</repository>
+```
+```xml
+<dependency>
+    <groupId>com.focamacho</groupId>
+    <artifactId>seallibrary</artifactId>
+    <version>VERSAO</version>
+    <classifier>common</classifier>
+</dependency>
+```
+
+**Gradle**
+```groovy
+repositories {
+  maven { url = 'https://repo.focamacho.com/repository/releases/' }
+}
+
+dependencies {
+    compile 'com.focamacho:seallibrary:VERSAO:common'
+}
+```
+Substitua a palavra "VERSAO" com o número da última versão disponível nos [releases](https://github.com/Seal-Island/Seal-Library/releases) do GitHub.
