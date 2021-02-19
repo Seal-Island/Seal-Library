@@ -49,16 +49,13 @@ allprojects {
         maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
         maven { url = 'http://repo.wea-ondara.net/repository/public/' }
-        maven { url 'https://jitpack.io' }
-    }
-
-    shadowJar {
-        relocate 'org.apache.commons.text', 'com.focamacho.seallibrary.relocated.org.apache.commons.text'
+        maven { url = 'https://jitpack.io' }
+        maven { url = 'https://repo.focamacho.com/repository/releases/' }
     }
 
     dependencies {
         //Seal Config
-        compile files(project.rootDir.toString() + '/../../Outros/Seal Config/build/libs/SealConfig-1.0.jar')
+        compile 'com.focamacho:sealconfig:1.2'
 
         //LuckPerms
         compileOnly 'net.luckperms:api:5.2'
