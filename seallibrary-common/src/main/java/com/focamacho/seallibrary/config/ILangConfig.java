@@ -33,7 +33,7 @@ public interface ILangConfig {
      * @return o idioma padrão para tradução.
      */
     default String getDefaultLang() {
-        return "en_us";
+        return "pt_br";
     }
 
     /**
