@@ -6,7 +6,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'net.minecraftforge.gradle'
 
 version = rootProject.version
-archivesBaseName = "SealLibrary-Sponge-" + rootProject.version
+archivesBaseName = "SealLibrary-Sponge"
 
 minecraft {
     mappings channel: 'stable', version: '39-1.12'
