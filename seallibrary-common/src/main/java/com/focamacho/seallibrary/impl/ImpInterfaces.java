@@ -45,12 +45,4 @@ public class ImpInterfaces {
         }
     }
 
-    /**
-     * Interface usada para a criação
-     * de um MessageWaiter.
-     */
-    public interface IMessageWaiterGetter {
-        void waitForMessage(UUID player, Runnable.MessageRunnable onReceive, int secondsLimit, java.lang.Runnable onExpire);
-    }
-
 }
