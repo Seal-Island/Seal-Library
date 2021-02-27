@@ -38,4 +38,5 @@ bungee {
     version = rootProject.version
     description = 'Library para facilitar a criação de plugins.'
     author = 'Focamacho'
+    softDepends = ['luckperms', 'bungeeperms']
 }

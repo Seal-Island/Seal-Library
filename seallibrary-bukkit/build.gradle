@@ -39,6 +39,7 @@ bukkit {
     version = rootProject.version
     description = 'Library para facilitar a criação de plugins.'
     author = 'Focamacho'
+    softDepend = ['vault', 'luckperms', 'bungeeperms']
 }
 
 reobf {

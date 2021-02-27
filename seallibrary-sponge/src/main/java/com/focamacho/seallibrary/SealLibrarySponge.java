@@ -7,6 +7,7 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppedEvent;
+import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 
 @Plugin(
@@ -15,6 +16,9 @@ import org.spongepowered.api.plugin.Plugin;
         description = "Library para facilitar a criação de plugins.",
         authors = {
                 "Focamacho"
+        },
+        dependencies = {
+                @Dependency(id = "luckperms")
         }
 )
 public class SealLibrarySponge {
