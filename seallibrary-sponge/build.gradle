@@ -16,7 +16,7 @@ dependencies {
     //Forge
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2854'
 
-    compile project(':seallibrary-common')
+    compileOnly project(':seallibrary-common')
     compileOnly 'org.spongepowered:spongeapi:7.3.0'
     annotationProcessor 'org.spongepowered:spongeapi:7.3.0'
     compileOnly ('org.spongepowered:spongecommon:1.12.2-7.3.0:dev') {

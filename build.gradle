@@ -54,9 +54,6 @@ allprojects {
     }
 
     dependencies {
-        //Seal Config
-        compile 'com.focamacho:sealconfig:1.2'
-
         //LuckPerms
         compileOnly 'net.luckperms:api:5.2'
 
@@ -69,11 +66,7 @@ allprojects {
         }
 
         //Outros
-        compile group: 'org.json', name: 'json', version: '20200518'
         compileOnly 'org.jetbrains:annotations:16.0.2'
-
-        //SQLite para Shadow
-        compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.34.0'
     }
 
     tasks.withType(JavaCompile) {

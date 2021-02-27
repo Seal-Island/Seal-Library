@@ -1,1 +1,14 @@
+apply plugin: 'com.github.johnrengelman.shadow'
+
 archivesBaseName = "SealLibrary-Common-" + rootProject.version
+
+dependencies {
+    //Seal Config
+    compile 'com.focamacho:sealconfig:1.2'
+
+    //org.json
+    compile group: 'org.json', name: 'json', version: '20200518'
+
+    //SQLite para Shadow
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.34.0'
+}
