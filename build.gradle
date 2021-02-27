@@ -55,7 +55,7 @@ allprojects {
 
     dependencies {
         //Seal Config
-        compile 'com.focamacho:sealconfig:1.2'
+        compile 'com.focamacho:sealconfig:1.2.1'
 
         //LuckPerms
         compileOnly 'net.luckperms:api:5.2'
