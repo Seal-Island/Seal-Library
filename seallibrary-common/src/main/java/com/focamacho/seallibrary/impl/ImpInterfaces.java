@@ -1,6 +1,5 @@
 package com.focamacho.seallibrary.impl;
 
-import com.focamacho.seallibrary.chat.lib.Runnable;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.menu.AbstractMenu;

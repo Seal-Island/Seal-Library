@@ -17,6 +17,7 @@ import com.focamacho.seallibrary.permission.impl.PermissionHandlerBungeePerms;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayerBukkit;
+import com.focamacho.seallibrary.server.SealServerBukkit;
 import com.focamacho.seallibrary.util.ItemStackUtilsBukkit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -124,6 +125,11 @@ public class ImplementationsBukkit {
             Class.forName("net.minecraftforge.common.MinecraftForge");
             Implementations.forgeUtils = new ForgeUtilsBukkit();
         } catch (ClassNotFoundException ignored) {}
+
+        /*
+         * Implementação do sistema de manipulação de servidor.
+         */
+        Implementations.server = new SealServerBukkit(Bukkit.getServer());
     }
 
 }

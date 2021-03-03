@@ -10,6 +10,7 @@ import com.focamacho.seallibrary.permission.impl.PermissionHandlerBungeePerms;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayerBungee;
+import com.focamacho.seallibrary.server.SealServerBungee;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.PluginManager;
@@ -88,6 +89,11 @@ public class ImplementationsBungee {
             ProxyServer.getInstance().stop();
         }
         pluginManager.registerListener(SealLibraryBungee.instance, new MessageWaiterListenerBungee());
+
+        /*
+         * Implementação do sistema de manipulação de servidor.
+         */
+        Implementations.server = new SealServerBungee(ProxyServer.getInstance());
 
     }
 

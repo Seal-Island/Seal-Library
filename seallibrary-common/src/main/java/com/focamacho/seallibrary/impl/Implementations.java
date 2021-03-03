@@ -8,6 +8,7 @@ import com.focamacho.seallibrary.logger.ILogger;
 import com.focamacho.seallibrary.menu.Menu;
 import com.focamacho.seallibrary.permission.IPermissionHandler;
 import com.focamacho.seallibrary.player.SealPlayer;
+import com.focamacho.seallibrary.server.ISealServer;
 
 /**
  * Classe contendo todas as
@@ -66,5 +67,11 @@ public class Implementations {
      * compatibilidade com o Forge.
      */
     public static IForgeUtils forgeUtils;
+
+    /**
+     * ISealServer utilizado para manipulação
+     * do servidor.
+     */
+    public static ISealServer server;
 
 }
