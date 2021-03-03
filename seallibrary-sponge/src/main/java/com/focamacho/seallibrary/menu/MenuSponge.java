@@ -1,5 +1,6 @@
 package com.focamacho.seallibrary.menu;
 
+import com.focamacho.seallibrary.SealLibrarySponge;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.menu.item.IMenuItem;
@@ -26,10 +27,6 @@ import java.util.Optional;
 public class MenuSponge extends AbstractMenu {
 
     protected Inventory inventory;
-
-    public MenuSponge(Object plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public Map<Integer, Object> getOriginalItems() {
@@ -59,6 +56,7 @@ public class MenuSponge extends AbstractMenu {
                     .property(InventoryTitle.of(Text.of(title)))
                     .property(InventoryDimension.of(9, rows))
                     .listener(ClickInventoryEvent.class, event -> {
+                        event.setCancelled(true);
                         AbstractClick click = getClick(event);
                         if(event.getSlot().isPresent()) {
                             Optional<SlotIndex> index = event.getSlot().get().getInventoryProperty(SlotIndex.class);
@@ -107,10 +105,15 @@ public class MenuSponge extends AbstractMenu {
                     })
                     .listener(InteractInventoryEvent.class, event -> {
                         AbstractInteract interact = getInteract(event);
-                        if (event instanceof InteractInventoryEvent.Open) onOpen.run(interact);
-                        else if (event instanceof InteractInventoryEvent.Close) onClose.run(interact);
-                        event.setCancelled(interact.isCancelled());
-                    }).build(plugin);
+                        if (event instanceof InteractInventoryEvent.Open) {
+                            onOpen.run(interact);
+                            event.setCancelled(interact.isCancelled());
+                        }
+                        else if (event instanceof InteractInventoryEvent.Close) {
+                            onClose.run(interact);
+                            event.setCancelled(interact.isCancelled());
+                        }
+                    }).build(SealLibrarySponge.instance);
         }
 
         int index = 0;
@@ -121,9 +124,9 @@ public class MenuSponge extends AbstractMenu {
                     IMenuItem item = items.get(finalIndex);
                     if (!slot.peek().isPresent() || !slot.peek().get().equals(item.getItem().toOriginal()))
                         slot.set((ItemStack) item.getItem().toOriginal());
-                }).submit(plugin);
+                }).submit(SealLibrarySponge.instance);
             } else {
-                Task.builder().execute(slot::clear).submit(plugin);
+                Task.builder().execute(slot::clear).submit(SealLibrarySponge.instance);
             }
             index++;
         }

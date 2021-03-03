@@ -7,12 +7,11 @@ public class Menu {
 
     /**
      * Cria um novo menu.
-     * @param plugin a instância do plugin
      * que está criando o menu.
      * @return o menu criado.
      */
-    public static AbstractMenu create(Object plugin) {
-        return Implementations.menuBuilder.create(plugin);
+    public static AbstractMenu create() {
+        return Implementations.menuBuilder.create();
     }
 
     /**

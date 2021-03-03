@@ -28,6 +28,11 @@ public class ImplementationsBungee {
 
     public static void init() {
         /*
+         * Implementação do sistema de manipulação de servidor.
+         */
+        Implementations.server = new SealServerBungee(ProxyServer.getInstance());
+
+        /*
          * Implementação do sistema de Logging.
          */
         Implementations.logger = new LoggerBungee(SealLibraryBungee.instance.getLogger());
@@ -89,12 +94,6 @@ public class ImplementationsBungee {
             ProxyServer.getInstance().stop();
         }
         pluginManager.registerListener(SealLibraryBungee.instance, new MessageWaiterListenerBungee());
-
-        /*
-         * Implementação do sistema de manipulação de servidor.
-         */
-        Implementations.server = new SealServerBungee(ProxyServer.getInstance());
-
     }
 
 }

@@ -13,10 +13,6 @@ public class MenuBukkit extends AbstractMenu {
 
     protected Inventory inventory;
 
-    public MenuBukkit(Object plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public Map<Integer, Object> getOriginalItems() {
         if(inventory == null) get();

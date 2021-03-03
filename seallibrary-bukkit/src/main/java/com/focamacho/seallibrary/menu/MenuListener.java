@@ -1,5 +1,6 @@
 package com.focamacho.seallibrary.menu;
 
+import com.focamacho.seallibrary.SealLibraryBukkit;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.menu.lib.AbstractClick;
@@ -28,6 +29,7 @@ public class MenuListener implements Listener {
     public void onClick(InventoryClickEvent event) {
         MenuBukkit menu = menus.get(event.getInventory());
         if(menu != null) {
+            event.setCancelled(true);
             AbstractClick click = getClick(event);
 
             int slotIndex = event.getSlot();
@@ -115,7 +117,7 @@ public class MenuListener implements Listener {
             };
             menu.getOnClose().run(interact);
             if(interact.isCancelled()) {
-                try { Bukkit.getScheduler().callSyncMethod((Plugin) menu.getPlugin(), () -> event.getPlayer().openInventory(inventory)).get(); } catch (Exception ignored) {}
+                try { Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> event.getPlayer().openInventory(inventory)).get(); } catch (Exception ignored) {}
             } else if(inventory.getViewers().size() <= 0) {
                 menus.remove(inventory);
             }

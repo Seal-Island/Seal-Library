@@ -17,12 +17,6 @@ import java.util.Map;
 public abstract class AbstractMenu {
 
     /**
-     * A instância do plugin que criou
-     * esse menu.
-     */
-    @Getter protected Object plugin;
-
-    /**
      * O título do inventário desse menu.
      */
     @Getter @Setter protected String title = "";
@@ -213,7 +207,7 @@ public abstract class AbstractMenu {
      * Cria uma cópia desse menu.
      */
     public AbstractMenu copy() {
-        AbstractMenu copy = Menu.create(getPlugin());
+        AbstractMenu copy = Menu.create();
         copy.setTitle(getTitle());
         copy.setRows(getRows());
 

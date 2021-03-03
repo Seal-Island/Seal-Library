@@ -1,5 +1,6 @@
 package com.focamacho.seallibrary.server;
 
+import com.focamacho.seallibrary.command.ISealCommand;
 import com.focamacho.seallibrary.player.ISealPlayer;
 
 import java.util.List;
@@ -65,5 +66,22 @@ public interface ISealServer {
     default void broadcast(String message) {
         this.getPlayers().forEach(player -> player.sendMessage(message));
     }
+
+    /**
+     * Registra um comando.
+     * @param plugin a instância do plugin que está
+     *               registrando esse comando.
+     * @param command o comando para registrar.
+     */
+    void registerCommand(Object plugin, ISealCommand command);
+
+    /**
+     * Retorna o local onde fica a
+     * pasta de configuração do
+     * servidor.
+     * @return o caminho para a pasta
+     * de configuração.
+     */
+    String getConfigFolder();
 
 }

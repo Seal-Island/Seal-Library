@@ -16,7 +16,7 @@ public class ImpInterfaces {
      * de um Menu.
      */
     public interface MenuBuilder {
-        AbstractMenu create(Object plugin);
+        AbstractMenu create();
     }
 
     /**

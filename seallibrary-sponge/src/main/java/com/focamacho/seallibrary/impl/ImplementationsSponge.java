@@ -13,6 +13,7 @@ import com.focamacho.seallibrary.menu.MenuSponge;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayerSponge;
+import com.focamacho.seallibrary.server.ISealServer;
 import com.focamacho.seallibrary.server.SealServerSponge;
 import com.focamacho.seallibrary.util.ItemStackUtils;
 import org.spongepowered.api.Sponge;
@@ -32,6 +33,12 @@ public class ImplementationsSponge {
     private static final PluginManager pluginManager = Sponge.getPluginManager();
 
     public static void init() {
+        /*
+         * Implementação do sistema de manipulação de servidor.
+         */
+        Implementations.server = new SealServerSponge(Sponge.getServer());
+        Sponge.getEventManager().registerListeners(SealLibrarySponge.instance, Implementations.server);
+
         /*
          * Implementação do sistema de Logging.
          */
@@ -107,11 +114,6 @@ public class ImplementationsSponge {
          * Implementação do sistema de utilidades para compatibilidade com Forge.
          */
         if(pluginManager.isLoaded("forge")) Implementations.forgeUtils = new ForgeUtilsSponge();
-
-        /*
-         * Implementação do sistema de manipulação de servidor.
-         */
-        Implementations.server = new SealServerSponge(Sponge.getServer());
     }
 
 }

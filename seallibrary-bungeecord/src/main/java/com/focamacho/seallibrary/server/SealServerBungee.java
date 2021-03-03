@@ -1,8 +1,15 @@
 package com.focamacho.seallibrary.server;
 
+import com.focamacho.seallibrary.command.ISealCommand;
+import com.focamacho.seallibrary.command.lib.ISealCommandSender;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayer;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +48,55 @@ public class SealServerBungee implements ISealServer {
     @Override
     public void shutdown() {
         this.server.stop();
+    }
+
+    @Override
+    public void registerCommand(Object plugin, ISealCommand command) {
+        Command cmd = new Command(command.getName()) {
+            @Override
+            public String[] getAliases() {
+                return command.getAliases();
+            }
+
+            @Override
+            public String getPermission() {
+                return command.getPermission();
+            }
+
+            @Override
+            public void execute(CommandSender commandSender, String[] args) {
+                ISealCommandSender sender = new ISealCommandSender() {
+                    @Override
+                    public boolean isConsole() {
+                        return commandSender.equals(ProxyServer.getInstance().getConsole());
+                    }
+
+                    @Override
+                    public boolean isPlayer() {
+                        return commandSender instanceof ProxiedPlayer;
+                    }
+
+                    @Override
+                    public Object get() {
+                        return commandSender;
+                    }
+
+                    @Override
+                    public void sendMessage(String message) {
+                        commandSender.sendMessage(new TextComponent(message));
+                    }
+                };
+
+                command.run(sender, args);
+            }
+        };
+
+        ProxyServer.getInstance().getPluginManager().registerCommand((Plugin) plugin, cmd);
+    }
+
+    @Override
+    public String getConfigFolder() {
+        return "./plugins/";
     }
 
 }

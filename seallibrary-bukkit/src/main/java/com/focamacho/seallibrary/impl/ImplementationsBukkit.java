@@ -37,6 +37,11 @@ public class ImplementationsBukkit {
 
     public static void init() {
         /*
+         * Implementação do sistema de manipulação de servidor.
+         */
+        Implementations.server = new SealServerBukkit(Bukkit.getServer());
+
+        /*
          * Implementação do sistema de Logging.
          */
         Implementations.logger = new LoggerBukkit(SealLibraryBukkit.instance.getLogger());
@@ -125,11 +130,6 @@ public class ImplementationsBukkit {
             Class.forName("net.minecraftforge.common.MinecraftForge");
             Implementations.forgeUtils = new ForgeUtilsBukkit();
         } catch (ClassNotFoundException ignored) {}
-
-        /*
-         * Implementação do sistema de manipulação de servidor.
-         */
-        Implementations.server = new SealServerBukkit(Bukkit.getServer());
     }
 
 }
