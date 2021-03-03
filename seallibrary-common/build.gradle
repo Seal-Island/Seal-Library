@@ -4,7 +4,7 @@ archivesBaseName = "SealLibrary-Common-" + rootProject.version
 
 dependencies {
     //Seal Config
-    compile 'com.focamacho:sealconfig:1.2'
+    compile 'com.focamacho:sealconfig:1.2.1'
 
     //org.json
     compile group: 'org.json', name: 'json', version: '20200518'
