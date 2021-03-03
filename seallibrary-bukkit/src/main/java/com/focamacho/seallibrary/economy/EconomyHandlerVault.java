@@ -18,9 +18,8 @@ public class EconomyHandlerVault implements IEconomyHandler {
         } else {
             SealLogger.error("Nenhum plugin de economia compatível foi carregado.",
                     "Por favor, instale um plugin compatível com o Vault.",
-                    "O servidor será desligado para evitar problemas.");
+                    "Algumas coisas não funcionarão corretamente até que um plugin compatível seja instalado.");
             economyService = null;
-            Bukkit.getServer().shutdown();
         }
     }
 

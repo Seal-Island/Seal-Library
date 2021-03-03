@@ -77,8 +77,7 @@ public class ImplementationsBungee {
             SealLogger.error("Nenhum plugin de permissões compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
                     "LuckPerms, BungeePerms",
-                    "O servidor será desligado para evitar problemas.");
-            ProxyServer.getInstance().stop();
+                    "Algumas coisas não funcionarão corretamente até que um dos plugins acima seja instalado.");
         }
 
         /*
@@ -90,8 +89,7 @@ public class ImplementationsBungee {
             SealLogger.error("Nenhum plugin de chat compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
                     "LuckPerms, BungeePerms",
-                    "O servidor será desligado para evitar problemas.");
-            ProxyServer.getInstance().stop();
+                    "Algumas coisas não funcionarão corretamente até que um dos plugins acima seja instalado.");
         }
         pluginManager.registerListener(SealLibraryBungee.instance, new MessageWaiterListenerBungee());
     }

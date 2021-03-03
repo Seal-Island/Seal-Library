@@ -93,8 +93,7 @@ public class ImplementationsSponge {
             SealLogger.error("Nenhum plugin de permissões compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
                     "LuckPerms",
-                    "O servidor será desligado para evitar problemas.");
-            Sponge.getServer().shutdown();
+                    "Algumas coisas não funcionarão corretamente até que um dos plugins acima seja instalado.");
         }
 
         /*
@@ -105,8 +104,7 @@ public class ImplementationsSponge {
             SealLogger.error("Nenhum plugin de chat compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
                     "LuckPerms",
-                    "O servidor será desligado para evitar problemas.");
-            Sponge.getServer().shutdown();
+                    "Algumas coisas não funcionarão corretamente até que um dos plugins acima seja instalado.");
         }
         Sponge.getEventManager().registerListeners(SealLibrarySponge.instance, new MessageWaiterListenerSponge());
 

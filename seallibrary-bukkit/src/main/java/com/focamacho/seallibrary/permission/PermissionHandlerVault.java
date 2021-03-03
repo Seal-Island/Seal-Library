@@ -18,9 +18,8 @@ public class PermissionHandlerVault implements IPermissionHandler {
         } else {
             SealLogger.error("Nenhum plugin de permissão compatível foi carregado.",
                     "Por favor, instale um plugin compatível com o Vault.",
-                    "O servidor será desligado para evitar problemas.");
+                    "Algumas coisas não funcionarão corretamente até que um plugin compatível seja instalado.");
             this.permissionService = null;
-            Bukkit.getServer().shutdown();
         }
     }
 

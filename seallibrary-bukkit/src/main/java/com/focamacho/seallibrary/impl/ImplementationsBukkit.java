@@ -90,8 +90,7 @@ public class ImplementationsBukkit {
             SealLogger.error("Nenhum plugin de economia compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
                     "Vault",
-                    "O servidor será desligado para evitar problemas.");
-            Bukkit.getServer().shutdown();
+                    "Algumas coisas não funcionarão corretamente até que um dos plugins acima seja instalado.");
         }
 
         /*
@@ -104,8 +103,7 @@ public class ImplementationsBukkit {
             SealLogger.error("Nenhum plugin de permissões compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
                     "LuckPerms; BungeePerms; Vault",
-                    "O servidor será desligado para evitar problemas.");
-            Bukkit.getServer().shutdown();
+                    "Algumas coisas não funcionarão corretamente até que um dos plugins acima seja instalado.");
         }
 
         /*
@@ -118,8 +116,7 @@ public class ImplementationsBukkit {
             SealLogger.error("Nenhum plugin de chat compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
                     "LuckPerms; BungeePerms; Vault",
-                    "O servidor será desligado para evitar problemas.");
-            Bukkit.getServer().shutdown();
+                    "Algumas coisas não funcionarão corretamente até que um dos plugins acima seja instalado.");
         }
         pluginManager.registerEvents(new MessageWaiterListenerBukkit(), SealLibraryBukkit.instance);
 
