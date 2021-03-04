@@ -13,7 +13,6 @@ import com.focamacho.seallibrary.menu.MenuSponge;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayerSponge;
-import com.focamacho.seallibrary.server.ISealServer;
 import com.focamacho.seallibrary.server.SealServerSponge;
 import com.focamacho.seallibrary.util.ItemStackUtils;
 import org.spongepowered.api.Sponge;
