@@ -3,9 +3,11 @@ package com.focamacho.seallibrary.player;
 import com.focamacho.seallibrary.chat.ChatHandler;
 import com.focamacho.seallibrary.chat.lib.Runnable;
 import com.focamacho.seallibrary.economy.EconomyHandler;
-import com.focamacho.seallibrary.menu.AbstractMenu;
+import com.focamacho.seallibrary.item.ISealStack;
+import com.focamacho.seallibrary.menu.Menu;
 import com.focamacho.seallibrary.permission.PermissionHandler;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -70,7 +72,7 @@ public interface ISealPlayer {
      * o jogador.
      * @param menu o menu para ser aberto.
      */
-    default void openInventory(AbstractMenu menu) {
+    default void openInventory(Menu menu) {
         openInventory(menu.get());
     }
 
@@ -166,6 +168,56 @@ public interface ISealPlayer {
     default boolean setOption(String option, String value) {
         return PermissionHandler.setOption(getUUID(), option, value);
     }
+
+    /**
+     * Verifica se o jogador possui a quantidade
+     * de itens especificada.
+     *
+     * @param item o item para verificar.
+     * @param amount a quantidade para verificar.
+     * @return boolean se o jogador possui ou não a quantidade
+     * de itens verificada.
+     */
+    boolean hasItems(ISealStack item, int amount);
+
+    /**
+     * Remove o item especificado do inventário
+     * do jogador.
+     *
+     * @param item o item para remover.
+     * @param amount a quantidade para remover.
+     */
+    void removeItems(ISealStack item, int amount);
+
+    /**
+     * Tenta dar os itens especificados para
+     * o jogador.
+     *
+     * @param items os itens para dar pro jogador.
+     * @return os itens que foram rejeitados pelo,
+     * seja por causa de inventário cheio ou outro
+     * motivo.
+     */
+    List<ISealStack> giveItems(ISealStack... items);
+
+    /**
+     * Tenta dar os itens especificados para
+     * o jogador. Caso não seja possível colocá-los
+     * no inventário do mesmo, os itens são dropados
+     * no chão.
+     *
+     * @param items os itens para dar pro jogador.
+     */
+    void giveOrDropItems(ISealStack... items);
+
+    /**
+     * Retorna todos os itens que o jogador
+     * possui no inventário.
+     *
+     * @return todos os itens no inventário do
+     * jogador.
+     */
+    List<ISealStack> getInventory();
 
     /**
      * Consulta a quantia de dinheiro

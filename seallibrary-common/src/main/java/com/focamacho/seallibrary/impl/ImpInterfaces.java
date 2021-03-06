@@ -2,7 +2,7 @@ package com.focamacho.seallibrary.impl;
 
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStack;
-import com.focamacho.seallibrary.menu.AbstractMenu;
+import com.focamacho.seallibrary.menu.Menu;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import org.json.JSONObject;
 
@@ -16,7 +16,7 @@ public class ImpInterfaces {
      * de um Menu.
      */
     public interface MenuBuilder {
-        AbstractMenu create();
+        Menu create();
     }
 
     /**

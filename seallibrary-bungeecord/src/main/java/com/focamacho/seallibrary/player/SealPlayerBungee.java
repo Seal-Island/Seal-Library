@@ -1,8 +1,10 @@
 package com.focamacho.seallibrary.player;
 
+import com.focamacho.seallibrary.item.ISealStack;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -39,10 +41,32 @@ public class SealPlayerBungee implements ISealPlayer {
         player.disconnect(new TextComponent(message));
     }
 
+    //Métodos não disponíveis para BungeeCord
     @Override
     public void openInventory(Object inventory) {}
 
     @Override
     public void closeInventory() {}
+
+    @Override
+    public boolean hasItems(ISealStack item, int amount) {
+        return false;
+    }
+
+    @Override
+    public void removeItems(ISealStack item, int amount) {}
+
+    @Override
+    public List<ISealStack> giveItems(ISealStack... items) {
+        return null;
+    }
+
+    @Override
+    public void giveOrDropItems(ISealStack... items) {}
+
+    @Override
+    public List<ISealStack> getInventory() {
+        return null;
+    }
 
 }

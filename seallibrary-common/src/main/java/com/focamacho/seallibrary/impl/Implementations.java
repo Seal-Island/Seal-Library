@@ -5,7 +5,6 @@ import com.focamacho.seallibrary.economy.IEconomyHandler;
 import com.focamacho.seallibrary.forge.IForgeUtils;
 import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.logger.ILogger;
-import com.focamacho.seallibrary.menu.Menu;
 import com.focamacho.seallibrary.permission.IPermissionHandler;
 import com.focamacho.seallibrary.player.SealPlayer;
 import com.focamacho.seallibrary.server.ISealServer;

@@ -1,8 +1,13 @@
 package com.focamacho.seallibrary.player;
 
+import com.focamacho.seallibrary.item.ISealStack;
+import com.focamacho.seallibrary.item.SealStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -47,6 +52,57 @@ public class SealPlayerBukkit implements ISealPlayer {
     @Override
     public void closeInventory() {
         player.closeInventory();
+    }
+
+    @Override
+    public boolean hasItems(ISealStack item, int amount) {
+        int itemsInInventory = 0;
+        for(ISealStack stack : this.getInventory()) {
+            if(stack.equalsIgnoreAmount(item)) itemsInInventory += stack.getAmount();
+        }
+        return itemsInInventory >= amount;
+    }
+
+    @Override
+    public void removeItems(ISealStack item, int amount) {
+        int toRemove = amount;
+        for(ItemStack slt : player.getInventory().getContents()) {
+            if(toRemove <= 0) break;
+            ISealStack stack = SealStack.get(slt);
+            if(stack.equalsIgnoreAmount(item)) {
+                if(stack.getAmount() >= toRemove) {
+                    if(stack.getAmount() - amount == 0) player.getInventory().remove(slt);
+                    else stack.setAmount(stack.getAmount() - toRemove);
+                    toRemove = 0;
+                } else {
+                    toRemove -= stack.getAmount();
+                    player.getInventory().removeItem(slt);
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<ISealStack> giveItems(ISealStack... items) {
+        List<ISealStack> rejected = new ArrayList<>();
+        for (ISealStack item : items) {
+            player.getInventory().addItem((ItemStack) item.toOriginal()).forEach((index, stack) -> rejected.add(SealStack.get(stack)));
+        }
+        return rejected;
+    }
+
+    @Override
+    public void giveOrDropItems(ISealStack... items) {
+        giveItems(items).forEach(rejected -> player.getWorld().dropItem(player.getLocation(), (ItemStack) rejected.toOriginal()));
+    }
+
+    @Override
+    public List<ISealStack> getInventory() {
+        List<ISealStack> allItems = new ArrayList<>();
+        for (ItemStack content : player.getInventory().getContents()) {
+            allItems.add(SealStack.get(content));
+        }
+        return allItems;
     }
 
 }

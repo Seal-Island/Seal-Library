@@ -9,7 +9,7 @@ import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
-public class ItemStackUtils {
+public class ItemStackUtilsSponge {
 
     public static ItemStack getStackFromID(String id) {
         String[] split = id.split(":");

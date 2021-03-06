@@ -14,7 +14,7 @@ import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayerSponge;
 import com.focamacho.seallibrary.server.SealServerSponge;
-import com.focamacho.seallibrary.util.ItemStackUtils;
+import com.focamacho.seallibrary.util.ItemStackUtilsSponge;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.inventory.ItemStack;
@@ -54,7 +54,7 @@ public class ImplementationsSponge {
 
             @Override
             public ISealStack get(String item) {
-                return get(ItemStackUtils.getStackFromID(item));
+                return get(ItemStackUtilsSponge.getStackFromID(item));
             }
         };
 
