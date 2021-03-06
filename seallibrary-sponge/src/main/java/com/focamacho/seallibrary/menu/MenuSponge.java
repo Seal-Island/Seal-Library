@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
-public class MenuSponge extends AbstractMenu {
+public class MenuSponge extends Menu {
 
     protected Inventory inventory;
 
@@ -49,7 +49,7 @@ public class MenuSponge extends AbstractMenu {
     }
 
     @Override
-    public AbstractMenu update() {
+    public Menu update() {
         if(inventory == null) {
             this.inventory = Inventory.builder()
                     .of(InventoryArchetypes.CHEST)

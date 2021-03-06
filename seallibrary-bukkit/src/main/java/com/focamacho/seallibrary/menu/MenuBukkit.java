@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("unused")
-public class MenuBukkit extends AbstractMenu {
+public class MenuBukkit extends Menu {
 
     protected Inventory inventory;
 
@@ -34,7 +34,7 @@ public class MenuBukkit extends AbstractMenu {
     }
 
     @Override
-    public AbstractMenu update() {
+    public Menu update() {
         if (inventory == null) {
             Inventory inventory = Bukkit.createInventory(null, rows * 9, title);
             this.inventory = inventory;
