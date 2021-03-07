@@ -30,12 +30,12 @@ public class PermissionHandlerLuckPerms implements IPermissionHandler {
     }
 
     private User getUser(UUID uuid) {
-        if(!api.getUserManager().isLoaded(uuid)) api.getUserManager().loadUser(uuid);
+        if(!api.getUserManager().isLoaded(uuid)) try { api.getUserManager().loadUser(uuid).wait(); } catch (Exception ignored) {}
         return api.getUserManager().getUser(uuid);
     }
 
     private Group getGroup(String group) {
-        if(!api.getGroupManager().isLoaded(group)) api.getGroupManager().loadGroup(group);
+        if(!api.getGroupManager().isLoaded(group)) try { api.getGroupManager().loadGroup(group).wait(); } catch (Exception ignored) {}
         return api.getGroupManager().getGroup(group);
     }
 

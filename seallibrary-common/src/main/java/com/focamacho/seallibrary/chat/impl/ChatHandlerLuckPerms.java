@@ -21,7 +21,7 @@ public class ChatHandlerLuckPerms implements IChatHandler {
     }
 
     private User getUser(UUID uuid) {
-        if(!api.getUserManager().isLoaded(uuid)) api.getUserManager().loadUser(uuid);
+        if(!api.getUserManager().isLoaded(uuid)) try { api.getUserManager().loadUser(uuid).wait(); } catch (Exception ignored) {}
         return api.getUserManager().getUser(uuid);
     }
 
