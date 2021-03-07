@@ -6,11 +6,13 @@ import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStack;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.Item;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.Slot;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
@@ -123,6 +125,16 @@ public class SealPlayerSponge implements ISealPlayer {
             }
         }
         return allItems;
+    }
+
+    @Override
+    public ISealStack getMainHand() {
+        return SealStack.get(this.player.getItemInHand(HandTypes.MAIN_HAND).orElseGet(ItemStackSnapshot.NONE::createStack));
+    }
+
+    @Override
+    public ISealStack getOffHand() {
+        return SealStack.get(this.player.getItemInHand(HandTypes.OFF_HAND).orElseGet(ItemStackSnapshot.NONE::createStack));
     }
 
     @Override

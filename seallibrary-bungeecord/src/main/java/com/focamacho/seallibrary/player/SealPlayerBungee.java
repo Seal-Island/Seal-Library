@@ -75,4 +75,14 @@ public class SealPlayerBungee implements ISealPlayer {
         return null;
     }
 
+    @Override
+    public ISealStack getMainHand() {
+        return null;
+    }
+
+    @Override
+    public ISealStack getOffHand() {
+        return null;
+    }
+
 }

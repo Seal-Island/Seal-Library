@@ -295,6 +295,22 @@ public interface ISealPlayer {
     List<ISealStack> getInventory();
 
     /**
+     * Retorna o item que o jogador possui
+     * na mão principal.
+     *
+     * @return o item na mão principal do jogador.
+     */
+    ISealStack getMainHand();
+
+    /**
+     * Retorna o item que o jogador possui
+     * na mão secundária.
+     *
+     * @return o item na mão secundária do jogador.
+     */
+    ISealStack getOffHand();
+
+    /**
      * Faz o jogador executar um comando.
      *
      * @param command o comando para ser
