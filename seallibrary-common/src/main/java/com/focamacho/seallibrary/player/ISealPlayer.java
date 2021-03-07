@@ -7,6 +7,7 @@ import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.menu.Menu;
 import com.focamacho.seallibrary.permission.PermissionHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -182,12 +183,34 @@ public interface ISealPlayer {
 
     /**
      * Remove o item especificado do inventário
-     * do jogador.
+     * do jogador, na quantia inserida.
      *
      * @param item o item para remover.
      * @param amount a quantidade para remover.
      */
     void removeItems(ISealStack item, int amount);
+
+    /**
+     * Remove o item especificado do inventário
+     * do jogador.
+     *
+     * @param item o item para remover.
+     */
+    default void removeItem(ISealStack item) {
+        removeItems(item, item.getAmount());
+    }
+
+    /**
+     * Remove os itens especificados do inventário
+     * do jogador.
+     *
+     * @param items os itens para remover.
+     */
+    default void removeItems(ISealStack... items) {
+        for (ISealStack item : items) {
+            removeItems(item);
+        }
+    }
 
     /**
      * Tenta dar os itens especificados para
@@ -201,6 +224,33 @@ public interface ISealPlayer {
     List<ISealStack> giveItems(ISealStack... items);
 
     /**
+     * Tenta dar o item especificado para
+     * o jogador, na quantidade informada.
+     * Caso a quantia seja maior que o limite
+     * de stack do item, novos stacks serão
+     * criados.
+     *
+     * @param item o item para dar pro jogador.
+     * @param amount a quantidade para dar.
+     * @return os itens que foram rejeitados,
+     * seja por causa de inventário cheio ou outro
+     * motivo.
+     */
+    default List<ISealStack> giveItems(ISealStack item, int amount) {
+        List<ISealStack> rejected = new ArrayList<>();
+        while(amount > 0) {
+            if(item.getMaxAmount() >= amount) {
+                rejected.addAll(giveItems(item.copy().setAmount(amount)));
+                amount = 0;
+            } else {
+                rejected.addAll(giveItems(item.copy().setAmount(item.getMaxAmount())));
+                amount -= item.getMaxAmount();
+            }
+        }
+        return rejected;
+    }
+
+    /**
      * Tenta dar os itens especificados para
      * o jogador. Caso não seja possível colocá-los
      * no inventário do mesmo, os itens são dropados
@@ -209,6 +259,31 @@ public interface ISealPlayer {
      * @param items os itens para dar pro jogador.
      */
     void giveOrDropItems(ISealStack... items);
+
+    /**
+     * Tenta dar o item especificado para
+     * o jogador, na quantidade informada.
+     * Caso não seja possível colocá-los no
+     * inventário do mesmo, os itens são dropados
+     * no chão.
+     * Caso a quantia seja maior que o limite
+     * de stack do item, novos stacks serão
+     * criados.
+     *
+     * @param item o item para dar pro jogador.
+     * @param amount a quantidade para dar.
+     */
+    default void giveOrDropItems(ISealStack item, int amount) {
+        while(amount > 0) {
+            if(item.getMaxAmount() >= amount) {
+                giveOrDropItems(item.copy().setAmount(amount));
+                amount = 0;
+            } else {
+                giveOrDropItems(item.copy().setAmount(item.getMaxAmount()));
+                amount -= item.getMaxAmount();
+            }
+        }
+    }
 
     /**
      * Retorna todos os itens que o jogador
