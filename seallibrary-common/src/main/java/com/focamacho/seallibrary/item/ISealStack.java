@@ -128,4 +128,12 @@ public interface ISealStack {
      */
     boolean equalsIgnoreAmount(ISealStack toCompare);
 
+    /**
+     * Confere se esse stack não é somente
+     * um item vazio.
+     *
+     * @return se é um item vazio ou não.
+     */
+    boolean isEmpty();
+
 }

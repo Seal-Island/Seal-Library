@@ -137,6 +137,11 @@ public class SealStackSponge implements ISealStack {
         return firstStack.equalTo(secondStack);
     }
 
+    @Override
+    public boolean isEmpty() {
+        return this.stack.isEmpty();
+    }
+
     private Key<Value<Boolean>> getSpongeFlag(ItemFlag flag) {
         switch (flag) {
             case HIDE_DESTROYS:

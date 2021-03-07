@@ -5,6 +5,7 @@ import com.focamacho.seallibrary.item.lib.ItemFlag;
 import net.minecraft.server.v1_12_R1.Item;
 import net.minecraft.server.v1_12_R1.MojangsonParseException;
 import net.minecraft.server.v1_12_R1.MojangsonParser;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -144,6 +145,11 @@ public class SealStackBukkit implements ISealStack {
         firstStack.setAmount(1);
         ItemStack secondStack = (ItemStack) toCompare.copy().setAmount(1).toOriginal();
         return firstStack.equals(secondStack);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.stack.getType() == Material.AIR;
     }
 
     private org.bukkit.inventory.ItemFlag getBukkitFlag(ItemFlag flag) {
