@@ -11,7 +11,7 @@ public class SealLibraryBungee extends Plugin {
     public void onEnable() {
         instance = this;
         ImplementationsBungee.init();
-        SealLibrary.init();
+        SealLibrary.init(instance);
     }
 
     @Override

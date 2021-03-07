@@ -13,7 +13,7 @@ public class SealLibraryBukkit extends JavaPlugin {
     public void onEnable() {
         instance = this;
         ImplementationsBukkit.init();
-        SealLibrary.init();
+        SealLibrary.init(instance);
 
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
     }

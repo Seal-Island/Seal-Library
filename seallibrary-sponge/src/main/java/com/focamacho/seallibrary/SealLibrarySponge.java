@@ -32,7 +32,7 @@ public class SealLibrarySponge {
     public void onServerStart(GameStartedServerEvent event) {
         instance = this;
         ImplementationsSponge.init();
-        SealLibrary.init();
+        SealLibrary.init(instance);
     }
 
     @Listener
