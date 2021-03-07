@@ -12,7 +12,7 @@ public class SealLibraryCommand implements ISealCommand {
 
     @Override
     public String getName() {
-        return "Seal Library";
+        return "SealLibrary";
     }
 
     @Override
@@ -33,10 +33,10 @@ public class SealLibraryCommand implements ISealCommand {
     @Override
     public void run(ISealCommandSender sender, String[] args) {
         if(args.length == 1) {
-            if(args[0].equalsIgnoreCase("itemtonbt") && sender.isPlayer()) {
+            if(args[0].equalsIgnoreCase("itemtojson") && sender.isPlayer()) {
                 ISealPlayer player = sender.getPlayer();
                 if(!player.getMainHand().isEmpty()) {
-                    String json = player.getMainHand().toJson();
+                    String json = player.getMainHand().toJson().replace("\"", "\\\"");
                     SealServer.get().runCommand("tellraw " + player.getName() + " {\"text\":\"" + json + "\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + json + "\"},\"hoverEvent\":{\"action\":\"show_text\", \"value\":\"" + json + "\"}}");
                 }
             }
