@@ -220,6 +220,14 @@ public interface ISealPlayer {
     List<ISealStack> getInventory();
 
     /**
+     * Faz o jogador executar um comando.
+     *
+     * @param command o comando para ser
+     *                executado.
+     */
+    void runCommand(String command);
+
+    /**
      * Consulta a quantia de dinheiro
      * que o jogador possui.
      *

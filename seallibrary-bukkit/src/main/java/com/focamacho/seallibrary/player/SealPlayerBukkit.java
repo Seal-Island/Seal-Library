@@ -2,6 +2,7 @@ package com.focamacho.seallibrary.player;
 
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStack;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -103,6 +104,11 @@ public class SealPlayerBukkit implements ISealPlayer {
             allItems.add(SealStack.get(content));
         }
         return allItems;
+    }
+
+    @Override
+    public void runCommand(String command) {
+        Bukkit.getServer().dispatchCommand(this.player, command);
     }
 
 }

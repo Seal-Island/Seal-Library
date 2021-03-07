@@ -4,6 +4,7 @@ package com.focamacho.seallibrary.player;
 import com.focamacho.seallibrary.SealLibrarySponge;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStack;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.Item;
@@ -122,6 +123,11 @@ public class SealPlayerSponge implements ISealPlayer {
             }
         }
         return allItems;
+    }
+
+    @Override
+    public void runCommand(String command) {
+        Sponge.getCommandManager().process(this.player, command);
     }
 
 }

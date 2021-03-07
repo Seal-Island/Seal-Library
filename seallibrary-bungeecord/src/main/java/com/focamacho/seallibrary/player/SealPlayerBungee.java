@@ -1,6 +1,7 @@
 package com.focamacho.seallibrary.player;
 
 import com.focamacho.seallibrary.item.ISealStack;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -39,6 +40,11 @@ public class SealPlayerBungee implements ISealPlayer {
     @Override
     public void kick(String message) {
         player.disconnect(new TextComponent(message));
+    }
+
+    @Override
+    public void runCommand(String command) {
+        ProxyServer.getInstance().getPluginManager().dispatchCommand(this.player, command);
     }
 
     //Métodos não disponíveis para BungeeCord
