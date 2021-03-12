@@ -48,4 +48,12 @@ public abstract class AbstractClick {
      */
     public abstract int getSlot();
 
+    /**
+     * Retorna o tipo de click
+     * que foi efetuado.
+     * @return o ClickType representando o
+     * tipo de click efetuado.
+     */
+    public abstract ClickType getType();
+
 }

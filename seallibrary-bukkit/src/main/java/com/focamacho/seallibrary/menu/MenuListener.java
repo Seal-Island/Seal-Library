@@ -149,6 +149,31 @@ public class MenuListener implements Listener {
             public int getSlot() {
                 return event.getSlot();
             }
+
+            @Override
+            public com.focamacho.seallibrary.menu.lib.ClickType getType() {
+                switch (event.getClick()) {
+                    case DOUBLE_CLICK:
+                        return com.focamacho.seallibrary.menu.lib.ClickType.DOUBLE;
+                    case SHIFT_LEFT:
+                        return com.focamacho.seallibrary.menu.lib.ClickType.SHIFT;
+                    case SHIFT_RIGHT:
+                        return com.focamacho.seallibrary.menu.lib.ClickType.SHIFT_SECONDARY;
+                    case LEFT:
+                        return com.focamacho.seallibrary.menu.lib.ClickType.PRIMARY;
+                    case MIDDLE:
+                        return com.focamacho.seallibrary.menu.lib.ClickType.MIDDLE;
+                    case RIGHT:
+                        return com.focamacho.seallibrary.menu.lib.ClickType.SECONDARY;
+                    case CONTROL_DROP:
+                        return com.focamacho.seallibrary.menu.lib.ClickType.DROP_ALL;
+                    case DROP:
+                        return com.focamacho.seallibrary.menu.lib.ClickType.DROP;
+                    case NUMBER_KEY:
+                        return com.focamacho.seallibrary.menu.lib.ClickType.NUMBER;
+                }
+                return com.focamacho.seallibrary.menu.lib.ClickType.PRIMARY;
+            }
         };
     }
 

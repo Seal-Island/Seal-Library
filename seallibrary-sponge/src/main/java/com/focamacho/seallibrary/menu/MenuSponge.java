@@ -6,6 +6,7 @@ import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.menu.item.IMenuItem;
 import com.focamacho.seallibrary.menu.lib.AbstractClick;
 import com.focamacho.seallibrary.menu.lib.AbstractInteract;
+import com.focamacho.seallibrary.menu.lib.ClickType;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayer;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
@@ -162,6 +163,20 @@ public class MenuSponge extends Menu {
             @Override
             public int getSlot() {
                 return event.getSlot().get().getInventoryProperty(SlotIndex.class).get().getValue();
+            }
+
+            @Override
+            public ClickType getType() {
+                if(event instanceof ClickInventoryEvent.Double) return ClickType.DOUBLE;
+                else if(event instanceof ClickInventoryEvent.Shift.Primary) return ClickType.SHIFT;
+                else if(event instanceof ClickInventoryEvent.Shift.Secondary) return ClickType.SHIFT_SECONDARY;
+                else if(event instanceof ClickInventoryEvent.Primary) return ClickType.PRIMARY;
+                else if(event instanceof ClickInventoryEvent.Middle) return ClickType.MIDDLE;
+                else if(event instanceof ClickInventoryEvent.Secondary) return ClickType.SECONDARY;
+                else if(event instanceof ClickInventoryEvent.Drop.Full) return ClickType.DROP_ALL;
+                else if(event instanceof ClickInventoryEvent.Drop) return ClickType.DROP;
+                else if(event instanceof ClickInventoryEvent.NumberPress) return ClickType.NUMBER;
+                return ClickType.PRIMARY;
             }
         };
     }
