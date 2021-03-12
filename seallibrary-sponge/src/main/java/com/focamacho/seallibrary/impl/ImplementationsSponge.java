@@ -10,6 +10,7 @@ import com.focamacho.seallibrary.item.SealStackSponge;
 import com.focamacho.seallibrary.logger.LoggerSponge;
 import com.focamacho.seallibrary.logger.SealLogger;
 import com.focamacho.seallibrary.menu.MenuSponge;
+import com.focamacho.seallibrary.permission.PermissionHandlerSponge;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayerSponge;
@@ -88,12 +89,7 @@ public class ImplementationsSponge {
          * Implementação do sistema de manipulação de Permissões.
          */
         if(pluginManager.isLoaded("luckperms")) Implementations.permissionHandler = new PermissionHandlerLuckPerms();
-        else {
-            SealLogger.error("Nenhum plugin de permissões compatível foi carregado.",
-                    "Por favor, instale um dos seguintes plugins:",
-                    "LuckPerms",
-                    "Algumas coisas não funcionarão corretamente até que um dos plugins acima seja instalado.");
-        }
+        else Implementations.permissionHandler = new PermissionHandlerSponge();
 
         /*
          * Implementação do sistema de manipulação de Chat.
