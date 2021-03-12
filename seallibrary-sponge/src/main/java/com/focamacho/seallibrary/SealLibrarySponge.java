@@ -18,7 +18,7 @@ import org.spongepowered.api.plugin.Plugin;
                 "Focamacho"
         },
         dependencies = {
-                @Dependency(id = "luckperms")
+                @Dependency(id = "luckperms", optional = true)
         }
 )
 public class SealLibrarySponge {
