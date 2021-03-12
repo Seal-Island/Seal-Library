@@ -39,7 +39,7 @@ public class ImpInterfaces {
         static ISealStack fromJson(String item) {
             JSONObject object = new JSONObject(item);
             return SealStack.get(object.getString("item"))
-                    .setData(object.getString("data"))
+                    .setData(object.getString("data").replace("\\\"", "\""))
                     .setAmount(object.getInt("amount"));
         }
     }
