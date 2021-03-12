@@ -6,6 +6,7 @@ Os plugins suportados até o momento são:
   - [LuckPerms](https://luckperms.net/)
   - [BungeePerms](https://www.spigotmc.org/resources/bungeeperms.25/)
   - Um plugin de permissões compatível com a API do [Vault](https://www.spigotmc.org/resources/vault.34315/).
+  - Um plugin de permissões compatível com a API do Sponge.
 - **Economia:**
   - Um plugin de economia compatível com a API do Sponge.
   - Um plugin de economia compatível com a API do [Vault](https://www.spigotmc.org/resources/vault.34315/).
