@@ -34,12 +34,14 @@ processResources {
 }
 
 bukkit {
+    load = 'STARTUP'
     main = 'com.focamacho.seallibrary.SealLibraryBukkit'
     name = 'seallibrary'
     version = rootProject.version
     description = 'Library para facilitar a criação de plugins.'
     author = 'Focamacho'
     softDepend = ['vault', 'luckperms', 'bungeeperms']
+    prefix = 'Seal Library'
 }
 
 reobf {

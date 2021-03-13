@@ -22,6 +22,7 @@ import com.focamacho.seallibrary.util.ItemStackUtilsBukkit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.Optional;
@@ -33,9 +34,9 @@ import java.util.UUID;
  */
 public class ImplementationsBukkit {
 
-    public static final PluginManager pluginManager = Bukkit.getPluginManager();
-
     public static void init() {
+        PluginManager pluginManager = Bukkit.getPluginManager();
+
         /*
          * Implementação do sistema de manipulação de servidor.
          */
@@ -85,7 +86,7 @@ public class ImplementationsBukkit {
         /*
          * Implementação do sistema de manipulação de Economia.
          */
-        if(pluginManager.isPluginEnabled("vault")) Implementations.economyHandler = new EconomyHandlerVault();
+        if(isPluginEnabled("vault")) Implementations.economyHandler = new EconomyHandlerVault();
         else {
             SealLogger.error("Nenhum plugin de economia compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
@@ -96,9 +97,9 @@ public class ImplementationsBukkit {
         /*
          * Implementação do sistema de manipulação de Permissões.
          */
-        if(pluginManager.isPluginEnabled("luckperms")) Implementations.permissionHandler = new PermissionHandlerLuckPerms();
-        else if(pluginManager.isPluginEnabled("bungeeperms")) Implementations.permissionHandler = new PermissionHandlerBungeePerms();
-        else if(pluginManager.isPluginEnabled("vault")) Implementations.permissionHandler = new PermissionHandlerVault();
+        if(isPluginEnabled("luckperms")) Implementations.permissionHandler = new PermissionHandlerLuckPerms();
+        else if(isPluginEnabled("bungeeperms")) Implementations.permissionHandler = new PermissionHandlerBungeePerms();
+        else if(isPluginEnabled("vault")) Implementations.permissionHandler = new PermissionHandlerVault();
         else {
             SealLogger.error("Nenhum plugin de permissões compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
@@ -109,9 +110,9 @@ public class ImplementationsBukkit {
         /*
          * Implementação do sistema de manipulação de Chat.
          */
-        if(pluginManager.isPluginEnabled("luckperms")) Implementations.chatHandler = new ChatHandlerLuckPerms();
-        else if(pluginManager.isPluginEnabled("bungeeperms")) Implementations.chatHandler = new ChatHandlerBungeePerms();
-        else if(pluginManager.isPluginEnabled("vault")) Implementations.chatHandler = new ChatHandlerVault();
+        if(isPluginEnabled("luckperms")) Implementations.chatHandler = new ChatHandlerLuckPerms();
+        else if(isPluginEnabled("bungeeperms")) Implementations.chatHandler = new ChatHandlerBungeePerms();
+        else if(isPluginEnabled("vault")) Implementations.chatHandler = new ChatHandlerVault();
         else {
             SealLogger.error("Nenhum plugin de chat compatível foi carregado.",
                     "Por favor, instale um dos seguintes plugins:",
@@ -127,6 +128,13 @@ public class ImplementationsBukkit {
             Class.forName("net.minecraftforge.common.MinecraftForge");
             Implementations.forgeUtils = new ForgeUtilsBukkit();
         } catch (ClassNotFoundException ignored) {}
+    }
+    
+    private static boolean isPluginEnabled(String plugin) {
+        for (Plugin pl : Bukkit.getPluginManager().getPlugins()) {
+            if(pl.getName().equalsIgnoreCase(plugin)) return true;
+        }
+        return false;
     }
 
 }
