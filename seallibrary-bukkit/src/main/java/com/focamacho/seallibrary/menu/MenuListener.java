@@ -148,7 +148,7 @@ public class MenuListener implements Listener {
 
             @Override
             public int getSlot() {
-                return event.getSlot();
+                return event.getRawSlot();
             }
 
             @Override
