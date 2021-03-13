@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppedEvent;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
@@ -29,10 +30,15 @@ public class SealLibrarySponge {
     public Logger logger;
 
     @Listener
-    public void onServerStart(GameStartedServerEvent event) {
+    public void onServerStart(GameStartingServerEvent event) {
         instance = this;
         ImplementationsSponge.init();
         SealLibrary.init(instance);
+    }
+
+    @Listener
+    public void onServerStarted(GameStartedServerEvent event) {
+        ImplementationsSponge.postInit();
     }
 
     @Listener

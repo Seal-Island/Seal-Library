@@ -49,6 +49,7 @@ public class SealStackBukkit implements ISealStack {
 
     @Override
     public ISealStack setName(String name) {
+        if(name.isEmpty()) name = "§r";
         ItemMeta meta = stack.getItemMeta();
         meta.setDisplayName(name);
         stack.setItemMeta(meta);

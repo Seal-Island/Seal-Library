@@ -84,6 +84,21 @@ public class ImplementationsBukkit {
         };
 
         /*
+         * Implementação do sistema de utilidades para compatibilidade com Forge.
+         */
+        try {
+            Class.forName("net.minecraftforge.common.MinecraftForge");
+            Implementations.forgeUtils = new ForgeUtilsBukkit();
+        } catch (ClassNotFoundException ignored) {}
+    }
+
+    /**
+     * Algumas implementações precisam ser feitas
+     * após o carregamento de outros plugins,
+     * como permissões, chat e economia.
+     */
+    public static void postInit() {
+        /*
          * Implementação do sistema de manipulação de Economia.
          */
         if(isPluginEnabled("vault")) Implementations.economyHandler = new EconomyHandlerVault();
@@ -119,17 +134,9 @@ public class ImplementationsBukkit {
                     "LuckPerms; BungeePerms; Vault",
                     "Algumas coisas não funcionarão corretamente até que um dos plugins acima seja instalado.");
         }
-        pluginManager.registerEvents(new MessageWaiterListenerBukkit(), SealLibraryBukkit.instance);
-
-        /*
-         * Implementação do sistema de utilidades para compatibilidade com Forge.
-         */
-        try {
-            Class.forName("net.minecraftforge.common.MinecraftForge");
-            Implementations.forgeUtils = new ForgeUtilsBukkit();
-        } catch (ClassNotFoundException ignored) {}
+        Bukkit.getPluginManager().registerEvents(new MessageWaiterListenerBukkit(), SealLibraryBukkit.instance);
     }
-    
+
     private static boolean isPluginEnabled(String plugin) {
         for (Plugin pl : Bukkit.getPluginManager().getPlugins()) {
             if(pl.getName().equalsIgnoreCase(plugin)) return true;

@@ -81,10 +81,17 @@ public class ImplementationsSponge {
         };
 
         /*
-         * Implementação do sistema de manipulação de Economia.
+         * Implementação do sistema de utilidades para compatibilidade com Forge.
          */
-        Implementations.economyHandler = new EconomyHandlerSponge();
+        if(pluginManager.isLoaded("forge")) Implementations.forgeUtils = new ForgeUtilsSponge();
+    }
 
+    /**
+     * Algumas implementações precisam ser feitas
+     * após o carregamento de outros plugins,
+     * como permissões, chat e economia.
+     */
+    public static void postInit() {
         /*
          * Implementação do sistema de manipulação de Permissões.
          */
@@ -104,9 +111,9 @@ public class ImplementationsSponge {
         Sponge.getEventManager().registerListeners(SealLibrarySponge.instance, new MessageWaiterListenerSponge());
 
         /*
-         * Implementação do sistema de utilidades para compatibilidade com Forge.
+         * Implementação do sistema de manipulação de Economia.
          */
-        if(pluginManager.isLoaded("forge")) Implementations.forgeUtils = new ForgeUtilsSponge();
+        Implementations.economyHandler = new EconomyHandlerSponge();
     }
 
 }
