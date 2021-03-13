@@ -117,7 +117,7 @@ public class MenuListener implements Listener {
             };
             menu.getOnClose().run(interact);
             if(interact.isCancelled()) {
-                try { Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> event.getPlayer().openInventory(inventory)).get(); } catch (Exception ignored) {}
+                event.getPlayer().openInventory(inventory);
             } else if(inventory.getViewers().size() <= 0) {
                 menus.remove(inventory);
             }

@@ -1,5 +1,6 @@
 package com.focamacho.seallibrary.player;
 
+import com.focamacho.seallibrary.SealLibraryBukkit;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStack;
 import org.bukkit.Bukkit;
@@ -47,12 +48,15 @@ public class SealPlayerBukkit implements ISealPlayer {
 
     @Override
     public void openInventory(Object inventory) {
-        player.openInventory((Inventory) inventory);
+        Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> player.openInventory((Inventory) inventory));
     }
 
     @Override
     public void closeInventory() {
-        player.closeInventory();
+        Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> {
+            player.closeInventory();
+            return true;
+        });
     }
 
     @Override
