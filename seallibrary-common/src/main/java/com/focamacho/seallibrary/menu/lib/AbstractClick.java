@@ -14,6 +14,16 @@ public abstract class AbstractClick {
     @Getter @Setter boolean cancelled = true;
 
     /**
+     * Faz com que a execução de outros
+     * clicks no menu seja cancelada.
+     * Esse método é usado caso o usuário deseje
+     * definir algo no Menu#setOnClick, e previnir
+     * que os outros tipos de clicks sejam
+     * acionados.
+     */
+    @Setter @Getter boolean breakNow = false;
+
+    /**
      * Retorna o jogador que efetuou
      * o click.
      * @return o jogador.

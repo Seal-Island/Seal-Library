@@ -65,41 +65,36 @@ public class MenuSponge extends Menu {
                             Integer slotIndex = index.get().getValue();
 
                             onClick.run(click);
-                            if(event instanceof ClickInventoryEvent.Double) {
-                                onDouble.run(click);
-                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnDouble().run(click);
-                            }
-                            else if(event instanceof ClickInventoryEvent.Shift.Primary) {
-                                onShift.run(click);
-                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnShift().run(click);
-                            }
-                            else if(event instanceof ClickInventoryEvent.Shift.Secondary) {
-                                onShiftSecondary.run(click);
-                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnShiftSecondary().run(click);
-                            }
-                            else if(event instanceof ClickInventoryEvent.Primary) {
-                                onPrimary.run(click);
-                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnPrimary().run(click);
-                            }
-                            else if(event instanceof ClickInventoryEvent.Middle) {
-                                onMiddle.run(click);
-                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnMiddle().run(click);
-                            }
-                            else if(event instanceof ClickInventoryEvent.Secondary) {
-                                onSecondary.run(click);
-                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnSecondary().run(click);
-                            }
-                            else if(event instanceof ClickInventoryEvent.Drop.Full) {
-                                onDropAll.run(click);
-                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnDropAll().run(click);
-                            }
-                            else if(event instanceof ClickInventoryEvent.Drop) {
-                                onDrop.run(click);
-                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnDrop().run(click);
-                            }
-                            else if(event instanceof ClickInventoryEvent.NumberPress) {
-                                onNumber.run(click);
-                                if(items.containsKey(slotIndex)) items.get(slotIndex).getOnNumber().run(click);
+                            if(!click.isBreakNow()) {
+                                if (event instanceof ClickInventoryEvent.Double) {
+                                    onDouble.run(click);
+                                    if (items.containsKey(slotIndex)) items.get(slotIndex).getOnDouble().run(click);
+                                } else if (event instanceof ClickInventoryEvent.Shift.Primary) {
+                                    onShift.run(click);
+                                    if (items.containsKey(slotIndex)) items.get(slotIndex).getOnShift().run(click);
+                                } else if (event instanceof ClickInventoryEvent.Shift.Secondary) {
+                                    onShiftSecondary.run(click);
+                                    if (items.containsKey(slotIndex))
+                                        items.get(slotIndex).getOnShiftSecondary().run(click);
+                                } else if (event instanceof ClickInventoryEvent.Primary) {
+                                    onPrimary.run(click);
+                                    if (items.containsKey(slotIndex)) items.get(slotIndex).getOnPrimary().run(click);
+                                } else if (event instanceof ClickInventoryEvent.Middle) {
+                                    onMiddle.run(click);
+                                    if (items.containsKey(slotIndex)) items.get(slotIndex).getOnMiddle().run(click);
+                                } else if (event instanceof ClickInventoryEvent.Secondary) {
+                                    onSecondary.run(click);
+                                    if (items.containsKey(slotIndex)) items.get(slotIndex).getOnSecondary().run(click);
+                                } else if (event instanceof ClickInventoryEvent.Drop.Full) {
+                                    onDropAll.run(click);
+                                    if (items.containsKey(slotIndex)) items.get(slotIndex).getOnDropAll().run(click);
+                                } else if (event instanceof ClickInventoryEvent.Drop) {
+                                    onDrop.run(click);
+                                    if (items.containsKey(slotIndex)) items.get(slotIndex).getOnDrop().run(click);
+                                } else if (event instanceof ClickInventoryEvent.NumberPress) {
+                                    onNumber.run(click);
+                                    if (items.containsKey(slotIndex)) items.get(slotIndex).getOnNumber().run(click);
+                                }
                             }
                         }
                         event.setCancelled(click.isCancelled());

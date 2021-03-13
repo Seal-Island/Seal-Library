@@ -35,44 +35,45 @@ public class MenuListener implements Listener {
             ClickType type = event.getClick();
 
             menu.getOnClick().run(click);
-            switch (type) {
-                case DOUBLE_CLICK:
-                    menu.getOnDouble().run(click);
-                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnDouble().run(click));
-                    break;
-                case SHIFT_LEFT:
-                    menu.getOnShift().run(click);
-                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnShift().run(click));
-                    break;
-                case SHIFT_RIGHT:
-                    menu.getOnShiftSecondary().run(click);
-                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnShiftSecondary().run(click));
-                    break;
-                case LEFT:
-                    menu.getOnPrimary().run(click);
-                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnPrimary().run(click));
-                    break;
-                case MIDDLE:
-                    menu.getOnMiddle().run(click);
-                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnMiddle().run(click));
-                    break;
-                case RIGHT:
-                    menu.getOnSecondary().run(click);
-                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnSecondary().run(click));
-                    break;
-                case CONTROL_DROP:
-                    menu.getOnDropAll().run(click);
-                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnDropAll().run(click));
-                    break;
-                case DROP:
-                    menu.getOnDrop().run(click);
-                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnDrop().run(click));
-                    break;
-                case NUMBER_KEY:
-                    menu.getOnNumber().run(click);
-                    Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnNumber().run(click));
+            if(!click.isBreakNow()) {
+                switch (type) {
+                    case DOUBLE_CLICK:
+                        menu.getOnDouble().run(click);
+                        Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnDouble().run(click));
+                        break;
+                    case SHIFT_LEFT:
+                        menu.getOnShift().run(click);
+                        Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnShift().run(click));
+                        break;
+                    case SHIFT_RIGHT:
+                        menu.getOnShiftSecondary().run(click);
+                        Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnShiftSecondary().run(click));
+                        break;
+                    case LEFT:
+                        menu.getOnPrimary().run(click);
+                        Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnPrimary().run(click));
+                        break;
+                    case MIDDLE:
+                        menu.getOnMiddle().run(click);
+                        Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnMiddle().run(click));
+                        break;
+                    case RIGHT:
+                        menu.getOnSecondary().run(click);
+                        Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnSecondary().run(click));
+                        break;
+                    case CONTROL_DROP:
+                        menu.getOnDropAll().run(click);
+                        Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnDropAll().run(click));
+                        break;
+                    case DROP:
+                        menu.getOnDrop().run(click);
+                        Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnDrop().run(click));
+                        break;
+                    case NUMBER_KEY:
+                        menu.getOnNumber().run(click);
+                        Optional.ofNullable(menu.getItem(slotIndex)).ifPresent(item -> item.getOnNumber().run(click));
+                }
             }
-            
             event.setCancelled(click.isCancelled());
         }
     }
