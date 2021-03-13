@@ -19,7 +19,7 @@ public class MenuBukkit extends Menu {
         Map<Integer, Object> items = new HashMap<>();
 
         for(int i = 0; i < inventory.getSize(); i++) {
-            ItemStack item = inventory.getItem(0);
+            ItemStack item = inventory.getItem(i);
             if(item != null) items.put(i, item);
         }
 
