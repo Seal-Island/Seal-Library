@@ -52,6 +52,11 @@ public class SealStackSponge implements ISealStack {
     }
 
     @Override
+    public boolean hasCustomName() {
+        return stack.get(Keys.DISPLAY_NAME).isPresent();
+    }
+
+    @Override
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
         Optional<List<Text>> optional = stack.get(Keys.ITEM_LORE);

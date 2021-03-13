@@ -56,6 +56,11 @@ public class SealStackBukkit implements ISealStack {
     }
 
     @Override
+    public boolean hasCustomName() {
+        return stack.getItemMeta().hasDisplayName();
+    }
+
+    @Override
     public List<String> getLore() {
         return stack.getItemMeta().hasLore() ? stack.getItemMeta().getLore() : new ArrayList<>();
     }

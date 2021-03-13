@@ -24,6 +24,14 @@ public interface ISealStack {
     ISealStack setName(String name);
 
     /**
+     * Verifica se o item tem um nome
+     * customizado ou não.
+     * @return se o nome do item foi editado
+     * ou não.
+     */
+    boolean hasCustomName();
+
+    /**
      * Retorna a lore atual do item.
      * @return a lore do item.
      */
