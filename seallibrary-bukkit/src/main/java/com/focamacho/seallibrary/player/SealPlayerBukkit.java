@@ -9,8 +9,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("unused")
 public class SealPlayerBukkit implements ISealPlayer {
@@ -60,6 +62,35 @@ public class SealPlayerBukkit implements ISealPlayer {
     }
 
     @Override
+    public boolean hasAndRemoveItems(ISealStack item, int amount) {
+        try {
+            return Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> {
+                if(hasItems(item, amount)) {
+                    int toRemove = amount;
+                    for(ItemStack slt : player.getInventory().getContents()) {
+                        if(toRemove <= 0) break;
+                        ISealStack stack = SealStack.get(slt);
+                        if(stack.equalsIgnoreAmount(item)) {
+                            if(stack.getAmount() >= toRemove) {
+                                if(stack.getAmount() - amount == 0) player.getInventory().remove(slt);
+                                else stack.setAmount(stack.getAmount() - toRemove);
+                                toRemove = 0;
+                            } else {
+                                toRemove -= stack.getAmount();
+                                player.getInventory().removeItem(slt);
+                            }
+                        }
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }).get();
+        } catch(Exception ignored) { return false; }
+    }
+
+    @Override
     public boolean hasItems(ISealStack item, int amount) {
         int itemsInInventory = 0;
         for(ISealStack stack : this.getInventory()) {
@@ -70,30 +101,39 @@ public class SealPlayerBukkit implements ISealPlayer {
 
     @Override
     public void removeItems(ISealStack item, int amount) {
-        int toRemove = amount;
-        for(ItemStack slt : player.getInventory().getContents()) {
-            if(toRemove <= 0) break;
-            ISealStack stack = SealStack.get(slt);
-            if(stack.equalsIgnoreAmount(item)) {
-                if(stack.getAmount() >= toRemove) {
-                    if(stack.getAmount() - amount == 0) player.getInventory().remove(slt);
-                    else stack.setAmount(stack.getAmount() - toRemove);
-                    toRemove = 0;
-                } else {
-                    toRemove -= stack.getAmount();
-                    player.getInventory().removeItem(slt);
+        Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> {
+            int toRemove = amount;
+            for(ItemStack slt : player.getInventory().getContents()) {
+                if(toRemove <= 0) break;
+                ISealStack stack = SealStack.get(slt);
+                if(stack.equalsIgnoreAmount(item)) {
+                    if(stack.getAmount() >= toRemove) {
+                        if(stack.getAmount() - amount == 0) player.getInventory().remove(slt);
+                        else stack.setAmount(stack.getAmount() - toRemove);
+                        toRemove = 0;
+                    } else {
+                        toRemove -= stack.getAmount();
+                        player.getInventory().removeItem(slt);
+                    }
                 }
             }
-        }
+
+            return true;
+        });
     }
 
     @Override
     public List<ISealStack> giveItems(ISealStack... items) {
-        List<ISealStack> rejected = new ArrayList<>();
-        for (ISealStack item : items) {
-            player.getInventory().addItem((ItemStack) item.toOriginal()).forEach((index, stack) -> rejected.add(SealStack.get(stack)));
-        }
-        return rejected;
+        try {
+            return Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> {
+                List<ISealStack> rejected = new ArrayList<>();
+                for (ISealStack item : items) {
+                    player.getInventory().addItem((ItemStack) item.toOriginal()).forEach((index, stack) -> rejected.add(SealStack.get(stack)));
+                }
+                return rejected;
+            }).get();
+        } catch (InterruptedException | ExecutionException ignored) {}
+        return Collections.emptyList();
     }
 
     @Override

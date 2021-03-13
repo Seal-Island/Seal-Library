@@ -176,10 +176,22 @@ public interface ISealPlayer {
      *
      * @param item o item para verificar.
      * @param amount a quantidade para verificar.
-     * @return boolean se o jogador possui ou não a quantidade
+     * @return se o jogador possui ou não a quantidade
      * de itens verificada.
      */
     boolean hasItems(ISealStack item, int amount);
+
+    /**
+     * Verifica se o jogador possui a quantidade
+     * de itens especificada. Caso sim, os itens são
+     * removidos do inventário do jogador
+     *
+     * @param item o item para verificar.
+     * @param amount a quantidade para verificar.
+     * @return se o jogador possui e se foi possível
+     * remover a quantia de itens verificada.
+     */
+    boolean hasAndRemoveItems(ISealStack item, int amount);
 
     /**
      * Remove o item especificado do inventário

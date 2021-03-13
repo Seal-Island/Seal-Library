@@ -60,6 +60,9 @@ public class SealPlayerBungee implements ISealPlayer {
     }
 
     @Override
+    public boolean hasAndRemoveItems(ISealStack item, int amount) { return false; }
+
+    @Override
     public void removeItems(ISealStack item, int amount) {}
 
     @Override

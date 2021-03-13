@@ -18,8 +18,10 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("unused")
 public class SealPlayerSponge implements ISealPlayer {
@@ -75,34 +77,70 @@ public class SealPlayerSponge implements ISealPlayer {
     }
 
     @Override
+    public boolean hasAndRemoveItems(ISealStack item, int amount) {
+        try {
+            return Sponge.getScheduler().createSyncExecutor(SealLibrarySponge.instance).submit(() -> {
+                if(hasItems(item, amount)) {
+                    int toRemove = amount;
+                    for(Object slt : player.getInventory().slots()) {
+                        if(toRemove <= 0) break;
+                        Slot slot = (Slot) slt;
+                        if(slot.peek().isPresent()) {
+                            ISealStack stack = SealStack.get(slot.peek().get());
+                            if(stack.equalsIgnoreAmount(item)) {
+                                if(stack.getAmount() >= toRemove) {
+                                    if(stack.getAmount() - amount == 0) slot.clear();
+                                    else slot.poll(toRemove);
+                                    toRemove = 0;
+                                } else {
+                                    toRemove -= stack.getAmount();
+                                    slot.clear();
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return false;
+            }).get();
+        } catch (InterruptedException | ExecutionException ignored) { return false; }
+    }
+
+    @Override
     public void removeItems(ISealStack item, int amount) {
-        int toRemove = amount;
-        for(Object slt : player.getInventory().slots()) {
-            if(toRemove <= 0) break;
-            Slot slot = (Slot) slt;
-            if(slot.peek().isPresent()) {
-                ISealStack stack = SealStack.get(slot.peek().get());
-                if(stack.equalsIgnoreAmount(item)) {
-                    if(stack.getAmount() >= toRemove) {
-                        if(stack.getAmount() - amount == 0) slot.clear();
-                        else slot.poll(toRemove);
-                        toRemove = 0;
-                    } else {
-                        toRemove -= stack.getAmount();
-                        slot.clear();
+        Task.builder().execute(() -> {
+            int toRemove = amount;
+            for(Object slt : player.getInventory().slots()) {
+                if(toRemove <= 0) break;
+                Slot slot = (Slot) slt;
+                if(slot.peek().isPresent()) {
+                    ISealStack stack = SealStack.get(slot.peek().get());
+                    if(stack.equalsIgnoreAmount(item)) {
+                        if(stack.getAmount() >= toRemove) {
+                            if(stack.getAmount() - amount == 0) slot.clear();
+                            else slot.poll(toRemove);
+                            toRemove = 0;
+                        } else {
+                            toRemove -= stack.getAmount();
+                            slot.clear();
+                        }
                     }
                 }
             }
-        }
+        }).submit(SealLibrarySponge.instance);
     }
 
     @Override
     public List<ISealStack> giveItems(ISealStack... items) {
-        List<ISealStack> rejected = new ArrayList<>();
-        for (ISealStack item : items) {
-            player.getInventory().offer((ItemStack) item.toOriginal()).getRejectedItems().forEach(stack -> rejected.add(SealStack.get(stack.createStack())));
-        }
-        return rejected;
+        try {
+            return Sponge.getScheduler().createSyncExecutor(SealLibrarySponge.instance).submit(() -> {
+                List<ISealStack> rejected = new ArrayList<>();
+                for (ISealStack item : items) {
+                    player.getInventory().offer((ItemStack) item.toOriginal()).getRejectedItems().forEach(stack -> rejected.add(SealStack.get(stack.createStack())));
+                }
+                return rejected;
+            }).get();
+        } catch (InterruptedException | ExecutionException ignored) { return Collections.emptyList(); }
     }
 
     @Override
