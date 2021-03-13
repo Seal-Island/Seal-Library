@@ -174,6 +174,12 @@ public class MenuListener implements Listener {
                 }
                 return com.focamacho.seallibrary.menu.lib.ClickType.PRIMARY;
             }
+
+            @Override
+            public int getNumber() {
+                if(event.getClick() != ClickType.NUMBER_KEY) return 0;
+                return event.getHotbarButton();
+            }
         };
     }
 

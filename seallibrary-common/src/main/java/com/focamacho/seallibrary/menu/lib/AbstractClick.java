@@ -56,4 +56,13 @@ public abstract class AbstractClick {
      */
     public abstract ClickType getType();
 
+    /**
+     * Retorna o número que foi
+     * clicado.
+     * Caso o click não tenha sido
+     * numérico, retorna sempre 0.
+     * @return o número clicado.
+     */
+    public abstract int getNumber();
+
 }

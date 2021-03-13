@@ -178,6 +178,12 @@ public class MenuSponge extends Menu {
                 else if(event instanceof ClickInventoryEvent.NumberPress) return ClickType.NUMBER;
                 return ClickType.PRIMARY;
             }
+
+            @Override
+            public int getNumber() {
+                if(!(event instanceof ClickInventoryEvent.NumberPress)) return 0;
+                return ((ClickInventoryEvent.NumberPress)event).getNumber();
+            }
         };
     }
 
