@@ -118,7 +118,7 @@ public class MenuSponge extends Menu {
                 int finalIndex = index;
                 Task.builder().execute(() -> {
                     IMenuItem item = items.get(finalIndex);
-                    if (!slot.peek().isPresent() || !slot.peek().get().equals(item.getItem().toOriginal()))
+                    if (item.getItem() != null && !slot.peek().isPresent() || !slot.peek().get().equals(item.getItem().toOriginal()))
                         slot.set((ItemStack) item.getItem().toOriginal());
                 }).submit(SealLibrarySponge.instance);
             } else {
