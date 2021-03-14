@@ -17,6 +17,7 @@ import org.spongepowered.api.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class SealServerSponge implements ISealServer {
@@ -40,7 +41,8 @@ public class SealServerSponge implements ISealServer {
 
     @Override
     public ISealPlayer getPlayer(UUID uuid) {
-        return SealPlayer.get(this.server.getPlayer(uuid));
+        Optional<Player> player = this.server.getPlayer(uuid);
+        return player.isPresent() ? SealPlayer.get(this.server.getPlayer(uuid)) : null;
     }
 
     @Override
