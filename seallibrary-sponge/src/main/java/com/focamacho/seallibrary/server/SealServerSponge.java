@@ -42,7 +42,7 @@ public class SealServerSponge implements ISealServer {
     @Override
     public ISealPlayer getPlayer(UUID uuid) {
         Optional<Player> player = this.server.getPlayer(uuid);
-        return player.isPresent() ? SealPlayer.get(this.server.getPlayer(uuid)) : null;
+        return player.map(SealPlayer::get).orElse(null);
     }
 
     @Override
