@@ -31,7 +31,7 @@ public class MessageWaiterListenerSponge {
 
                     @Override
                     public String getMessage() {
-                        return event.getMessage().toPlain();
+                        return event.getMessage().toPlainSingle();
                     }
                 });
 
