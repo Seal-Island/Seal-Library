@@ -220,7 +220,7 @@ public interface ISealPlayer {
      */
     default void removeItems(ISealStack... items) {
         for (ISealStack item : items) {
-            removeItems(item);
+            removeItems(item, item.getAmount());
         }
     }
 
