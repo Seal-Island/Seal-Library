@@ -1,13 +1,11 @@
 package com.focamacho.seallibrary.menu;
 
-import com.focamacho.seallibrary.SealLibraryBukkit;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.menu.lib.AbstractClick;
 import com.focamacho.seallibrary.menu.lib.AbstractInteract;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;

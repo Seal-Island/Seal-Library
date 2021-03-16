@@ -2,14 +2,10 @@ package com.focamacho.seallibrary.item;
 
 import com.focamacho.seallibrary.item.lib.FakeEnchantment;
 import com.focamacho.seallibrary.item.lib.ItemFlag;
-import net.minecraft.server.v1_12_R1.Item;
-import net.minecraft.server.v1_12_R1.MojangsonParseException;
-import net.minecraft.server.v1_12_R1.MojangsonParser;
+import com.focamacho.seallibrary.wrapper.nms.NMSWrapper;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +25,7 @@ public class SealStackBukkit implements ISealStack {
 
     @Override
     public String toJson() {
-        net.minecraft.server.v1_12_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
-
-        JSONObject json = new JSONObject();
-        json.put("item", Item.REGISTRY.b(nmsStack.getItem()).toString() + (nmsStack.getData() != 0 ? ":" + nmsStack.getData() : ""));
-        json.put("data", getData());
-        json.put("amount", getAmount());
-
-        return json.toString();
+        return NMSWrapper.nmsWrapper.stackToJson(this);
     }
 
     @Override
@@ -121,17 +110,12 @@ public class SealStackBukkit implements ISealStack {
 
     @Override
     public String getData() {
-        net.minecraft.server.v1_12_R1.ItemStack craftStack = CraftItemStack.asNMSCopy(stack);
-        return craftStack.hasTag() ? craftStack.getTag().toString() : "";
+        return NMSWrapper.nmsWrapper.getDataFromStack(stack);
     }
 
     @Override
     public ISealStack setData(String nbt) {
-        net.minecraft.server.v1_12_R1.ItemStack craftStack = CraftItemStack.asNMSCopy(stack);
-        try {
-            craftStack.setTag(MojangsonParser.parse(nbt));
-        } catch (MojangsonParseException ignored) {}
-        stack = CraftItemStack.asBukkitCopy(craftStack);
+        stack = NMSWrapper.nmsWrapper.setDataToStack(stack, nbt);
         return this;
     }
 

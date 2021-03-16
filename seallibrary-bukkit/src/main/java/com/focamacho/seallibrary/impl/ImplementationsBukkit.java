@@ -18,7 +18,7 @@ import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayerBukkit;
 import com.focamacho.seallibrary.server.SealServerBukkit;
-import com.focamacho.seallibrary.util.ItemStackUtilsBukkit;
+import com.focamacho.seallibrary.wrapper.nms.NMSWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -58,7 +58,7 @@ public class ImplementationsBukkit {
 
             @Override
             public ISealStack get(String item) {
-                return get(ItemStackUtilsBukkit.getStackFromID(item));
+                return get(NMSWrapper.nmsWrapper.getStackFromString(item));
             }
         };
 
