@@ -3,6 +3,7 @@ package com.focamacho.seallibrary;
 import com.focamacho.seallibrary.impl.ImplementationsSponge;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
@@ -10,6 +11,8 @@ import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppedEvent;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.scheduler.Scheduler;
+import org.spongepowered.api.scheduler.SpongeExecutorService;
 
 @Plugin(
         id = "seallibrary",
@@ -25,6 +28,7 @@ import org.spongepowered.api.plugin.Plugin;
 public class SealLibrarySponge {
 
     public static SealLibrarySponge instance;
+    public static SpongeExecutorService syncExecutor;
 
     @Inject
     public Logger logger;
@@ -32,6 +36,7 @@ public class SealLibrarySponge {
     @Listener
     public void onServerStart(GameStartingServerEvent event) {
         instance = this;
+        syncExecutor = Sponge.getScheduler().createSyncExecutor(this);
         ImplementationsSponge.init();
         SealLibrary.init(instance);
     }

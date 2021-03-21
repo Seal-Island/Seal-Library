@@ -191,7 +191,11 @@ public interface ISealPlayer {
      * @return se o jogador possui e se foi possível
      * remover a quantia de itens verificada.
      */
-    boolean hasAndRemoveItems(ISealStack item, int amount);
+    default boolean hasAndRemoveItems(ISealStack item, int amount) {
+        boolean hasItems = hasItems(item, amount);
+        if(hasItems) removeItems(item, amount);
+        return hasItems;
+    }
 
     /**
      * Remove o item especificado do inventário
@@ -227,13 +231,13 @@ public interface ISealPlayer {
     /**
      * Tenta dar os itens especificados para
      * o jogador.
+     * Tenha em mente que o inventário do jogador pode
+     * recusar os itens. Use o método giveOrDropItems
+     * para evitar isso.
      *
      * @param items os itens para dar pro jogador.
-     * @return os itens que foram rejeitados pelo,
-     * seja por causa de inventário cheio ou outro
-     * motivo.
      */
-    List<ISealStack> giveItems(ISealStack... items);
+    void giveItems (ISealStack... items);
 
     /**
      * Tenta dar o item especificado para
@@ -241,25 +245,23 @@ public interface ISealPlayer {
      * Caso a quantia seja maior que o limite
      * de stack do item, novos stacks serão
      * criados.
+     * Tenha em mente que o inventário do jogador pode
+     * recusar os itens. Use o método giveOrDropItems
+     * para evitar isso.
      *
      * @param item o item para dar pro jogador.
      * @param amount a quantidade para dar.
-     * @return os itens que foram rejeitados,
-     * seja por causa de inventário cheio ou outro
-     * motivo.
      */
-    default List<ISealStack> giveItems(ISealStack item, int amount) {
-        List<ISealStack> rejected = new ArrayList<>();
+    default void giveItems(ISealStack item, int amount) {
         while(amount > 0) {
             if(item.getMaxAmount() >= amount) {
-                rejected.addAll(giveItems(item.copy().setAmount(amount)));
+                giveItems(item.copy().setAmount(amount));
                 amount = 0;
             } else {
-                rejected.addAll(giveItems(item.copy().setAmount(item.getMaxAmount())));
+                giveItems(item.copy().setAmount(item.getMaxAmount()));
                 amount -= item.getMaxAmount();
             }
         }
-        return rejected;
     }
 
     /**

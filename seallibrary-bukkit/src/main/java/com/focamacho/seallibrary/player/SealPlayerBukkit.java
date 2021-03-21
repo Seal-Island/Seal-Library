@@ -62,35 +62,6 @@ public class SealPlayerBukkit implements ISealPlayer {
     }
 
     @Override
-    public boolean hasAndRemoveItems(ISealStack item, int amount) {
-        try {
-            return Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> {
-                if(hasItems(item, amount)) {
-                    int toRemove = amount;
-                    for(ItemStack slt : player.getInventory().getContents()) {
-                        if(toRemove <= 0) break;
-                        ISealStack stack = SealStack.get(slt);
-                        if(stack.equalsIgnoreAmount(item)) {
-                            if(stack.getAmount() >= toRemove) {
-                                if(stack.getAmount() - amount == 0) player.getInventory().remove(slt);
-                                else stack.setAmount(stack.getAmount() - toRemove);
-                                toRemove = 0;
-                            } else {
-                                toRemove -= stack.getAmount();
-                                player.getInventory().removeItem(slt);
-                            }
-                        }
-                    }
-
-                    return true;
-                }
-
-                return false;
-            }).get();
-        } catch(Exception ignored) { return false; }
-    }
-
-    @Override
     public boolean hasItems(ISealStack item, int amount) {
         int itemsInInventory = 0;
         for(ISealStack stack : this.getInventory()) {
@@ -123,22 +94,23 @@ public class SealPlayerBukkit implements ISealPlayer {
     }
 
     @Override
-    public List<ISealStack> giveItems(ISealStack... items) {
-        try {
-            return Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> {
-                List<ISealStack> rejected = new ArrayList<>();
-                for (ISealStack item : items) {
-                    player.getInventory().addItem((ItemStack) item.toOriginal()).forEach((index, stack) -> rejected.add(SealStack.get(stack)));
-                }
-                return rejected;
-            }).get();
-        } catch (InterruptedException | ExecutionException ignored) {}
-        return Collections.emptyList();
+    public void giveItems(ISealStack... items) {
+        Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> {
+            for (ISealStack item : items) {
+                player.getInventory().addItem((ItemStack) item.toOriginal());
+            }
+            return true;
+        });
     }
 
     @Override
     public void giveOrDropItems(ISealStack... items) {
-        giveItems(items).forEach(rejected -> player.getWorld().dropItem(player.getLocation(), (ItemStack) rejected.toOriginal()));
+        Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> {
+            for (ISealStack item : items) {
+                player.getInventory().addItem((ItemStack) item.toOriginal()).values().forEach(rejected -> player.getWorld().dropItem(player.getLocation(), rejected));;
+            }
+            return true;
+        });
     }
 
     @Override
