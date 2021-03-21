@@ -5,14 +5,32 @@ import com.focamacho.seallibrary.logger.SealLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 public abstract class NMSWrapper {
 
     public static NMSWrapper nmsWrapper;
 
     static {
-        try {
-            nmsWrapper = (NMSWrapper) Class.forName(NMSWrapper.class.getName() + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].substring(1)).newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].substring(1);
+
+        Class<?>[] versions = {
+                NMSWrapper1_12_R1.class,
+                NMSWrapper1_16_R3.class
+        };
+
+        for(Class<?> v : versions) {
+            if(v.getSimpleName().substring(10).equalsIgnoreCase(version)) {
+                try {
+                    nmsWrapper = (NMSWrapper) v.newInstance();
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
+
+        if(nmsWrapper == null) {
             SealLogger.error("A sua versão de servidor não é compatível com a Seal Library.");
             SealLogger.error("Muitas coisas não irão funcionar corretamente.");
         }
