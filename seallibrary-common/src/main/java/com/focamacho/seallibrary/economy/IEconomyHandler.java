@@ -121,4 +121,12 @@ public interface IEconomyHandler {
      */
     String getCurrencyPlural(String currency);
 
+    /**
+     * Retorna se a moeda especificada existe
+     * ou não.
+     * @param currency a moeda desejada.
+     * @return se ela existe ou não.
+     */
+    boolean isValidCurrency(String currency);
+
 }

@@ -70,4 +70,8 @@ public class EconomyHandler {
         return Implementations.economyHandler.getCurrencyPlural(currency);
     }
 
+    public static boolean isValidCurrency(String currency) {
+        return Implementations.economyHandler.isValidCurrency(currency);
+    }
+
 }

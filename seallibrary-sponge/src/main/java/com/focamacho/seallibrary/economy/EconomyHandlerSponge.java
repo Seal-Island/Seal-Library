@@ -98,6 +98,11 @@ public class EconomyHandlerSponge implements IEconomyHandler {
         return getCurrency(currency).getPluralDisplayName().toPlain();
     }
 
+    @Override
+    public boolean isValidCurrency(String currency) {
+        return economyService.getCurrencies().stream().anyMatch(cur -> cur.getId().equalsIgnoreCase(currency));
+    }
+
     private Currency getCurrency(String currency) {
         for (Currency cur : economyService.getCurrencies()) {
             if(cur.getId().equalsIgnoreCase(currency)) return cur;

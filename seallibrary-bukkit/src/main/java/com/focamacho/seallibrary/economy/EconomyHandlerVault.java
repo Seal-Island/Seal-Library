@@ -87,4 +87,9 @@ public class EconomyHandlerVault implements IEconomyHandler {
         return name;
     }
 
+    @Override
+    public boolean isValidCurrency(String currency) {
+        return false;
+    }
+
 }
