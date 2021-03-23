@@ -1,6 +1,7 @@
 package com.focamacho.seallibrary.permission;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
 public interface IPermissionHandler {
@@ -12,7 +13,7 @@ public interface IPermissionHandler {
      * @param uuid o uuid do jogador
      * @param permission a permissão para consulta
      */
-    boolean hasPermission(UUID uuid, String permission);
+    CompletableFuture<Boolean> hasPermission(UUID uuid, String permission);
 
     /**
      *  Adiciona uma permissão para
@@ -21,7 +22,7 @@ public interface IPermissionHandler {
      * @param uuid o uuid do jogador
      * @param permission a permissão para adição
      */
-    boolean addPermission(UUID uuid, String permission);
+    CompletableFuture<Boolean> addPermission(UUID uuid, String permission);
 
     /**
      *  Remove uma permissão
@@ -30,7 +31,7 @@ public interface IPermissionHandler {
      * @param uuid o uuid do jogador
      * @param permission a permissão para remoção
      */
-    boolean removePermission(UUID uuid, String permission);
+    CompletableFuture<Boolean> removePermission(UUID uuid, String permission);
 
     /**
      *  Consulta se o jogador está em um
@@ -39,7 +40,7 @@ public interface IPermissionHandler {
      * @param uuid o uuid do jogador
      * @param group o grupo para consulta
      */
-    boolean hasGroup(UUID uuid, String group);
+    CompletableFuture<Boolean> hasGroup(UUID uuid, String group);
 
     /**
      * Adiciona o jogador no grupo
@@ -50,7 +51,7 @@ public interface IPermissionHandler {
      * @return true se a ação foi efetuada com sucesso
      * e false caso algum erro tenha ocorrido.
      */
-    boolean addGroup(UUID uuid, String group);
+    CompletableFuture<Boolean> addGroup(UUID uuid, String group);
 
     /**
      * Remove o jogador do grupo
@@ -61,7 +62,7 @@ public interface IPermissionHandler {
      * @return true se a ação foi efetuada com sucesso
      * e false caso algum erro tenha ocorrido.
      */
-    boolean removeGroup(UUID uuid, String group);
+    CompletableFuture<Boolean> removeGroup(UUID uuid, String group);
 
     /**
      * Consulta uma option do jogador.
@@ -71,7 +72,7 @@ public interface IPermissionHandler {
      * @return uma String vazia se ela não existe, ou então
      * a option.
      */
-    String getOption(UUID uuid, String option);
+    CompletableFuture<String> getOption(UUID uuid, String option);
 
     /**
      * Define uma option do jogador.
@@ -82,6 +83,6 @@ public interface IPermissionHandler {
      * @return uma String vazia se ela não existe, ou então
      * a option.
      */
-    boolean setOption(UUID uuid, String option, String value);
+    CompletableFuture<Boolean> setOption(UUID uuid, String option, String value);
 
 }

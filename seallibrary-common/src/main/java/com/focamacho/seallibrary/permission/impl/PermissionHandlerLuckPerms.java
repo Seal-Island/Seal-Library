@@ -3,7 +3,6 @@ package com.focamacho.seallibrary.permission.impl;
 import com.focamacho.seallibrary.permission.IPermissionHandler;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.NodeType;
@@ -11,9 +10,9 @@ import net.luckperms.api.node.types.InheritanceNode;
 import net.luckperms.api.node.types.MetaNode;
 import net.luckperms.api.node.types.PermissionNode;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -29,42 +28,45 @@ public class PermissionHandlerLuckPerms implements IPermissionHandler {
         api = LuckPermsProvider.get();
     }
 
-    private User getUser(UUID uuid) {
-        if(!api.getUserManager().isLoaded(uuid)) try { api.getUserManager().loadUser(uuid).wait(); } catch (Exception ignored) {}
-        return api.getUserManager().getUser(uuid);
+    private CompletableFuture<User> getUser(UUID uuid) {
+        return api.getUserManager().loadUser(uuid);
     }
 
-    private Group getGroup(String group) {
-        if(!api.getGroupManager().isLoaded(group)) try { api.getGroupManager().loadGroup(group).wait(); } catch (Exception ignored) {}
-        return api.getGroupManager().getGroup(group);
-    }
+    private CompletableFuture<Group> getGroup(String group) {
+        CompletableFuture<Group> future = new CompletableFuture<>();
 
-    @Override
-    public boolean hasPermission(UUID uuid, String permission) {
-        User user = getUser(uuid);
-        return user != null && user.getCachedData().getPermissionData().checkPermission(permission).asBoolean();
-    }
+        if(!api.getGroupManager().isLoaded(group))
+            api.getGroupManager().loadGroup(group).whenComplete((opt, throwable) -> future.complete(opt.orElseGet(null)));
+        else future.complete(api.getGroupManager().getGroup(group));
 
-    @Override
-    public boolean addPermission(UUID uuid, String permission) {
-        User user = getUser(uuid);
-        if(user == null) return false;
-
-        DataMutateResult result = user.data().add(PermissionNode.builder().permission(permission).value(true).build());
-        api.getUserManager().saveUser(user);
-
-        return result.wasSuccessful();
+        return future;
     }
 
     @Override
-    public boolean removePermission(UUID uuid, String permission) {
-        User user = getUser(uuid);
-        if(user == null) return false;
+    public CompletableFuture<Boolean> hasPermission(UUID uuid, String permission) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        getUser(uuid).whenComplete((user, throwable) -> future.complete(user != null && user.getCachedData().getPermissionData().checkPermission(permission).asBoolean()));
+        return future;
+    }
 
-        DataMutateResult result = user.data().remove(PermissionNode.builder().permission(permission).value(true).build());
-        api.getUserManager().saveUser(user);
+    @Override
+    public CompletableFuture<Boolean> addPermission(UUID uuid, String permission) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        getUser(uuid).whenComplete((user, throwable) -> {
+            future.complete(user != null && user.data().add(PermissionNode.builder().permission(permission).value(true).build()).wasSuccessful());
+            if(user != null) api.getUserManager().saveUser(user);
+        });
+        return future;
+    }
 
-        return result.wasSuccessful();
+    @Override
+    public CompletableFuture<Boolean> removePermission(UUID uuid, String permission) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        getUser(uuid).whenComplete((user, throwable) -> {
+            future.complete(user != null && user.data().remove(PermissionNode.builder().permission(permission).value(true).build()).wasSuccessful());
+            if(user != null) api.getUserManager().saveUser(user);
+        });
+        return future;
     }
 
     private boolean hasGroup(User user, Group group) {
@@ -73,67 +75,83 @@ public class PermissionHandlerLuckPerms implements IPermissionHandler {
     }
 
     @Override
-    public boolean hasGroup(UUID uuid, String group) {
-        User user = getUser(uuid);
-        if(user == null) return false;
+    public CompletableFuture<Boolean> hasGroup(UUID uuid, String group) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        Group gp = getGroup(group);
-        if(gp == null) return false;
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                getGroup(group).whenComplete((gp, tr) -> {
+                    if(group != null) {
+                        future.complete(hasGroup(user, gp));
+                    } else future.complete(false);
+                });
+            } else future.complete(false);
+        });
 
-        return hasGroup(user, gp);
+        return future;
     }
 
     @Override
-    public boolean addGroup(UUID uuid, String group) {
-        User user = getUser(uuid);
-        if(user == null) return false;
+    public CompletableFuture<Boolean> addGroup(UUID uuid, String group) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        Group gp = getGroup(group);
-        if(group == null) return false;
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                getGroup(group).whenComplete((gp, tr) -> {
+                    if(group != null) {
+                        future.complete(user.data().add(InheritanceNode.builder().group(gp).value(true).build()).wasSuccessful());
+                        api.getUserManager().saveUser(user);
+                    } else future.complete(false);
+                });
+            } else future.complete(false);
+        });
 
-        if(hasGroup(user, gp)) return false;
-
-        DataMutateResult result = user.data().add(InheritanceNode.builder().group(gp).value(true).build());
-        api.getUserManager().saveUser(user);
-
-        return result.wasSuccessful();
+        return future;
     }
 
     @Override
-    public boolean removeGroup(UUID uuid, String group) {
-        User user = getUser(uuid);
-        if(user == null) return false;
+    public CompletableFuture<Boolean> removeGroup(UUID uuid, String group) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        Group gp = getGroup(group);
-        if(group == null) return false;
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                getGroup(group).whenComplete((gp, tr) -> {
+                    if(group != null) {
+                        future.complete(user.data().add(InheritanceNode.builder().group(gp).value(false).build()).wasSuccessful());
+                        api.getUserManager().saveUser(user);
+                    } else future.complete(false);
+                });
+            } else future.complete(false);
+        });
 
-        if(hasGroup(user, gp)) return false;
-
-        DataMutateResult result = user.data().add(InheritanceNode.builder().group(gp).value(false).build());
-        api.getUserManager().saveUser(user);
-
-        return result.wasSuccessful();
+        return future;
     }
 
     @Override
-    public String getOption(UUID uuid, String option) {
-        User user = getUser(uuid);
-        if(user == null) return "";
+    public CompletableFuture<String> getOption(UUID uuid, String option) {
+        CompletableFuture<String> future = new CompletableFuture<>();
 
-        Optional<MetaNode> meta = user.getNodes(NodeType.META).stream().filter(node -> node.getMetaKey().equalsIgnoreCase(option)).collect(Collectors.toSet()).stream().findFirst();
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                future.complete(user.getNodes(NodeType.META).stream().filter(node -> node.getMetaKey().equalsIgnoreCase(option)).collect(Collectors.toSet()).stream().findFirst().map(MetaNode::getMetaValue).orElse(""));
+            } else future.complete("");
+        });
 
-        return meta.map(MetaNode::getMetaValue).orElse("");
+        return future;
     }
 
     @Override
-    public boolean setOption(UUID uuid, String option, String value) {
-        User user = getUser(uuid);
-        if(user == null) return false;
+    public CompletableFuture<Boolean> setOption(UUID uuid, String option, String value) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        DataMutateResult result = user.data().add(MetaNode.builder().key(option).value(value).build());
-        api.getUserManager().saveUser(user);
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                future.complete(user.data().add(MetaNode.builder().key(option).value(value).build()).wasSuccessful());
+                api.getUserManager().saveUser(user);
+            } else future.complete(false);
+        });
 
-        return result.wasSuccessful();
+        return future;
     }
 
 }

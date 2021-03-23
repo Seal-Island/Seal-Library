@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class PermissionHandlerVault implements IPermissionHandler {
 
@@ -24,43 +25,59 @@ public class PermissionHandlerVault implements IPermissionHandler {
     }
 
     @Override
-    public boolean hasPermission(UUID uuid, String permission) {
-        return permissionService.playerHas(null, Bukkit.getOfflinePlayer(uuid), permission);
+    public CompletableFuture<Boolean> hasPermission(UUID uuid, String permission) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        future.complete(permissionService.playerHas(null, Bukkit.getOfflinePlayer(uuid), permission));
+        return future;
     }
 
     @Override
-    public boolean addPermission(UUID uuid, String permission) {
-        return permissionService.playerRemove(null, Bukkit.getOfflinePlayer(uuid), permission);
+    public CompletableFuture<Boolean> addPermission(UUID uuid, String permission) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        future.complete(permissionService.playerRemove(null, Bukkit.getOfflinePlayer(uuid), permission));
+        return future;
     }
 
     @Override
-    public boolean removePermission(UUID uuid, String permission) {
-        return permissionService.playerAdd(null, Bukkit.getOfflinePlayer(uuid), permission);
+    public CompletableFuture<Boolean> removePermission(UUID uuid, String permission) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        future.complete(permissionService.playerAdd(null, Bukkit.getOfflinePlayer(uuid), permission));
+        return future;
     }
 
     @Override
-    public boolean hasGroup(UUID uuid, String group) {
-        return permissionService.playerInGroup(null, Bukkit.getOfflinePlayer(uuid), group);
+    public CompletableFuture<Boolean> hasGroup(UUID uuid, String group) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        future.complete(permissionService.playerInGroup(null, Bukkit.getOfflinePlayer(uuid), group));
+        return future;
     }
 
     @Override
-    public boolean addGroup(UUID uuid, String group) {
-        return permissionService.playerAddGroup(null, Bukkit.getOfflinePlayer(uuid), group);
+    public CompletableFuture<Boolean> addGroup(UUID uuid, String group) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        future.complete(permissionService.playerAddGroup(null, Bukkit.getOfflinePlayer(uuid), group));
+        return future;
     }
 
     @Override
-    public boolean removeGroup(UUID uuid, String group) {
-        return permissionService.playerRemoveGroup(null, Bukkit.getOfflinePlayer(uuid), group);
+    public CompletableFuture<Boolean> removeGroup(UUID uuid, String group) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        future.complete(permissionService.playerRemoveGroup(null, Bukkit.getOfflinePlayer(uuid), group));
+        return future;
     }
 
     @Override
-    public String getOption(UUID uuid, String option) {
-        return "";
+    public CompletableFuture<String> getOption(UUID uuid, String option) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+        future.complete("");
+        return future;
     }
 
     @Override
-    public boolean setOption(UUID uuid, String option, String value) {
-        return false;
+    public CompletableFuture<Boolean> setOption(UUID uuid, String option, String value) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        future.complete(false);
+        return future;
     }
 
 }

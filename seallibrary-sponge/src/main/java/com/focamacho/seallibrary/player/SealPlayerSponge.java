@@ -18,10 +18,8 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("unused")
 public class SealPlayerSponge implements ISealPlayer {

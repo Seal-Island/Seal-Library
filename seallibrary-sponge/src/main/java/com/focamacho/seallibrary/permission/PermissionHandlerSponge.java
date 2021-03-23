@@ -11,6 +11,7 @@ import org.spongepowered.api.util.Tristate;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class PermissionHandlerSponge implements IPermissionHandler {
@@ -29,38 +30,51 @@ public class PermissionHandlerSponge implements IPermissionHandler {
         }
     }
 
-    private Subject getUser(UUID uuid) {
-        try { permissionService.getUserSubjects().loadSubject(uuid.toString()).wait(); } catch (Exception ignored) {}
-        return permissionService.getUserSubjects().getSubject(uuid.toString()).orElse(null);
+    private CompletableFuture<Subject> getUser(UUID uuid) {
+        return permissionService.getUserSubjects().loadSubject(uuid.toString());
     }
 
-    private Subject getGroup(String group) {
-        try { permissionService.getGroupSubjects().loadSubject(group).wait(); } catch (Exception ignored) {}
-        return permissionService.getGroupSubjects().getSubject(group).orElse(null);
-    }
-
-    @Override
-    public boolean hasPermission(UUID uuid, String permission) {
-        Subject user = getUser(uuid);
-        return user != null && user.getPermissionValue(SubjectData.GLOBAL_CONTEXT, permission).asBoolean();
+    private CompletableFuture<Subject> getGroup(String group) {
+        return permissionService.getGroupSubjects().loadSubject(group);
     }
 
     @Override
-    public boolean addPermission(UUID uuid, String permission) {
-        Subject user = getUser(uuid);
-        if(user == null) return false;
+    public CompletableFuture<Boolean> hasPermission(UUID uuid, String permission) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        try { return user.getSubjectData().setPermission(SubjectData.GLOBAL_CONTEXT, permission, Tristate.TRUE).get(); }
-        catch(Exception ignored) { return false; }
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                future.complete(user.getPermissionValue(SubjectData.GLOBAL_CONTEXT, permission).asBoolean());
+            } else future.complete(false);
+        });
+
+        return future;
     }
 
     @Override
-    public boolean removePermission(UUID uuid, String permission) {
-        Subject user = getUser(uuid);
-        if(user == null) return false;
+    public CompletableFuture<Boolean> addPermission(UUID uuid, String permission) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        try { return user.getSubjectData().setPermission(SubjectData.GLOBAL_CONTEXT, permission, Tristate.UNDEFINED).get(); }
-        catch(Exception ignored) { return false; }
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                user.getSubjectData().setPermission(SubjectData.GLOBAL_CONTEXT, permission, Tristate.TRUE).whenComplete((success, thr) -> future.complete(success));
+            } else future.complete(false);
+        });
+
+        return future;
+    }
+
+    @Override
+    public CompletableFuture<Boolean> removePermission(UUID uuid, String permission) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                user.getSubjectData().setPermission(SubjectData.GLOBAL_CONTEXT, permission, Tristate.UNDEFINED).whenComplete((success, thr) -> future.complete(success));
+            } else future.complete(false);
+        });
+
+        return future;
     }
 
     private boolean hasGroup(Subject user, Subject group) {
@@ -69,59 +83,80 @@ public class PermissionHandlerSponge implements IPermissionHandler {
     }
 
     @Override
-    public boolean hasGroup(UUID uuid, String group) {
-        Subject user = getUser(uuid);
-        if(user == null) return false;
+    public CompletableFuture<Boolean> hasGroup(UUID uuid, String group) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        Subject gp = getGroup(group);
-        if(gp == null) return false;
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                getGroup(group).whenComplete((gp, thr) -> {
+                    if(gp != null) {
+                        future.complete(hasGroup(user, gp));
+                    } else future.complete(false);
+                });
+            } else future.complete(false);
+        });
 
-        return hasGroup(user, gp);
+        return future;
     }
 
     @Override
-    public boolean addGroup(UUID uuid, String group) {
-        Subject user = getUser(uuid);
-        if(user == null) return false;
+    public CompletableFuture<Boolean> addGroup(UUID uuid, String group) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        Subject gp = getGroup(group);
-        if(group == null) return false;
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                getGroup(group).whenComplete((gp, thr) -> {
+                    if(gp != null) {
+                        user.getSubjectData().addParent(SubjectData.GLOBAL_CONTEXT, gp.asSubjectReference()).whenComplete((success, tr) -> future.complete(success));
+                    } else future.complete(false);
+                });
+            } else future.complete(false);
+        });
 
-        if(hasGroup(user, gp)) return false;
-
-        try { return user.getSubjectData().addParent(SubjectData.GLOBAL_CONTEXT, gp.asSubjectReference()).get(); }
-        catch(Exception ignored) { return false; }
+        return future;
     }
 
     @Override
-    public boolean removeGroup(UUID uuid, String group) {
-        Subject user = getUser(uuid);
-        if(user == null) return false;
+    public CompletableFuture<Boolean> removeGroup(UUID uuid, String group) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        Subject gp = getGroup(group);
-        if(group == null) return false;
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                getGroup(group).whenComplete((gp, thr) -> {
+                    if(gp != null) {
+                        user.getSubjectData().removeParent(SubjectData.GLOBAL_CONTEXT, gp.asSubjectReference()).whenComplete((success, tr) -> future.complete(success));
+                    } else future.complete(false);
+                });
+            } else future.complete(false);
+        });
 
-        if(hasGroup(user, gp)) return false;
-
-        try { return user.getSubjectData().removeParent(SubjectData.GLOBAL_CONTEXT, gp.asSubjectReference()).get(); }
-        catch(Exception ignored) { return false; }
+        return future;
     }
 
     @Override
-    public String getOption(UUID uuid, String option) {
-        Subject user = getUser(uuid);
-        if(user == null) return "";
+    public CompletableFuture<String> getOption(UUID uuid, String option) {
+        CompletableFuture<String> future = new CompletableFuture<>();
 
-        return user.getOption(option).orElse("");
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                future.complete(user.getOption(option).orElse(""));
+            } else future.complete("");
+        });
+
+        return future;
     }
 
     @Override
-    public boolean setOption(UUID uuid, String option, String value) {
-        Subject user = getUser(uuid);
-        if(user == null) return false;
+    public CompletableFuture<Boolean> setOption(UUID uuid, String option, String value) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        try { return user.getSubjectData().setOption(SubjectData.GLOBAL_CONTEXT, option, value).get(); }
-        catch(Exception ignored) { return false; }
+        getUser(uuid).whenComplete((user, throwable) -> {
+            if(user != null) {
+                user.getSubjectData().setOption(SubjectData.GLOBAL_CONTEXT, option, value).whenComplete((success, thr) -> future.complete(success));
+            } else future.complete(false);
+        });
+
+        return future;
     }
 
 }

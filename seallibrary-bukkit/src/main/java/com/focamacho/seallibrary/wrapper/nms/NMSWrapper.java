@@ -5,8 +5,6 @@ import com.focamacho.seallibrary.logger.SealLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
 public abstract class NMSWrapper {
 
     public static NMSWrapper nmsWrapper;

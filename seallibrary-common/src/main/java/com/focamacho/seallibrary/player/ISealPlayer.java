@@ -7,9 +7,9 @@ import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.menu.Menu;
 import com.focamacho.seallibrary.permission.PermissionHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  *  Classe que representa um jogador
@@ -109,7 +109,7 @@ public interface ISealPlayer {
      *
      * @param permission a permissão para consulta
      */
-    default boolean hasPermission(String permission) {
+    default CompletableFuture<Boolean> hasPermission(String permission) {
         return PermissionHandler.hasPermission(getUUID(), permission);
     }
 
@@ -119,7 +119,7 @@ public interface ISealPlayer {
      *
      * @param group o grupo para consulta
      */
-    default boolean hasGroup(String group) {
+    default CompletableFuture<Boolean> hasGroup(String group) {
         return PermissionHandler.hasGroup(getUUID(), group);
     }
 
@@ -131,7 +131,7 @@ public interface ISealPlayer {
      * @return true se a ação foi efetuada com sucesso
      * e false caso algum erro tenha ocorrido.
      */
-    default boolean addGroup(String group) {
+    default CompletableFuture<Boolean> addGroup(String group) {
         return PermissionHandler.addGroup(getUUID(), group);
     }
 
@@ -143,7 +143,7 @@ public interface ISealPlayer {
      * @return true se a ação foi efetuada com sucesso
      * e false caso algum erro tenha ocorrido.
      */
-    default boolean removeGroup(String group) {
+    default CompletableFuture<Boolean> removeGroup(String group) {
         return PermissionHandler.removeGroup(getUUID(), group);
     }
 
@@ -154,7 +154,7 @@ public interface ISealPlayer {
      * @return uma String vazia se ela não existe, ou então
      * a option.
      */
-    default String getOption(String option) {
+    default CompletableFuture<String> getOption(String option) {
         return PermissionHandler.getOption(getUUID(), option);
     }
 
@@ -166,7 +166,7 @@ public interface ISealPlayer {
      * @return uma String vazia se ela não existe, ou então
      * a option.
      */
-    default boolean setOption(String option, String value) {
+    default CompletableFuture<Boolean> setOption(String option, String value) {
         return PermissionHandler.setOption(getUUID(), option, value);
     }
 
