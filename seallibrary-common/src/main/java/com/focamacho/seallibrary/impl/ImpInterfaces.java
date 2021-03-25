@@ -3,6 +3,7 @@ package com.focamacho.seallibrary.impl;
 import com.focamacho.seallibrary.item.ISealStack;
 import com.focamacho.seallibrary.item.SealStack;
 import com.focamacho.seallibrary.menu.Menu;
+import com.focamacho.seallibrary.nbt.ISealNBT;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import org.json.JSONObject;
 
@@ -26,6 +27,15 @@ public class ImpInterfaces {
     public interface ISealPlayerGetter {
         ISealPlayer get(Object player);
         Optional<ISealPlayer> get(UUID uuid);
+    }
+
+    /**
+     * Interface usada para a obtenção
+     * de um ISealNBT.
+     */
+    public interface ISealNBTGetter {
+        ISealNBT create();
+        ISealNBT get(Object nbt);
     }
 
     /**

@@ -2,7 +2,11 @@ package com.focamacho.seallibrary.item;
 
 import com.focamacho.seallibrary.forge.ForgeUtils;
 import com.focamacho.seallibrary.item.lib.ItemFlag;
+import com.focamacho.seallibrary.nbt.ISealNBT;
+import com.focamacho.seallibrary.nbt.SealNBT;
+import com.focamacho.seallibrary.nbt.SealNBTSponge;
 import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import org.json.JSONObject;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Key;
@@ -118,6 +122,22 @@ public class SealStackSponge implements ISealStack {
         net.minecraft.item.ItemStack item = (net.minecraft.item.ItemStack) ForgeUtils.getForgeStack(stack);
         try {
             item.setTagCompound(JsonToNBT.getTagFromJson(nbt));
+        } catch(Exception ignored) {}
+        stack = (ItemStack) ForgeUtils.getServerStack(item).toOriginal();
+        return this;
+    }
+
+    @Override
+    public ISealNBT getNBT() {
+        net.minecraft.item.ItemStack item = (net.minecraft.item.ItemStack) ForgeUtils.getForgeStack(stack);
+        return item.hasTagCompound() ? SealNBT.get(item.getTagCompound()) : SealNBT.get(new NBTTagCompound());
+    }
+
+    @Override
+    public ISealStack setNBT(ISealNBT nbt) {
+        net.minecraft.item.ItemStack item = (net.minecraft.item.ItemStack) ForgeUtils.getForgeStack(stack);
+        try {
+            item.setTagCompound((NBTTagCompound) nbt.toOriginal());
         } catch(Exception ignored) {}
         stack = (ItemStack) ForgeUtils.getServerStack(item).toOriginal();
         return this;

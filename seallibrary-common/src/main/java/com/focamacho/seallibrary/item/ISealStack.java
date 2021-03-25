@@ -1,6 +1,7 @@
 package com.focamacho.seallibrary.item;
 
 import com.focamacho.seallibrary.item.lib.ItemFlag;
+import com.focamacho.seallibrary.nbt.ISealNBT;
 
 import java.util.List;
 
@@ -98,6 +99,18 @@ public interface ISealStack {
      * @param nbt o NBT em String.
      */
     ISealStack setData(String nbt);
+
+    /**
+     * Retorna o NBT do item.
+     * @return o NBT do item.
+     */
+    ISealNBT getNBT();
+
+    /**
+     * Define o NBT do Item.
+     * @param nbt o NBT para definir.
+     */
+    ISealStack setNBT(ISealNBT nbt);
 
     /**
      * Retorna o ItemStack original.

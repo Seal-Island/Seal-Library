@@ -32,7 +32,7 @@ public class Implementations {
     /**
      * MenuBuilder utilizado para a obtenção
      * de Menus.
-     * @see Menu
+     * @see com.focamacho.seallibrary.menu.Menu
      */
     public static ImpInterfaces.MenuBuilder menuBuilder;
 
@@ -42,6 +42,13 @@ public class Implementations {
      * @see SealPlayer
      */
     public static ImpInterfaces.ISealPlayerGetter playerGetter;
+
+    /**
+     * ISealNBTGetter utilizado para a obtenção
+     * de ISealNBT.
+     * @see com.focamacho.seallibrary.nbt.ISealNBT
+     */
+    public static ImpInterfaces.ISealNBTGetter nbtGetter;
 
     /**
      * IEconomyHandler utilizado para a manipulação

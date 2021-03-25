@@ -48,6 +48,11 @@ public class ImplementationsBungee {
         Implementations.menuBuilder = null;
 
         /*
+         * Implementação do sistema de NBTs.
+         */
+        Implementations.nbtGetter = null;
+
+        /*
          * Implementação do sistema de SealPlayers.
          */
         Implementations.playerGetter = new ImpInterfaces.ISealPlayerGetter() {

@@ -12,6 +12,8 @@ import com.focamacho.seallibrary.item.SealStackBukkit;
 import com.focamacho.seallibrary.logger.LoggerBukkit;
 import com.focamacho.seallibrary.logger.SealLogger;
 import com.focamacho.seallibrary.menu.MenuBukkit;
+import com.focamacho.seallibrary.nbt.ISealNBT;
+import com.focamacho.seallibrary.nbt.SealNBTBukkit;
 import com.focamacho.seallibrary.permission.PermissionHandlerVault;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerBungeePerms;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
@@ -66,6 +68,21 @@ public class ImplementationsBukkit {
          * Implementação do sistema de Menus.
          */
         Implementations.menuBuilder = MenuBukkit::new;
+
+        /*
+         * Implementação do sistema de NBTs.
+         */
+        Implementations.nbtGetter = new ImpInterfaces.ISealNBTGetter() {
+            @Override
+            public ISealNBT create() {
+                return NMSWrapper.nmsWrapper.createNBT();
+            }
+
+            @Override
+            public ISealNBT get(Object nbt) {
+                return new SealNBTBukkit(nbt);
+            }
+        };
 
         /*
          * Implementação do sistema de SealPlayers.

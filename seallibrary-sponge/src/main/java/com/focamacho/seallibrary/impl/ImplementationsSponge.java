@@ -10,12 +10,16 @@ import com.focamacho.seallibrary.item.SealStackSponge;
 import com.focamacho.seallibrary.logger.LoggerSponge;
 import com.focamacho.seallibrary.logger.SealLogger;
 import com.focamacho.seallibrary.menu.MenuSponge;
+import com.focamacho.seallibrary.nbt.ISealNBT;
+import com.focamacho.seallibrary.nbt.SealNBT;
+import com.focamacho.seallibrary.nbt.SealNBTSponge;
 import com.focamacho.seallibrary.permission.PermissionHandlerSponge;
 import com.focamacho.seallibrary.permission.impl.PermissionHandlerLuckPerms;
 import com.focamacho.seallibrary.player.ISealPlayer;
 import com.focamacho.seallibrary.player.SealPlayerSponge;
 import com.focamacho.seallibrary.server.SealServerSponge;
 import com.focamacho.seallibrary.util.ItemStackUtilsSponge;
+import net.minecraft.nbt.NBTTagCompound;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.inventory.ItemStack;
@@ -63,6 +67,21 @@ public class ImplementationsSponge {
          * Implementação do sistema de Menus.
          */
         Implementations.menuBuilder = MenuSponge::new;
+
+        /*
+         * Implementação do sistema de NBTs.
+         */
+        Implementations.nbtGetter = new ImpInterfaces.ISealNBTGetter() {
+            @Override
+            public ISealNBT create() {
+                return SealNBT.get(new NBTTagCompound());
+            }
+
+            @Override
+            public ISealNBT get(Object nbt) {
+                return new SealNBTSponge(nbt);
+            }
+        };
 
         /*
          * Implementação do sistema de SealPlayers.

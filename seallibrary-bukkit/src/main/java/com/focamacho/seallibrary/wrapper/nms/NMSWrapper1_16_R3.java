@@ -1,8 +1,12 @@
 package com.focamacho.seallibrary.wrapper.nms;
 
 import com.focamacho.seallibrary.item.ISealStack;
+import com.focamacho.seallibrary.nbt.ISealNBT;
+import com.focamacho.seallibrary.nbt.SealNBT;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.v1_16_R3.MojangsonParser;
+import net.minecraft.server.v1_16_R3.NBTBase;
+import net.minecraft.server.v1_16_R3.NBTTagCompound;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -10,6 +14,7 @@ import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.json.JSONObject;
 
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class NMSWrapper1_16_R3 extends NMSWrapper {
@@ -82,6 +87,26 @@ public class NMSWrapper1_16_R3 extends NMSWrapper {
     }
 
     @Override
+    public ISealNBT getNBTFromStack(ItemStack stack) {
+        net.minecraft.server.v1_16_R3.ItemStack craftStack = org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack.asNMSCopy(stack);
+        return craftStack.hasTag() ? SealNBT.get(craftStack.getTag()) : SealNBT.get(new net.minecraft.server.v1_16_R3.NBTTagCompound());
+    }
+
+    @Override
+    public ISealNBT createNBT() {
+        return SealNBT.get(new NBTTagCompound());
+    }
+
+    @Override
+    public ItemStack setNBTToStack(ItemStack stack, ISealNBT nbt) {
+        net.minecraft.server.v1_16_R3.ItemStack craftStack = org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack.asNMSCopy(stack);
+        try {
+            craftStack.setTag((net.minecraft.server.v1_16_R3.NBTTagCompound) nbt.toOriginal());
+        } catch (Exception ignored) {}
+        return org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack.asBukkitCopy(craftStack);
+    }
+
+    @Override
     public String stackToJson(ISealStack stack) {
         net.minecraft.server.v1_16_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy((ItemStack) stack.toOriginal());
 
@@ -96,5 +121,130 @@ public class NMSWrapper1_16_R3 extends NMSWrapper {
     @Override
     public String getItemRegistryName(ItemStack stack) {
         return stack.getType().getKey().toString();
+    }
+
+    @Override
+    public boolean hasKey(Object nbt, String key) {
+        return ((NBTTagCompound)nbt).hasKey(key);
+    }
+
+    @Override
+    public void set(Object nbt, String key, ISealNBT value) {
+        ((NBTTagCompound)nbt).set(key, (NBTBase) value.toOriginal());
+    }
+
+    @Override
+    public void setByte(Object nbt, String key, byte value) {
+        ((NBTTagCompound)nbt).setByte(key, value);;
+    }
+
+    @Override
+    public void setShort(Object nbt, String key, short value) {
+        ((NBTTagCompound)nbt).setShort(key, value);
+    }
+
+    @Override
+    public void setInt(Object nbt, String key, int value) {
+        ((NBTTagCompound)nbt).setInt(key, value);
+    }
+
+    @Override
+    public void setLong(Object nbt, String key, long value) {
+        ((NBTTagCompound)nbt).setLong(key, value);
+    }
+
+    @Override
+    public void setFloat(Object nbt, String key, float value) {
+        ((NBTTagCompound)nbt).setFloat(key, value);
+    }
+
+    @Override
+    public void setDouble(Object nbt, String key, double value) {
+        ((NBTTagCompound)nbt).setDouble(key, value);
+    }
+
+    @Override
+    public void setString(Object nbt, String key, String value) {
+        ((NBTTagCompound)nbt).setString(key, value);
+    }
+
+    @Override
+    public void setByteArray(Object nbt, String key, byte[] value) {
+        ((NBTTagCompound)nbt).setByteArray(key, value);
+    }
+
+    @Override
+    public void setIntArray(Object nbt, String key, int[] value) {
+        ((NBTTagCompound)nbt).setIntArray(key, value);
+    }
+
+    @Override
+    public void setBoolean(Object nbt, String key, boolean value) {
+        ((NBTTagCompound)nbt).setBoolean(key, value);
+    }
+
+    @Override
+    public ISealNBT get(Object nbt, String key) {
+        return SealNBT.get(((NBTTagCompound)nbt).getCompound(key));
+    }
+
+    @Override
+    public byte getByte(Object nbt, String key) {
+        return ((NBTTagCompound)nbt).getByte(key);
+    }
+
+    @Override
+    public short getShort(Object nbt, String key) {
+        return ((NBTTagCompound)nbt).getShort(key);
+    }
+
+    @Override
+    public int getInt(Object nbt, String key) {
+        return ((NBTTagCompound)nbt).getInt(key);
+    }
+
+    @Override
+    public long getLong(Object nbt, String key) {
+        return ((NBTTagCompound)nbt).getLong(key);
+    }
+
+    @Override
+    public float getFloat(Object nbt, String key) {
+        return ((NBTTagCompound)nbt).getFloat(key);
+    }
+
+    @Override
+    public double getDouble(Object nbt, String key) {
+        return ((NBTTagCompound)nbt).getDouble(key);
+    }
+
+    @Override
+    public String getString(Object nbt, String key) {
+        return ((NBTTagCompound)nbt).getString(key);
+    }
+
+    @Override
+    public byte[] getByteArray(Object nbt, String key) {
+        return ((NBTTagCompound)nbt).getByteArray(key);
+    }
+
+    @Override
+    public int[] getIntArray(Object nbt, String key) {
+        return ((NBTTagCompound)nbt).getIntArray(key);
+    }
+
+    @Override
+    public boolean getBoolean(Object nbt, String key) {
+        return ((NBTTagCompound)nbt).getBoolean(key);
+    }
+
+    @Override
+    public Set<String> getKeys(Object nbt) {
+        return ((NBTTagCompound)nbt).getKeys();
+    }
+
+    @Override
+    public void remove(Object nbt, String key) {
+        ((NBTTagCompound)nbt).remove(key);
     }
 }

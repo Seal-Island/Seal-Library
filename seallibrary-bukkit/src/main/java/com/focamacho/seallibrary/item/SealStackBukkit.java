@@ -2,6 +2,7 @@ package com.focamacho.seallibrary.item;
 
 import com.focamacho.seallibrary.item.lib.FakeEnchantment;
 import com.focamacho.seallibrary.item.lib.ItemFlag;
+import com.focamacho.seallibrary.nbt.ISealNBT;
 import com.focamacho.seallibrary.wrapper.nms.NMSWrapper;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -116,6 +117,17 @@ public class SealStackBukkit implements ISealStack {
     @Override
     public ISealStack setData(String nbt) {
         stack = NMSWrapper.nmsWrapper.setDataToStack(stack, nbt);
+        return this;
+    }
+
+    @Override
+    public ISealNBT getNBT() {
+        return NMSWrapper.nmsWrapper.getNBTFromStack(this.stack);
+    }
+
+    @Override
+    public ISealStack setNBT(ISealNBT nbt) {
+        this.stack = NMSWrapper.nmsWrapper.setNBTToStack(this.stack, nbt);
         return this;
     }
 
