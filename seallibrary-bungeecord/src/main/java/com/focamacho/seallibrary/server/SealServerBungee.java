@@ -1,5 +1,6 @@
 package com.focamacho.seallibrary.server;
 
+import com.focamacho.seallibrary.SealLibraryBungee;
 import com.focamacho.seallibrary.command.ISealCommand;
 import com.focamacho.seallibrary.command.lib.ISealCommandSender;
 import com.focamacho.seallibrary.player.ISealPlayer;
@@ -97,6 +98,11 @@ public class SealServerBungee implements ISealServer {
     @Override
     public String getConfigFolder() {
         return "./plugins/";
+    }
+
+    @Override
+    public void runSync(Runnable runnable) {
+        ProxyServer.getInstance().getScheduler().runAsync(SealLibraryBungee.instance, runnable);
     }
 
 }

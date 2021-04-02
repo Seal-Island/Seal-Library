@@ -224,7 +224,53 @@ public interface ISealPlayer {
      */
     default void removeItems(ISealStack... items) {
         for (ISealStack item : items) {
-            removeItems(item, item.getAmount());
+            removeItem(item);
+        }
+    }
+
+    /**
+     * Remove o item especificado do inventário
+     * do jogador, na quantia inserida.
+     *
+     * Esse método não é executado sincronizadamente
+     * com o servidor. Isso pode acabar resultando em erros.
+     *
+     * Só use isso se você realmente sabe o que está fazendo.
+     *
+     * @param item o item para remover.
+     * @param amount a quantidade para remover.
+     */
+    void removeItemsUnsafe(ISealStack item, int amount);
+
+    /**
+     * Remove o item especificado do inventário
+     * do jogador.
+     *
+     * Esse método não é executado sincronizadamente
+     * com o servidor. Isso pode acabar resultando em erros.
+     *
+     * Só use isso se você realmente sabe o que está fazendo.
+     *
+     * @param item o item para remover.
+     */
+    default void removeItemUnsafe(ISealStack item) {
+        removeItemsUnsafe(item, item.getAmount());
+    }
+
+    /**
+     * Remove os itens especificados do inventário
+     * do jogador.
+     *
+     * Esse método não é executado sincronizadamente
+     * com o servidor. Isso pode acabar resultando em erros.
+     *
+     * Só use isso se você realmente sabe o que está fazendo.
+     *
+     * @param items os itens para remover.
+     */
+    default void removeItemsUnsafe(ISealStack... items) {
+        for(ISealStack item : items) {
+            removeItemUnsafe(item);
         }
     }
 

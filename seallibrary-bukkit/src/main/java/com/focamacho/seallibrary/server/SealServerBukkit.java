@@ -1,5 +1,6 @@
 package com.focamacho.seallibrary.server;
 
+import com.focamacho.seallibrary.SealLibraryBukkit;
 import com.focamacho.seallibrary.command.ISealCommand;
 import com.focamacho.seallibrary.command.lib.ISealCommandSender;
 import com.focamacho.seallibrary.player.ISealPlayer;
@@ -107,6 +108,14 @@ public class SealServerBukkit implements ISealServer {
     @Override
     public String getConfigFolder() {
         return "./plugins/";
+    }
+
+    @Override
+    public void runSync(Runnable runnable) {
+        Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> {
+            runnable.run();
+            return true;
+        });
     }
 
     private void registerCmd(Command command) {

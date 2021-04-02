@@ -99,6 +99,28 @@ public class SealPlayerSponge implements ISealPlayer {
     }
 
     @Override
+    public void removeItemsUnsafe(ISealStack item, int amount) {
+        int toRemove = amount;
+        for(Object slt : player.getInventory().slots()) {
+            if(toRemove <= 0) break;
+            Slot slot = (Slot) slt;
+            if(slot.peek().isPresent()) {
+                ISealStack stack = SealStack.get(slot.peek().get());
+                if(stack.equalsIgnoreAmount(item)) {
+                    if(stack.getAmount() >= toRemove) {
+                        if(stack.getAmount() - amount == 0) slot.clear();
+                        else slot.poll(toRemove);
+                        toRemove = 0;
+                    } else {
+                        toRemove -= stack.getAmount();
+                        slot.clear();
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public void giveItems(ISealStack... items) {
         SealLibrarySponge.syncExecutor.execute(() -> {
             for (ISealStack item : items) {

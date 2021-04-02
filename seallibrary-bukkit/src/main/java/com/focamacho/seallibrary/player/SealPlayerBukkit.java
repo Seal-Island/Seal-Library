@@ -92,6 +92,25 @@ public class SealPlayerBukkit implements ISealPlayer {
     }
 
     @Override
+    public void removeItemsUnsafe(ISealStack item, int amount) {
+        int toRemove = amount;
+        for(ItemStack slt : player.getInventory().getContents()) {
+            if(toRemove <= 0) break;
+            ISealStack stack = SealStack.get(slt);
+            if(stack.equalsIgnoreAmount(item)) {
+                if(stack.getAmount() >= toRemove) {
+                    if(stack.getAmount() - amount == 0) player.getInventory().remove(slt);
+                    else stack.setAmount(stack.getAmount() - toRemove);
+                    toRemove = 0;
+                } else {
+                    toRemove -= stack.getAmount();
+                    player.getInventory().removeItem(slt);
+                }
+            }
+        }
+    }
+
+    @Override
     public void giveItems(ISealStack... items) {
         Bukkit.getScheduler().callSyncMethod(SealLibraryBukkit.instance, () -> {
             for (ISealStack item : items) {

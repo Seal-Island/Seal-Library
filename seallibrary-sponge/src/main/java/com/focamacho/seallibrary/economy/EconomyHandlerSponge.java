@@ -100,12 +100,12 @@ public class EconomyHandlerSponge implements IEconomyHandler {
 
     @Override
     public boolean isValidCurrency(String currency) {
-        return currency.equalsIgnoreCase("") || economyService.getCurrencies().stream().anyMatch(cur -> cur.getId().equalsIgnoreCase(currency));
+        return currency.equalsIgnoreCase("") || economyService.getCurrencies().stream().anyMatch(cur -> cur.getId().equalsIgnoreCase(currency)  || cur.getDisplayName().toPlainSingle().equalsIgnoreCase(currency));
     }
 
     private Currency getCurrency(String currency) {
         for (Currency cur : economyService.getCurrencies()) {
-            if(cur.getId().equalsIgnoreCase(currency)) return cur;
+            if(cur.getId().equalsIgnoreCase(currency) || cur.getDisplayName().toPlainSingle().equalsIgnoreCase(currency)) return cur;
         }
         return economyService.getDefaultCurrency();
     }

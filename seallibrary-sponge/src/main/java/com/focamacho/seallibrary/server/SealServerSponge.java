@@ -1,5 +1,6 @@
 package com.focamacho.seallibrary.server;
 
+import com.focamacho.seallibrary.SealLibrarySponge;
 import com.focamacho.seallibrary.command.ISealCommand;
 import com.focamacho.seallibrary.command.lib.ISealCommandSender;
 import com.focamacho.seallibrary.player.ISealPlayer;
@@ -13,6 +14,7 @@ import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.command.SendCommandEvent;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 
 import java.util.ArrayList;
@@ -71,6 +73,11 @@ public class SealServerSponge implements ISealServer {
     @Override
     public String getConfigFolder() {
         return "./config/";
+    }
+
+    @Override
+    public void runSync(Runnable runnable) {
+        Task.builder().execute(runnable).submit(SealLibrarySponge.instance);
     }
 
     @Listener

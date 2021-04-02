@@ -127,7 +127,7 @@ public class SealStackBukkit implements ISealStack {
 
     @Override
     public ISealStack setNBT(ISealNBT nbt) {
-        this.stack = NMSWrapper.nmsWrapper.setNBTToStack(this.stack, nbt);
+        NMSWrapper.nmsWrapper.setNBTToStack(this.stack, nbt);
         return this;
     }
 

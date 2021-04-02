@@ -84,4 +84,10 @@ public interface ISealServer {
      */
     String getConfigFolder();
 
+    /**
+     * Faz uma ação ser executada
+     * sincronizadamente com o servidor.
+     */
+    void runSync(Runnable runnable);
+
 }

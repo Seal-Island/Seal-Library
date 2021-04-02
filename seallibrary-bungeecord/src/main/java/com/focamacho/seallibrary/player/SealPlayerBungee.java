@@ -66,6 +66,9 @@ public class SealPlayerBungee implements ISealPlayer {
     public void removeItems(ISealStack item, int amount) {}
 
     @Override
+    public void removeItemsUnsafe(ISealStack item, int amount) {}
+
+    @Override
     public void giveItems(ISealStack... items) {}
 
     @Override
