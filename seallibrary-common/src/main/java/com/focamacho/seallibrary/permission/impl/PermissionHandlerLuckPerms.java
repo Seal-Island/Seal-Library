@@ -3,12 +3,14 @@ package com.focamacho.seallibrary.permission.impl;
 import com.focamacho.seallibrary.permission.IPermissionHandler;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.data.DataType;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.InheritanceNode;
 import net.luckperms.api.node.types.MetaNode;
 import net.luckperms.api.node.types.PermissionNode;
+import net.luckperms.api.query.QueryOptions;
 
 import java.util.Set;
 import java.util.UUID;
@@ -133,7 +135,8 @@ public class PermissionHandlerLuckPerms implements IPermissionHandler {
 
         getUser(uuid).whenComplete((user, throwable) -> {
             if(user != null) {
-                future.complete(user.getNodes(NodeType.META).stream().filter(node -> node.getMetaKey().equalsIgnoreCase(option)).collect(Collectors.toSet()).stream().findFirst().map(MetaNode::getMetaValue).orElse(""));
+                String opt = user.getCachedData().getMetaData(QueryOptions.nonContextual()).getMetaValue("");
+                future.complete(opt != null ? opt : "");
             } else future.complete("");
         });
 
