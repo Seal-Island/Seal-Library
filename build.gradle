@@ -20,7 +20,7 @@ apply plugin: 'io.freefair.lombok'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group = 'com.focamacho'
-version = '1.2'
+version = '1.3'
 archivesBaseName = 'SealLibrary'
 
 repositories {
