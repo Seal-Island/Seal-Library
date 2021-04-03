@@ -4,6 +4,7 @@ import com.focamacho.seallibrary.chat.lib.Runnable;
 import com.focamacho.seallibrary.impl.Implementations;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Classe static para acesso dos métodos
@@ -14,11 +15,11 @@ import java.util.UUID;
  */
 public class ChatHandler {
 
-    public static String getPrefix(UUID uuid) {
+    public static CompletableFuture<String> getPrefix(UUID uuid) {
         return Implementations.chatHandler.getPrefix(uuid);
     }
 
-    public static String getSuffix(UUID uuid) {
+    public static CompletableFuture<String> getSuffix(UUID uuid) {
         return Implementations.chatHandler.getSuffix(uuid);
     }
 

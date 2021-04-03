@@ -3,6 +3,7 @@ package com.focamacho.seallibrary.chat;
 import com.focamacho.seallibrary.chat.lib.Runnable;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
 public interface IChatHandler {
@@ -14,7 +15,7 @@ public interface IChatHandler {
      * @return o prefix ou null caso o jogador
      * não possua um.
      */
-    String getPrefix(UUID uuid);
+    CompletableFuture<String> getPrefix(UUID uuid);
 
     /**
      *  Consulta o suffix de um jogador.
@@ -23,7 +24,7 @@ public interface IChatHandler {
      * @return o suffix ou null caso o jogador
      * não possua um.
      */
-    String getSuffix(UUID uuid);
+    CompletableFuture<String> getSuffix(UUID uuid);
 
     /**
      * Aguarda uma mensagem do jogador

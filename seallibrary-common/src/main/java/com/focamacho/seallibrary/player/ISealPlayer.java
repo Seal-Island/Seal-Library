@@ -89,7 +89,7 @@ public interface ISealPlayer {
      * @return o prefix do jogador ou null
      * caso ele não possua um.
      */
-    default String getPrefix() {
+    default CompletableFuture<String> getPrefix() {
         return ChatHandler.getPrefix(getUUID());
     }
 
@@ -99,7 +99,7 @@ public interface ISealPlayer {
      * @return o suffix do jogador ou null
      * caso ele não possua um.
      */
-    default String getSuffix() {
+    default CompletableFuture<String> getSuffix() {
         return ChatHandler.getSuffix(getUUID());
     }
 

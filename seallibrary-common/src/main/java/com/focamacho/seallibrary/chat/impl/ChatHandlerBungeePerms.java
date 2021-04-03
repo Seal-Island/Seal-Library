@@ -4,6 +4,7 @@ import com.focamacho.seallibrary.chat.IChatHandler;
 import net.alpenblock.bungeeperms.BungeePermsAPI;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Implementação do sistema de chat
@@ -13,13 +14,17 @@ import java.util.UUID;
 public class ChatHandlerBungeePerms implements IChatHandler {
 
     @Override
-    public String getPrefix(UUID uuid) {
-        return BungeePermsAPI.userPrefix(uuid.toString(), "", null);
+    public CompletableFuture<String> getPrefix(UUID uuid) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+        future.complete(BungeePermsAPI.userPrefix(uuid.toString(), "", null));
+        return future;
     }
 
     @Override
-    public String getSuffix(UUID uuid) {
-        return BungeePermsAPI.userSuffix(uuid.toString(), "", null);
+    public CompletableFuture<String> getSuffix(UUID uuid) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+        future.complete(BungeePermsAPI.userSuffix(uuid.toString(), "", null));
+        return future;
     }
 
 }

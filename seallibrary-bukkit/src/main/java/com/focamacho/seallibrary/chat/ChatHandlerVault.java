@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class ChatHandlerVault implements IChatHandler {
 
@@ -25,13 +26,17 @@ public class ChatHandlerVault implements IChatHandler {
     }
 
     @Override
-    public String getPrefix(UUID uuid) {
-        return chatService.getPlayerPrefix(null, Bukkit.getOfflinePlayer(uuid));
+    public CompletableFuture<String> getPrefix(UUID uuid) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+        future.complete(chatService.getPlayerPrefix(null, Bukkit.getOfflinePlayer(uuid)));
+        return future;
     }
 
     @Override
-    public String getSuffix(UUID uuid) {
-        return chatService.getPlayerSuffix(null, Bukkit.getOfflinePlayer(uuid));
+    public CompletableFuture<String> getSuffix(UUID uuid) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+        future.complete(chatService.getPlayerSuffix(null, Bukkit.getOfflinePlayer(uuid)));
+        return future;
     }
 
 }
