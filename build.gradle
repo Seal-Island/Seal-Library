@@ -55,7 +55,7 @@ allprojects {
 
     dependencies {
         //LuckPerms
-        compileOnly 'net.luckperms:api:5.2'
+        compileOnly 'net.luckperms:api:5.3'
 
         //BungeePerms
         compileOnly 'net.alpenblock:BungeePerms:4.0'
