@@ -4,14 +4,14 @@ archivesBaseName = "SealLibrary-Common-" + rootProject.version
 
 dependencies {
     //Seal Config
-    implementation group: 'com.focamacho', name: 'sealconfig', version: '1.2.2'
+    compile group: 'com.focamacho', name: 'sealconfig', version: '1.2.2'
 
     //org.json
-    implementation group: 'org.json', name: 'json', version: '20210307'
+    compile group: 'org.json', name: 'json', version: '20210307'
 
     //SQLite para Shadow
-    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.34.0'
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.34.0'
 
     //Apache Commons Lang para Shadow
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 }
