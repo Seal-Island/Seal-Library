@@ -58,7 +58,7 @@ allprojects {
         compileOnly 'net.luckperms:api:5.2'
 
         //BungeePerms
-        compileOnly 'net.alpenblock:BungeePerms:4.0-dev-108'
+        compileOnly 'net.alpenblock:BungeePerms:4.0'
 
         //Vault
         compileOnly('com.github.MilkBowl:VaultAPI:1.7'){
