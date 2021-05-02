@@ -88,12 +88,12 @@ public class NMSWrapper1_12_R1 extends NMSWrapper {
     }
 
     @Override
-    public ItemStack setNBTToStack(ItemStack stack, ISealNBT nbt) {
+    public void setNBTToStack(ItemStack stack, ISealNBT nbt) {
         net.minecraft.server.v1_12_R1.ItemStack craftStack = org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack.asNMSCopy(stack);
         try {
             craftStack.setTag((net.minecraft.server.v1_12_R1.NBTTagCompound) nbt.toOriginal());
+            stack.setItemMeta(org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack.getItemMeta(craftStack));
         } catch (Exception ignored) {}
-        return org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack.asBukkitCopy(craftStack);
     }
 
     @Override
@@ -118,6 +118,12 @@ public class NMSWrapper1_12_R1 extends NMSWrapper {
         net.minecraft.server.v1_12_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
         MinecraftKey registry = Item.REGISTRY.b(nmsStack.getItem());
         return registry != null ? registry.toString() : "";
+    }
+
+    @Override
+    public int getItemMetaData(ItemStack stack) {
+        net.minecraft.server.v1_12_R1.ItemStack nmsStack = org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack.asNMSCopy(stack);
+        return nmsStack.getData();
     }
 
     @Override

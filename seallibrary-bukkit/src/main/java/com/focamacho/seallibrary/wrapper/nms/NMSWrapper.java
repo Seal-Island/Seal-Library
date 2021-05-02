@@ -46,13 +46,15 @@ public abstract class NMSWrapper {
 
     public abstract ISealNBT getNBTFromStack(ItemStack stack);
 
-    public abstract ItemStack setNBTToStack(ItemStack stack, ISealNBT nbt);
+    public abstract void setNBTToStack(ItemStack stack, ISealNBT nbt);
 
     public abstract ISealNBT createNBT();
 
     public abstract String stackToJson(ISealStack stack);
 
     public abstract String getItemRegistryName(ItemStack stack);
+
+    public abstract int getItemMetaData(ItemStack stack);
     
     //NBT
     public abstract boolean hasKey(Object nbt, String key);

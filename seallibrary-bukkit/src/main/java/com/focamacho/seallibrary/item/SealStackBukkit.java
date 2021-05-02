@@ -52,6 +52,16 @@ public class SealStackBukkit implements ISealStack {
     }
 
     @Override
+    public String getRegistryName() {
+        return NMSWrapper.nmsWrapper.getItemRegistryName(stack);
+    }
+
+    @Override
+    public int getMeta() {
+        return NMSWrapper.nmsWrapper.getItemMetaData(stack);
+    }
+
+    @Override
     public List<String> getLore() {
         return stack.getItemMeta().hasLore() ? stack.getItemMeta().getLore() : new ArrayList<>();
     }

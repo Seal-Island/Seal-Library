@@ -61,6 +61,17 @@ public class SealStackSponge implements ISealStack {
     }
 
     @Override
+    @SuppressWarnings("all")
+    public String getRegistryName() {
+        return ((net.minecraft.item.ItemStack) ForgeUtils.getForgeStack(stack)).getItem().getRegistryName().toString();
+    }
+
+    @Override
+    public int getMeta() {
+        return ((net.minecraft.item.ItemStack) ForgeUtils.getForgeStack(stack)).getMetadata();
+    }
+
+    @Override
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
         Optional<List<Text>> optional = stack.get(Keys.ITEM_LORE);

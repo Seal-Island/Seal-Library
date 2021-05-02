@@ -33,6 +33,20 @@ public interface ISealStack {
     boolean hasCustomName();
 
     /**
+     * Retorna o Registry Name desse item.
+     * Por exemplo, um carvão tem o Registry Name
+     * de "minecraft:coal".
+     * @return o Registry Name do item.
+     */
+    String getRegistryName();
+
+    /**
+     * Retorna a meta-data(ou durability data) desse item.
+     * @return a meta-data do item.
+     */
+    int getMeta();
+
+    /**
      * Retorna a lore atual do item.
      * @return a lore do item.
      */
@@ -148,6 +162,31 @@ public interface ISealStack {
      * @return se o item é ou não igual.
      */
     boolean equalsIgnoreAmount(ISealStack toCompare);
+
+    /**
+     * Confere se o item nesse SealStack
+     * é igual a outro, ignorando o nbt
+     * do item.
+     * @param toCompare o item para ser comparado.
+     * @return se o item é ou não igual.
+     */
+    default boolean equalsIgnoreNBT(ISealStack toCompare) {
+        return this.copy().setData("{}").equals(toCompare.copy().setData("{}"));
+    }
+
+    /**
+     * Confere se o item nesse SealStack
+     * é igual a outro, fazendo a comparação
+     * somente do item, ignorando a meta-data,
+     * durabilidade, nbt, e outros valores que
+     * são atribuídos ao ItemStack e não ao
+     * Item.
+     * @param toCompare o item para ser comparado.
+     * @return se o item é ou não igual.
+     */
+    default boolean equalsType(ISealStack toCompare) {
+        return toCompare.getRegistryName().equalsIgnoreCase(this.getRegistryName());
+    }
 
     /**
      * Confere se esse stack não é somente

@@ -98,29 +98,31 @@ public class NMSWrapper1_16_R3 extends NMSWrapper {
     }
 
     @Override
-    public ItemStack setNBTToStack(ItemStack stack, ISealNBT nbt) {
+    public void setNBTToStack(ItemStack stack, ISealNBT nbt) {
         net.minecraft.server.v1_16_R3.ItemStack craftStack = org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack.asNMSCopy(stack);
         try {
             craftStack.setTag((net.minecraft.server.v1_16_R3.NBTTagCompound) nbt.toOriginal());
+            stack.setItemMeta(org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack.getItemMeta(craftStack));
         } catch (Exception ignored) {}
-        return org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack.asBukkitCopy(craftStack);
     }
 
     @Override
     public String stackToJson(ISealStack stack) {
-        net.minecraft.server.v1_16_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy((ItemStack) stack.toOriginal());
-
         JSONObject json = new JSONObject();
         json.put("item", ((ItemStack)stack.toOriginal()).getType().getKey().toString());
         json.put("data", stack.getData());
         json.put("amount", stack.getAmount());
-
         return json.toString();
     }
 
     @Override
     public String getItemRegistryName(ItemStack stack) {
         return stack.getType().getKey().toString();
+    }
+
+    @Override
+    public int getItemMetaData(ItemStack stack) {
+        return 0;
     }
 
     @Override
