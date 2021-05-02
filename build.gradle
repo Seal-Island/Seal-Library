@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
         classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
-        classpath "io.freefair.gradle:lombok-plugin:5.3.0"
+        classpath "io.freefair.gradle:lombok-plugin:5.3.3.3"
     }
 }
 
