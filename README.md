@@ -1,3 +1,8 @@
+# Arquivado
+Esse projeto foi arquivado pois, sejamos sinceros, não está muito bem feito quanto eu gostaria que estivesse. A ideia inicial foi legal, porém acabei optando por ao invés de usar uma Library para os meus projetos, começarei a fazer alguns wrappers dentro dos próprio plugins, evitando assim a necessidade de uma dependência adicional também.
+
+Pretendo criar algumas outras libraries para compensar a falta dessa, com alguns métodos úteis como criação de menus, etc...
+
 # Seal Library
 A Seal Library foi criada com o objetivo de tornar mais fácil para mim(Focamacho) criar plugins compatíveis com múltiplas plataformas.<br><br>
 Para suas funcionalidades funcionarem corretamente é necessário ter um plugin de economia e permissões compatível.<br>
